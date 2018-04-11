@@ -14,11 +14,18 @@ xcolumn columnStyle widthExpression attributes content =
 
 menubar model menuContent =
     row Menubar
-        [ width (percent 100), height (px 35), center ]
+        [ width (percent 100), height (px 35) ]
         menuContent
 
 
 footer model footerContent =
     row Menubar
-        [ width (percent 100), height (px 35), center, alignBottom ]
+        [ width (percent 100), height (px 35), alignBottom ]
         footerContent
+
+
+button title width_ attrs selected =
+    if selected then
+        el ButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_), center ] ++ attrs) (el None [ center ] (text title))
+    else
+        el Button ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [ center ] (text title))

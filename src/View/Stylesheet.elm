@@ -15,6 +15,7 @@ type MyStyles
     | Panel
     | TextPanel
     | Heading
+    | LeftHeading
     | RightColumnHeading
     | Bold
     | Paragraph
@@ -46,6 +47,10 @@ grayColor x =
     Color.rgb x x x
 
 
+myBlack =
+    grayColor 60
+
+
 stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
@@ -60,18 +65,18 @@ stylesheet =
             , Font.typeface fontList
             ]
         , style Heading
-            [ Color.text Color.black
+            [ Color.text myBlack
             , Color.background mainColor
             , Font.size 24 -- all units given as px
             , Font.typeface fontList
-            , Font.weight 550
+            , Font.weight 600
             ]
-        , style RightColumnHeading
-            [ Color.text Color.black
+        , style LeftHeading
+            [ Color.text myBlack
             , Color.background alternateColor
-            , Font.size 24 -- all units given as px
+            , Font.size 18 -- all units given as px
             , Font.typeface fontList
-            , Font.weight 550
+            , Font.weight 600
             ]
         , style Bold
             [ Color.text Color.black
@@ -102,14 +107,14 @@ stylesheet =
             [ Color.text Color.white
             , Color.background (Color.rgb 100 100 100)
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
-            , Font.size 12 -- all units given as px
+            , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]
         , style ButtonSelected
             [ Color.text Color.white
             , Color.background (Color.darkBlue)
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
-            , Font.size 12 -- all units given as px
+            , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]
         , style SmallButton
