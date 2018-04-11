@@ -16,6 +16,7 @@
 # echo "${red}red text ${green}green text${reset}"
 
 color=`tput setaf 48`
+red=`tput setaf 1`
 reset=`tput setaf 7`
 
 echo "${color}Commit changes to git${reset}"

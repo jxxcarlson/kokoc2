@@ -3,21 +3,10 @@ port module Main exposing (main)
 {- This app retrieves and displays weather data from openweathermap.org. -}
 
 import Html
-import Types exposing (Model, Msg(..))
-import View exposing (view)
 import OutsideInfo
-
-
-type alias Flags =
-    { width : Int
-    , height : Int
-    }
-
-
-
--- type Msg
---     = LogErr String
---     | Outside InfoForElm
+import Model exposing (Model, Flags, initialModel)
+import Msg exposing (Msg(..))
+import View.Main
 
 
 type InfoForElm
@@ -27,7 +16,7 @@ type InfoForElm
 main =
     Html.programWithFlags
         { init = init
-        , view = view
+        , view = View.Main.view
         , update = update
         , subscriptions = subscriptions
         }
@@ -35,12 +24,7 @@ main =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { message = "App started"
-      , windowWidth = flags.width
-      , windowHeight = flags.height
-      }
-    , Cmd.none
-    )
+    ( Model.initialModel flags, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
