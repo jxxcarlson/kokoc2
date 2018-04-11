@@ -6,7 +6,19 @@ import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, effectiveWindowHeight)
+import Model exposing (Model, Mode(..), leftColumnWidth)
+import Msg
+    exposing
+        ( Msg
+            ( SignIn
+            , CancelSignIn
+            , GoToSignupForm
+            , InputName
+            , InputUsername
+            , InputEmail
+            , InputPassword
+            )
+        )
 import View.Widget as Widget
 import View.Text as Text
 
@@ -32,25 +44,44 @@ mainRow model =
         ]
 
 
+mainContent model =
+    case model.mode of
+        Public ->
+            startContent model
+
+        SigningIn ->
+            signInForm model
+
+        SigningUp ->
+            signUpForm model
+
+        SignedIn ->
+            startContent model
+
+
 
 {- LEFT COLUMN -}
 
 
 leftColumn model =
     [ row LeftHeading [ paddingLeft 40 ] [ text ("About kNode") ]
-    , row Alternate [ paddingLeft 40 ] [ textLayout Alternate [ yScrollbar, height (px <| effectiveWindowHeight model), width (px 300), spacing 10 ] textContent ]
+    , row Alternate [ paddingLeft 40 ] (textColumn model)
     ]
 
 
-textContent =
-    Text.loremIpsum |> Text.paragraphify (\x -> paragraph Alternate [ width (px 300) ] [ text x ])
+textColumn model =
+    [ textLayout Alternate [ yScrollbar, height (px <| toFloat <| model.windowHeight - 160), spacing 10 ] (textContent model) ]
+
+
+textContent model =
+    Text.loremIpsum |> Text.paragraphify (\x -> paragraph Alternate [ width (px ((leftColumnWidth model) - 120)) ] [ text x ])
 
 
 
 {- MAIN COLUMN -}
 
 
-mainContent model =
+startContent model =
     [ row Heading [ center ] [ text ("kNode: A place to share your knowledge") ]
     , row Main [ center ] [ mainImage ]
     ]
@@ -58,6 +89,37 @@ mainContent model =
 
 mainImage =
     image Main [ width (percent 80) ] { src = "https://www.ibiblio.org/wm/paint/auth/kandinsky/kandinsky.comp-8.jpg", caption = "Kandinsky" }
+
+
+
+{- SIGN IN -}
+
+
+signInForm model =
+    [ column Panel
+        [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
+        [ row PanelHeading [ center ] [ text ("Sign in form") ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 InputEmail ]
+        , row Panel [] [ Widget.inputField "Password" "" 300 InputPassword ]
+        , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick Msg.NoOp ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick CancelSignIn ] False ]
+        , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick GoToSignupForm ] False ]
+        ]
+    ]
+
+
+signUpForm model =
+    [ column Panel
+        [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
+        [ row PanelHeading [ center ] [ text ("Sign up form") ]
+        , row Panel [] [ Widget.inputField "Name" "" 300 InputName ]
+        , row Panel [] [ Widget.inputField "Username" "" 300 InputUsername ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 InputEmail ]
+        , row Panel [] [ Widget.inputField "Password" "" 300 InputPassword ]
+        , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick Msg.NoOp ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick CancelSignIn ] False ]
+        ]
+    ]
 
 
 
@@ -77,7 +139,7 @@ centerMenu =
 
 
 rightMenu =
-    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button "Sign in" 75 [] False ]
+    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button "Sign in!" 75 [ onClick SignIn ] False ]
 
 
 

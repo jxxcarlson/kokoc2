@@ -19,6 +19,10 @@ view model =
         ]
 
 
+
+-- inputField label_ value_ width_ action
+
+
 mainRow model =
     row Main
         [ height fill ]

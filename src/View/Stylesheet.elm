@@ -13,10 +13,10 @@ type MyStyles
     | Menubar
     | Alternate
     | Panel
+    | PanelHeading
     | TextPanel
     | Heading
     | LeftHeading
-    | RightColumnHeading
     | Bold
     | Paragraph
     | Title
@@ -24,14 +24,15 @@ type MyStyles
     | InputField
     | Button
     | ButtonSelected
+    | FormButton
+    | FormButtonSelected
     | SmallButton
     | SmallButtonSelected
-    | RowLabel
     | None
 
 
 fontList =
-    [ Font.font "Georgia"
+    [ Font.font "Arial"
     ]
 
 
@@ -56,8 +57,9 @@ stylesheet =
         [ style Main [ Color.background mainColor ]
         , style Menubar [ Color.background <| grayColor 40, Color.text Color.white ]
         , style Alternate [ Color.background alternateColor ]
-        , style Panel [ Font.size 14, Color.background (Color.rgba 250 250 250 1.0) ]
-        , style TextPanel [ Color.background (grayColor 245) ]
+        , style Panel [ Font.typeface fontList, Font.size 16, Color.background Color.darkBlue ]
+        , style PanelHeading [ Font.typeface fontList, Font.size 24, Color.background Color.darkBlue, Color.text Color.white ]
+        , style TextPanel [ Font.typeface fontList, Color.background (grayColor 245) ]
         , style Title
             [ Color.text Color.black
             , Color.background mainColor
@@ -92,20 +94,15 @@ stylesheet =
             , Font.typeface fontList
             ]
         , style InputField
-            [ Color.text Color.white
-            , Color.background (grayColor 160)
-            , Font.size 18 -- all units given as px
-            , Font.typeface fontList
-            ]
-        , style RowLabel
-            [ Color.text Color.white
-            , Color.background Color.darkBlue
+            [ Color.text myBlack
+            , Color.background Color.white
             , Font.size 18 -- all units given as px
             , Font.typeface fontList
             ]
         , style Button
             [ Color.text Color.white
             , Color.background (Color.rgb 100 100 100)
+            , Border.rounded 8
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
@@ -113,6 +110,23 @@ stylesheet =
         , style ButtonSelected
             [ Color.text Color.white
             , Color.background (Color.darkBlue)
+            , Border.rounded 8
+            , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style FormButton
+            [ Color.text myBlack
+            , Color.background Color.white
+            , Border.rounded 8
+            , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style FormButtonSelected
+            [ Color.text myBlack
+            , Color.background (Color.lightBlue)
+            , Border.rounded 8
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList

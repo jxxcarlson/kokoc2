@@ -3,5 +3,10 @@ module Msg exposing (..)
 
 type Msg
     = NoOp
-    | Input String
-    | ReverseText
+    | SignIn
+    | CancelSignIn
+    | GoToSignupForm
+    | InputName String
+    | InputUsername String
+    | InputEmail String
+    | InputPassword String

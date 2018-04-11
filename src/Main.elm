@@ -4,7 +4,7 @@ port module Main exposing (main)
 
 import Html
 import OutsideInfo
-import Model exposing (Model, Flags, initialModel)
+import Model exposing (Model, Flags, initialModel, Mode(..))
 import Msg exposing (Msg(..))
 import View.Main
 
@@ -40,8 +40,23 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Input str ->
-            ( { model | message = str }, Cmd.none )
+        SignIn ->
+            ( { model | mode = SigningIn }, Cmd.none )
 
-        ReverseText ->
-            ( { model | message = model.message |> String.reverse |> String.toLower }, Cmd.none )
+        CancelSignIn ->
+            ( { model | mode = Public }, Cmd.none )
+
+        GoToSignupForm ->
+            ( { model | mode = SigningUp }, Cmd.none )
+
+        InputName str ->
+            ( { model | name = str }, Cmd.none )
+
+        InputUsername str ->
+            ( { model | username = str }, Cmd.none )
+
+        InputEmail str ->
+            ( { model | email = str }, Cmd.none )
+
+        InputPassword str ->
+            ( { model | password = str }, Cmd.none )
