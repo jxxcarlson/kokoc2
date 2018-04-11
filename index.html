@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!--  META -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+
+    <!--  Still running under knoode.io -->
+
+    <title>XKNODE</title>
+
+    <!--  Asciidoctor (see also index.js) -->
+
+      <LINK href="css/asciidoc2.css" rel="stylesheet" type="text/css">
+      <LINK href="css/extra.css" rel="stylesheet" type="text/css">
+      <script src="js/asciidoctor.js"></script>
+
+     <!--  SYNTAX HIGLIGHTING (NOT WORKNG) -->
+
+      <link rel="stylesheet"
+         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+      <!--  MathJax -->
+
+      <script type="text/x-mathjax-config">
+
+         MathJax.Hub.Config({tex2jax: {
+           TeX: { equationNumbers: {autoNumber: "AMS"}}
+           }
+         });
+
+
+      </script>
+
+      <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+      </script>
+
+      <script>
+          // window.onbeforeunload = function() { return "you can not refresh the page"; }
+      </script>
+
+      <script type="text/x-mathjax-config">
+
+         MathJax.Hub.Config({tex2jax: {
+           inlineMath: [['$','$'], ['\\(','\\)']],
+
+         }});
+
+      </script>
+
+
+      <div id="main"></div>
+
+
+          <div id="renderedText" style="overflow:scroll;
+                  padding:2em; z-index: 100;
+                  position:absolute; top:81px; left:833px;
+                  width: 499px; height: 462px;
+                  border solid 1px;
+                  background-color: #f9f9f9;">
+          </div>
+
+      <script src="main.js"></script>
+
+      <script>
+          var node = document.getElementById('main');
+          //var app = Elm.Main.embed(node);
+          // Note: if your Elm module is named "MyThing.Root" you
+          // would call "Elm.MyThing.Root.embed(node)" instead.
+          var app = Elm.Main.fullscreen(
+            {
+                width:  window.innerWidth,
+                height: window.innerHeight
+            }
+          );
+
+
+      </script>
+
+    <script>
+      var request_in_progress = false;
+      var current_content = '';
+      var asciidoctor = Asciidoctor();
+      var count = 0;
+
+
+    // INFO FOR OUTSIDE
+
+    app.ports.infoForOutside.subscribe(msg => {
+      switch(msg.tag) {
+
+         case "PutTextToRender":
+           processDocumentContent(msg.data)
+           break;
+
+        case "UserData":
+           processUserData(msg.data)
+           break;
+
+        case "UserState":
+           processUserState(msg.data)
+           break;
+
+        case "SaveDocumentStack":
+           processDocumentStack(msg.data)
+           break;
+
+        case "AskToRecoverUserState":
+           askToRecoverUserState(msg.data)
+           break;
+
+        case "AskToReconnectUser":
+           askToReconnectUser(msg.data)
+           break;
+
+        case "DisconnectUser":
+           disconnectUser()
+           break;
+      }
+
+    })
+
+    // BEGIN: Helper functions for app.ports.infoForOutside.subscribe
+    // That is, the functions below process data received from Elm.
+
+    var processDocumentContent = function(data) {
+
+      if (data.force == true) {
+         console.log("DEBOUNCE = TRUE")
+      } else {
+        console.log("DEBOUNCE = FALSE")
+      }
+
+      requestAnimationFrame(function() {
+
+          count = count + 1
+          switch (data.textType) {
+
+            case "adoc":
+               render_asciidoc(data.content)
+               break;
+            case "adoc_latex":
+               render_asciidoc_latex(data.content)
+               break;
+            case "plain":
+               render_plain(data.content)
+               break;
+            case "latex":
+                // force = true
+                render_latex(true, data.idList, data.content)
+                break;
+            default:
+              console.log("Default rendering ... asciidoc")
+              render_asciidoc(data.content)
+          }
+      })
+    }
+
+
+    var disconnectUser = function () {
+      console.log("disconnectUser");
+      localStorage.clear()
+    }
+
+    var askToReconnectUser = function (str) {
+      console.log("reconnectUser");
+      app.ports.infoForElm.send({tag: "ReconnectUser", data: localStorage})
+    }
+
+    var askToRecoverUserState = function(str) {
+      console.log("RecoverUserState" + JSON.stringify(localStorage));
+      app.ports.infoForElm.send({tag: "RecoverUserState", data: localStorage});
+    }
+
+    var processDocumentStack = function(data) {
+      console.log("xxx I will put the documentStack in local storage");
+      localStorage.setItem("documentStack", data.documentStack);
+    }
+
+    var processUserData = function(userSettings) {
+      console.log("I will put this stuff in local storage" );
+      localStorage.setItem("username", userSettings.username);
+      localStorage.setItem("token", userSettings.token);
+      localStorage.setItem("id", userSettings.id);
+      localStorage.setItem("email", userSettings.email);
+      localStorage.setItem("name", userSettings.name);
+      localStorage.setItem("blurb", userSettings.blurb);
+    }
+
+    var processUserState = function(data) {
+      console.log("I will put the documentStack in local storage");
+      localStorage.setItem("documentStack", data.documentStack);
+      localStorage.setItem("currentDocumentId", data.currentDocumentId);
+    }
+
+
+    // END of helper functions for
+
+    // BEGIN Document rendering functions
+
+    document.getElementById("renderedText").style.visibility = "hidden";
+
+      var render_asciidoc = function(content) {
+          request_in_progress = true;
+          var millisecondsToWait = 100;
+          setTimeout(function() {
+              request_in_progress = false;
+              if (content !== current_content) {
+                var rt = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'})
+                app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
+                current_content = content
+              }
+          }  , millisecondsToWait);
+       }
+
+       var render_asciidoc_latex = function(content) {
+               if (content !== current_content) {
+                 document.getElementById('rendered_text2').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
+                 typeset()
+                 current_content = content
+                 var rt = document.getElementById('rendered_text2').innerHTML
+                 app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
+               }
+        }
+
+      var send_rendered_text = function() {
+        var rt = document.getElementById('rendered_text2').innerHTML
+        app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
+      }
+
+       function typeset() {
+        MathJax.Hub.Queue( ["Typeset", MathJax.Hub, send_rendered_text] );
+      }
+
+      function typeset2() {
+        console.log(":: typesetting document ... ")
+        MathJax.Hub.Queue( ["Typeset", MathJax.Hub, ] );
+      }
+
+
+      var render_latex = function(force, idList, content) {
+        document.getElementById('rendered_text2').innerHTML = content;
+        typeset()
+      }
+
+       var render_plain = function(content) {
+           request_in_progress = true;
+           var millisecondsToWait = 100;
+           setTimeout(function() {
+               request_in_progress = false;
+               if (content !== current_content) {
+                 app.ports.infoForElm.send({ tag: "RenderedText", data: "<pre>\n" + content + "\n</pre>\n\n" });
+                 current_content = content
+               }
+           }  , millisecondsToWait);
+        }
+
+
+  </script>
+
+  </head>
+  <body>
+
+
+
+
+  </body>
+</html>
