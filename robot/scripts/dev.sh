@@ -20,3 +20,7 @@ echo "${magenta}Compile time: " $runtime " seconds${reset}"
 echo
 echo "${color}Copying files${reset}"
 cp index.html ./dist/index.html
+
+echo
+echo "${color}Start web server on port 8080${reset}"
+http-server  ./dist

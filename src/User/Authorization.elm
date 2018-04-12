@@ -117,8 +117,3 @@ registerUser model c =
                 |> Http.jsonBody
     in
         Http.post registerUserUrl body Data.User.userRecordDecoder
-
-
-tokenDecoder : Decoder String
-tokenDecoder =
-    Decode.field "token" Decode.string

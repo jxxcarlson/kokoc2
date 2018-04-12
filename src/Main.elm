@@ -4,7 +4,7 @@ port module Main exposing (main)
 
 import Html
 import OutsideInfo
-import Model exposing (Model, Flags, initialModel, Mode(..))
+import Model exposing (Model, Flags, initialModel)
 import Msg exposing (Msg(..))
 import Update exposing (update)
 import View.Main

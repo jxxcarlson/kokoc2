@@ -6,17 +6,22 @@ import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
+import Html
 import Model exposing (Model, Mode(..), leftColumnWidth)
 import Msg
     exposing
-        ( Msg
+        ( Msg(UserMsg)
+        , UserMsg
             ( SignIn
+            , AuthenticateUser
+            , SignUpUser
             , CancelSignIn
             , GoToSignupForm
             , InputName
             , InputUsername
             , InputEmail
             , InputPassword
+            , UserNoOp
             )
         )
 import View.Widget as Widget
@@ -26,7 +31,7 @@ import View.Text as Text
 view model =
     Element.column Main
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
-        [ Widget.menubar model menuContent
+        [ Widget.menubar model (menuContent model)
         , mainRow model
         , Widget.footer model footerContent
         ]
@@ -99,11 +104,11 @@ signInForm model =
     [ column Panel
         [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
         [ row PanelHeading [ center ] [ text ("Sign in form") ]
-        , row Panel [] [ Widget.inputField "Email" "" 300 InputEmail ]
-        , row Panel [] [ Widget.inputField "Password" "" 300 InputPassword ]
-        , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick Msg.NoOp ] False ]
-        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick CancelSignIn ] False ]
-        , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick GoToSignupForm ] False ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
+        , row Panel [] [ Widget.inputField "Password" "" 300 (UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick (UserMsg AuthenticateUser) ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
+        , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick (UserMsg GoToSignupForm) ] False ]
         ]
     ]
 
@@ -112,12 +117,12 @@ signUpForm model =
     [ column Panel
         [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
         [ row PanelHeading [ center ] [ text ("Sign up form") ]
-        , row Panel [] [ Widget.inputField "Name" "" 300 InputName ]
-        , row Panel [] [ Widget.inputField "Username" "" 300 InputUsername ]
-        , row Panel [] [ Widget.inputField "Email" "" 300 InputEmail ]
-        , row Panel [] [ Widget.inputField "Password" "" 300 InputPassword ]
-        , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick Msg.NoOp ] False ]
-        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick CancelSignIn ] False ]
+        , row Panel [] [ Widget.inputField "Name" "" 300 (UserMsg << InputName) ]
+        , row Panel [] [ Widget.inputField "Username" "" 300 (UserMsg << InputUsername) ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
+        , row Panel [] [ Widget.inputField "Password" "" 300 (UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick (UserMsg SignUpUser) ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
         ]
     ]
 
@@ -126,8 +131,8 @@ signUpForm model =
 {- MENU -}
 
 
-menuContent =
-    [ leftMenu, centerMenu, rightMenu ]
+menuContent model =
+    [ leftMenu, centerMenu, rightMenu model ]
 
 
 leftMenu =
@@ -138,8 +143,15 @@ centerMenu =
     row Menubar [ center, width (fillPortion 35) ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Welcome!  ") ]
 
 
-rightMenu =
-    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button "Sign in!" 75 [ onClick SignIn ] False ]
+rightMenu model =
+    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button (signInButtonLabel model) 75 [ onClick (UserMsg SignIn) ] False ]
+
+
+signInButtonLabel model =
+    if model.mode == SignedIn then
+        "Sign out"
+    else
+        "Sign in"
 
 
 

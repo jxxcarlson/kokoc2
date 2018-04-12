@@ -1,7 +1,6 @@
 module Model exposing (..)
 
 import Msg exposing (..)
-import User.Main exposing (User)
 
 
 type alias Model =

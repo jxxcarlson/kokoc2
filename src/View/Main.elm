@@ -6,8 +6,11 @@ import View.Stylesheet exposing (..)
 import Model exposing (Model, Page(..))
 import View.SigninPage as SigninPage
 import View.StartPage as StartPage
+import Html
+import Msg exposing (Msg)
 
 
+view : Model -> Html.Html Msg
 view model =
     Element.viewport stylesheet <|
         Element.column Main

@@ -4,7 +4,7 @@ import Http exposing (send)
 import HttpBuilder as HB
 import Json.Encode as Encode
 import Json.Decode exposing (Decoder)
-import Types exposing (Msg)
+import Msg exposing (Msg)
 
 
 type alias Tagger resourceType =
@@ -59,3 +59,8 @@ doRequest requestData =
             setupRequest requestData
     in
         Http.send requestData.tagger (request requestData |> HB.toRequest)
+
+
+
+-- reallyDoRequest route token tagger =
+--    doRequest <| getDocumentsParameters route token tagger
