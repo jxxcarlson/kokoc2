@@ -61,7 +61,7 @@ mainContent model =
             signUpForm model
 
         SignedIn ->
-            startContent model
+            signedInContent model
 
 
 
@@ -96,6 +96,25 @@ mainImage =
     image Main [ width (percent 80) ] { src = "https://www.ibiblio.org/wm/paint/auth/kandinsky/kandinsky.comp-8.jpg", caption = "Kandinsky" }
 
 
+usernameText model =
+    case model.maybeCurrentUser of
+        Just user ->
+            "Signed in as " ++ user.username
+
+        Nothing ->
+            ""
+
+
+signedInContent model =
+    [ row Heading [ center ] [ text (usernameText model) ]
+    , row Main [ center ] [ signedInMainImage ]
+    ]
+
+
+signedInMainImage =
+    image Main [ width (percent 80) ] { src = "https://dg19s6hp6ufoh.cloudfront.net/pictures/613145863/large/Paul-Klee-Flora-on-sand.jpeg?1481352336", caption = "Kandinsky" }
+
+
 
 {- SIGN IN -}
 
@@ -105,7 +124,7 @@ signInForm model =
         [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
         [ row PanelHeading [ center ] [ text ("Sign in form") ]
         , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
-        , row Panel [] [ Widget.inputField "Password" "" 300 (UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.passwordField "Password" "" 300 (UserMsg << InputPassword) ]
         , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick (UserMsg AuthenticateUser) ] False ]
         , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
         , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick (UserMsg GoToSignupForm) ] False ]
@@ -120,7 +139,7 @@ signUpForm model =
         , row Panel [] [ Widget.inputField "Name" "" 300 (UserMsg << InputName) ]
         , row Panel [] [ Widget.inputField "Username" "" 300 (UserMsg << InputUsername) ]
         , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
-        , row Panel [] [ Widget.inputField "Password" "" 300 (UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.passwordField "Password" "" 300 (UserMsg << InputPassword) ]
         , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick (UserMsg SignUpUser) ] False ]
         , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
         ]

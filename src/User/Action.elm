@@ -48,7 +48,7 @@ handleUserRecord : Model -> UserRecord -> ( Model, Cmd Msg )
 handleUserRecord model userRecord =
     let
         user =
-            Debug.log "hamdleUserRecord"
+            Debug.log "handleUserRecord"
                 userRecord.user
     in
         case Jwt.decodeToken Data.jwtDecoder user.token of
@@ -56,4 +56,4 @@ handleUserRecord model userRecord =
                 ( { model | maybeCurrentUser = Just user, mode = SignedIn, password = "" }, Cmd.none )
 
             Err error ->
-                ( { model | maybeCurrentUser = Just user, mode = Public, password = "" }, Cmd.none )
+                ( { model | maybeCurrentUser = Just user, mode = Public, password = "", message = (toString error) }, Cmd.none )

@@ -53,5 +53,20 @@ inputField label_ value_ width_ action =
         }
 
 
+passwordField label_ value_ width_ action =
+    Element.Input.text InputField
+        [ width (px width_)
+        , height (px 30)
+        , paddingLeft 5
+        , Element.Attributes.toAttr (Html.Attributes.attribute "autocorrect" "off")
+        , doNotAutocapitalize
+        ]
+        { onChange = action
+        , value = value_
+        , label = Element.Input.placeholder { text = label_, label = Element.Input.labelLeft Element.empty }
+        , options = []
+        }
+
+
 doNotAutocapitalize =
     Element.Attributes.toAttr (Html.Attributes.attribute "autocapitalize" "none")
