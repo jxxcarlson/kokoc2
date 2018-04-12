@@ -6,6 +6,10 @@ echo
 echo "${color}Use dev configuration.${reset}"
 
 echo
+echo "${color}Copying files${reset}"
+cp index.html ./dist/index.html
+
+echo
 echo "${magenta}Compiling .."
 
 
