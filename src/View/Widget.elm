@@ -54,7 +54,7 @@ inputField label_ value_ width_ action =
 
 
 passwordField label_ value_ width_ action =
-    Element.Input.text InputField
+    Element.Input.currentPassword InputField
         [ width (px width_)
         , height (px 30)
         , paddingLeft 5
