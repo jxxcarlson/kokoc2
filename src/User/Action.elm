@@ -1,9 +1,9 @@
 module User.Action exposing (..)
 
 import Jwt exposing (decodeToken)
-import Model exposing (Model, Mode(..))
+import Model exposing (Model, Mode(..), User)
 import User.Data as Data
-import Msg exposing (UserRecord, Msg, User)
+import Msg exposing (UserRecord, Msg)
 
 
 handleToken model token =

@@ -1,6 +1,7 @@
 module Msg exposing (..)
 
 import Http
+import Model exposing (User)
 
 
 type Msg
@@ -21,17 +22,6 @@ type UserMsg
     | InputUsername String
     | InputEmail String
     | InputPassword String
-
-
-type alias User =
-    { name : String
-    , id : Int
-    , username : String
-    , email : String
-    , blurb : String
-    , token : String
-    , admin : Bool
-    }
 
 
 type alias UserRecord =

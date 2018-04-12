@@ -1,7 +1,5 @@
 module Model exposing (..)
 
-import Msg exposing (..)
-
 
 type alias Model =
     { mode : Mode
@@ -57,3 +55,18 @@ initialModel flags =
      , windowHeight = flags.height
      }
     )
+
+
+
+{- User stuff -}
+
+
+type alias User =
+    { name : String
+    , id : Int
+    , username : String
+    , email : String
+    , blurb : String
+    , token : String
+    , admin : Bool
+    }
