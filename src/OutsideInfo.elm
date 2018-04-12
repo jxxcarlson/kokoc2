@@ -6,6 +6,7 @@ import Json.Encode as Encode
 
 type InfoForOutside
     = WindowData Encode.Value
+    | UserData Encode.Value
 
 
 type InfoForElm
@@ -21,6 +22,9 @@ sendInfoOutside info =
     case info of
         WindowData value ->
             infoForOutside { tag = "WindowData", data = value }
+
+        UserData value ->
+            infoForOutside { tag = "UserData", data = value }
 
 
 getInfoFromOutside : (InfoForElm -> msg) -> (String -> msg) -> Sub msg

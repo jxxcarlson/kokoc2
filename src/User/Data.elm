@@ -41,6 +41,18 @@ signupUserEncoder model =
         ]
 
 
+encodeUserData : User -> Encode.Value
+encodeUserData user =
+    Encode.object
+        [ ( "name", Encode.string user.name )
+        , ( "email", Encode.string user.email )
+        , ( "id", Encode.int user.id )
+        , ( "username", Encode.string user.username )
+        , ( "blurb", Encode.string user.blurb )
+        , ( "token", Encode.string user.token )
+        ]
+
+
 
 {- DECODERS -}
 

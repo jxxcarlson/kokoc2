@@ -4,10 +4,15 @@ import Jwt exposing (decodeToken)
 import Model exposing (Model, Mode(..), User)
 import User.Data as Data
 import Msg exposing (UserRecord, Msg)
+import OutsideInfo exposing (InfoForOutside(..))
 
 
 handleToken model token =
-    ( modelFromToken model token, Cmd.none )
+    let
+        newModel =
+            modelFromToken model token
+    in
+        ( newModel, sendUserDataToLocalStorage newModel )
 
 
 userFromToken : Model -> String -> Maybe User
@@ -57,3 +62,13 @@ handleUserRecord model userRecord =
 
             Err error ->
                 ( { model | maybeCurrentUser = Just user, mode = Public, password = "", message = (toString error) }, Cmd.none )
+
+
+sendUserDataToLocalStorage : Model -> Cmd Msg
+sendUserDataToLocalStorage model =
+    case model.maybeCurrentUser of
+        Nothing ->
+            Cmd.none
+
+        Just user ->
+            OutsideInfo.sendInfoOutside (UserData <| Data.encodeUserData user)
