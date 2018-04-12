@@ -3,6 +3,7 @@ module User.Action exposing (..)
 import Jwt exposing (decodeToken)
 import Model exposing (Model, Mode(..), User)
 import User.Data as Data
+import Json.Encode as Encode
 import Msg exposing (UserRecord, Msg)
 import OutsideInfo exposing (InfoForOutside(..))
 
@@ -58,10 +59,14 @@ handleUserRecord model userRecord =
     in
         case Jwt.decodeToken Data.jwtDecoder user.token of
             Ok value ->
-                ( { model | maybeCurrentUser = Just user, mode = SignedIn, password = "" }, Cmd.none )
+                let
+                    newModel =
+                        { model | maybeCurrentUser = Just user, mode = SignedIn, password = "" }
+                in
+                    ( newModel, sendUserDataToLocalStorage newModel )
 
             Err error ->
-                ( { model | maybeCurrentUser = Just user, mode = Public, password = "", message = (toString error) }, Cmd.none )
+                ( { model | maybeCurrentUser = Nothing, mode = Public, password = "", message = "Error !!!" }, Cmd.none )
 
 
 sendUserDataToLocalStorage : Model -> Cmd Msg
@@ -72,3 +77,32 @@ sendUserDataToLocalStorage model =
 
         Just user ->
             OutsideInfo.sendInfoOutside (UserData <| Data.encodeUserData user)
+
+
+reconnectUser : Model -> User -> Model
+reconnectUser model user =
+    { model | maybeCurrentUser = Just user, mode = SignedIn }
+
+
+setMode : Model -> Mode
+setMode model =
+    case model.mode of
+        Public ->
+            SigningIn
+
+        SigningIn ->
+            SigningIn
+
+        SigningUp ->
+            SigningUp
+
+        SignedIn ->
+            Public
+
+
+signOutCommand : Model -> Cmd Msg
+signOutCommand model =
+    if model.mode == SignedIn then
+        OutsideInfo.sendInfoOutside (DisconnectUser Encode.null)
+    else
+        Cmd.none

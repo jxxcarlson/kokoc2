@@ -87,6 +87,18 @@ userDecoder =
         |> JPipeline.required "admin" Decode.bool
 
 
+userDecoderFromLocalStorage : Decoder User
+userDecoderFromLocalStorage =
+    decode User
+        |> JPipeline.required "name" Decode.string
+        |> JPipeline.required "id" (Decode.map (String.toInt >> (Result.withDefault 0)) Decode.string)
+        |> JPipeline.required "username" Decode.string
+        |> JPipeline.required "email" Decode.string
+        |> JPipeline.required "blurb" Decode.string
+        |> JPipeline.required "token" Decode.string
+        |> JPipeline.hardcoded False
+
+
 type alias User =
     { name : String
     , id : Int
