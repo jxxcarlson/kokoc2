@@ -1,4 +1,4 @@
-module User.Model exposing (User)
+module User.Model exposing (User, UserRecord)
 
 
 type alias User =
@@ -10,3 +10,7 @@ type alias User =
     , token : String
     , admin : Bool
     }
+
+
+type alias UserRecord =
+    { user : User }

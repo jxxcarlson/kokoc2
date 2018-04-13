@@ -5,7 +5,8 @@ import Model exposing (Model, Mode(..))
 import User.Model exposing (User)
 import User.Data as Data
 import Json.Encode as Encode
-import Msg exposing (UserRecord, Msg)
+import Msg exposing (Msg)
+import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))
 
 

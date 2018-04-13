@@ -1,7 +1,8 @@
 module User.Update exposing (..)
 
 import Model exposing (Model, Flags, initialModel, Mode(..))
-import Msg exposing (Msg, UserMsg(..))
+import Msg exposing (Msg)
+import User.Msg exposing (..)
 import Api.Request as Request
 import User.RequestParameters as RequestParameters
 import User.Action as Action

@@ -10,9 +10,9 @@ import Html
 import Model exposing (Model, Mode(..))
 import Helper
 import Msg
+import User.Msg
     exposing
-        ( Msg(UserMsg)
-        , UserMsg
+        ( UserMsg
             ( SignIn
             , AuthenticateUser
             , SignUpUser
@@ -124,11 +124,11 @@ signInForm model =
     [ column Panel
         [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
         [ row PanelHeading [ center ] [ text ("Sign in form") ]
-        , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
-        , row Panel [] [ Widget.passwordField "Password" "" 300 (UserMsg << InputPassword) ]
-        , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick (UserMsg AuthenticateUser) ] False ]
-        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
-        , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick (UserMsg GoToSignupForm) ] False ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 (Msg.UserMsg << InputEmail) ]
+        , row Panel [] [ Widget.passwordField "Password" "" 300 (Msg.UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick (Msg.UserMsg AuthenticateUser) ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (Msg.UserMsg CancelSignIn) ] False ]
+        , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick (Msg.UserMsg GoToSignupForm) ] False ]
         ]
     ]
 
@@ -137,12 +137,12 @@ signUpForm model =
     [ column Panel
         [ width (px 400), height (px 500), paddingXY 20 20, center, spacing 20 ]
         [ row PanelHeading [ center ] [ text ("Sign up form") ]
-        , row Panel [] [ Widget.inputField "Name" "" 300 (UserMsg << InputName) ]
-        , row Panel [] [ Widget.inputField "Username" "" 300 (UserMsg << InputUsername) ]
-        , row Panel [] [ Widget.inputField "Email" "" 300 (UserMsg << InputEmail) ]
-        , row Panel [] [ Widget.passwordField "Password" "" 300 (UserMsg << InputPassword) ]
-        , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick (UserMsg SignUpUser) ] False ]
-        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (UserMsg CancelSignIn) ] False ]
+        , row Panel [] [ Widget.inputField "Name" "" 300 (Msg.UserMsg << InputName) ]
+        , row Panel [] [ Widget.inputField "Username" "" 300 (Msg.UserMsg << InputUsername) ]
+        , row Panel [] [ Widget.inputField "Email" "" 300 (Msg.UserMsg << InputEmail) ]
+        , row Panel [] [ Widget.passwordField "Password" "" 300 (Msg.UserMsg << InputPassword) ]
+        , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick (Msg.UserMsg SignUpUser) ] False ]
+        , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (Msg.UserMsg CancelSignIn) ] False ]
         ]
     ]
 
@@ -164,7 +164,7 @@ centerMenu =
 
 
 rightMenu model =
-    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button (signInButtonLabel model) 75 [ onClick (UserMsg SignIn) ] False ]
+    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False ]
 
 
 signInButtonLabel model =

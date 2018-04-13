@@ -3,7 +3,9 @@ module User.RequestParameters exposing (..)
 import Configuration
 import User.Data as Data
 import Model exposing (Model)
-import Msg exposing (Msg(UserMsg), UserMsg(..))
+import Msg
+import User.Model exposing (UserRecord)
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp))
 import HttpBuilder as HB
 import Api.Request exposing (RequestParameters)
 
@@ -13,19 +15,19 @@ authenticateUser model =
     { api = Configuration.api
     , route = "/authentication"
     , payload = Data.authenticationEncoder model
-    , tagger = UserMsg << VerifyAuthentication
+    , tagger = Msg.UserMsg << VerifyAuthentication
     , token = ""
     , decoder = Data.tokenDecoder
     , method = HB.post
     }
 
 
-signUpUser : Model -> RequestParameters Msg.UserRecord
+signUpUser : Model -> RequestParameters UserRecord
 signUpUser model =
     { api = Configuration.api
     , route = "/users"
     , payload = Data.signupUserEncoder model
-    , tagger = UserMsg << VerifySignUp
+    , tagger = Msg.UserMsg << VerifySignUp
     , token = ""
     , decoder = Data.userRecordDecoder
     , method = HB.post
