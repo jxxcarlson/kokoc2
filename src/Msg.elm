@@ -1,7 +1,7 @@
 module Msg exposing (..)
 
 import Http
-import Model exposing (User)
+import Model.User exposing (User)
 
 
 type Msg

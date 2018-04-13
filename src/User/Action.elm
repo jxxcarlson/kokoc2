@@ -1,7 +1,8 @@
 module User.Action exposing (..)
 
 import Jwt exposing (decodeToken)
-import Model exposing (Model, Mode(..), User)
+import Model exposing (Model, Mode(..))
+import Model.User exposing (User)
 import User.Data as Data
 import Json.Encode as Encode
 import Msg exposing (UserRecord, Msg)

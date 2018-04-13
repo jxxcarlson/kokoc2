@@ -1,5 +1,9 @@
 module Model exposing (..)
 
+import Model.Document exposing (Document)
+import Model.User exposing (User)
+import Document.Default
+
 
 type alias Model =
     { mode : Mode
@@ -10,6 +14,8 @@ type alias Model =
     , password : String
     , maybeCurrentUser : Maybe User
     , message : String
+    , documentList : List Document
+    , currentDocument : Document
     , windowWidth : Int
     , windowHeight : Int
     }
@@ -33,12 +39,9 @@ type Mode
     | SignedIn
 
 
-effectiveWindowHeight model =
-    toFloat <| model.windowHeight - 160
 
-
-leftColumnWidth model =
-    0.33 * (toFloat <| model.windowWidth)
+{- USER -}
+{- INIT -}
 
 
 initialModel : Flags -> Model
@@ -51,6 +54,8 @@ initialModel flags =
      , password = ""
      , maybeCurrentUser = Nothing
      , message = "App started"
+     , documentList = []
+     , currentDocument = Document.Default.make "TITLE" "CONTENT"
      , windowWidth = flags.width
      , windowHeight = flags.height
      }
@@ -58,15 +63,12 @@ initialModel flags =
 
 
 
-{- User stuff -}
+{- HELPERS -}
 
 
-type alias User =
-    { name : String
-    , id : Int
-    , username : String
-    , email : String
-    , blurb : String
-    , token : String
-    , admin : Bool
-    }
+effectiveWindowHeight model =
+    toFloat <| model.windowHeight - 160
+
+
+leftColumnWidth model =
+    0.33 * (toFloat <| model.windowWidth)
