@@ -1,7 +1,7 @@
 module Model exposing (..)
 
-import Model.Document exposing (Document)
-import Model.User exposing (User)
+import Document.Model exposing (Document)
+import User.Model exposing (User)
 import Document.Default
 
 

@@ -1,6 +1,6 @@
 module Document.Default exposing (make)
 
-import Model.Document exposing (Document, DocumentAttributes)
+import Document.Model exposing (Document, DocumentAttributes)
 import Dict
 
 

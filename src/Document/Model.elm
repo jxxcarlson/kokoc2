@@ -1,4 +1,4 @@
-module Model.Document exposing (..)
+module Document.Model exposing (..)
 
 import Time exposing (Time)
 import Dict
