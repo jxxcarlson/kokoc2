@@ -39,11 +39,6 @@ type Mode
     | SignedIn
 
 
-
-{- USER -}
-{- INIT -}
-
-
 initialModel : Flags -> Model
 initialModel flags =
     ({ mode = Public
@@ -60,15 +55,3 @@ initialModel flags =
      , windowHeight = flags.height
      }
     )
-
-
-
-{- HELPERS -}
-
-
-effectiveWindowHeight model =
-    toFloat <| model.windowHeight - 160
-
-
-leftColumnWidth model =
-    0.33 * (toFloat <| model.windowWidth)

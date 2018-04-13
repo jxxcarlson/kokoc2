@@ -7,7 +7,8 @@ import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
 import Html
-import Model exposing (Model, Mode(..), leftColumnWidth)
+import Model exposing (Model, Mode(..))
+import Helper
 import Msg
     exposing
         ( Msg(UserMsg)
@@ -79,7 +80,7 @@ textColumn model =
 
 
 textContent model =
-    Text.loremIpsum |> Text.paragraphify (\x -> paragraph Alternate [ width (px ((leftColumnWidth model) - 120)) ] [ text x ])
+    Text.loremIpsum |> Text.paragraphify (\x -> paragraph Alternate [ width (px ((Helper.leftColumnWidth model) - 120)) ] [ text x ])
 
 
 
