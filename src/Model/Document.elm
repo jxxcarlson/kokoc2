@@ -7,25 +7,25 @@ import Dict
 type alias Document =
     { id : Int
     , identifier : String
-    , author_id : Int
-    , author_name : String
+    , authorId : Int
+    , authorName : String
     , access : AccessDict
     , title : String
     , content : String
-    , rendered_content : String
+    , renderedContent : String
     , attributes : DocumentAttributes
     , tags : List String
     , children : List Child
-    , parent_id : Int
-    , parent_title : String
+    , parentId : Int
+    , parentTitle : String
     }
 
 
 type alias Child =
     { title : String
     , level : Int
-    , doc_identifier : String
-    , doc_id : Int
+    , docIdentifier : String
+    , docId : Int
     , comment : String
     }
 

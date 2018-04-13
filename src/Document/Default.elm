@@ -10,24 +10,24 @@ make title content =
         doc =
             emptyDocument
     in
-        { doc | title = title, content = content, rendered_content = content }
+        { doc | title = title, content = content, renderedContent = content }
 
 
 emptyDocument : Document
 emptyDocument =
     { id = 0
     , identifier = "-"
-    , author_id = 0
-    , author_name = ""
+    , authorId = 0
+    , authorName = ""
     , access = Dict.empty
     , title = ""
     , content = ""
-    , rendered_content = ""
+    , renderedContent = ""
     , attributes = defaultAttributes
     , tags = []
     , children = []
-    , parent_id = 0
-    , parent_title = "-"
+    , parentId = 0
+    , parentTitle = "-"
     }
 
 

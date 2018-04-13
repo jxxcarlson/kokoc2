@@ -3,7 +3,6 @@ module User.RequestParameters exposing (..)
 import Configuration
 import User.Data as Data
 import Model exposing (Model)
-import User.Main exposing (..)
 import Msg exposing (Msg(UserMsg), UserMsg(..))
 import HttpBuilder as HB
 import Api.Request exposing (RequestParameters)
