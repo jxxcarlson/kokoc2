@@ -1,5 +1,8 @@
 module Document.Msg exposing (..)
 
+import Http
+import Document.Model exposing (DocumentListRecord)
 
-foo =
-    1
+
+type DocumentMsg
+    = GetDocumentList (Result Http.Error DocumentListRecord)

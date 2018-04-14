@@ -11,6 +11,12 @@ import Update exposing (update)
 import View.Main
 
 
+--
+
+import Api.Request
+import Document.RequestParameters
+
+
 main =
     Html.programWithFlags
         { init = init
@@ -22,7 +28,12 @@ main =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model.initialModel flags, OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null) )
+    ( Model.initialModel flags
+    , Cmd.batch
+        [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
+        , Api.Request.doRequest <| Document.RequestParameters.publicDocuments "/public/documents?random=public"
+        ]
+    )
 
 
 subscriptions : Model -> Sub Msg

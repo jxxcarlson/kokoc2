@@ -43,3 +43,12 @@ type alias DocumentAttributes =
     , version : Int
     , lastViewed : Maybe Time
     }
+
+
+type alias DocumentRecord =
+    { document : Document }
+
+
+type alias DocumentListRecord =
+    { documents : List Document
+    }

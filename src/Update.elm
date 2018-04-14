@@ -3,6 +3,7 @@ module Update exposing (update)
 import Model exposing (Model, Flags, initialModel, Mode(..))
 import Msg exposing (..)
 import User.Update
+import Document.Update
 import User.Action
 
 
@@ -14,6 +15,9 @@ update msg model =
 
         UserMsg submessage ->
             User.Update.update submessage model
+
+        DocumentMsg submessage ->
+            Document.Update.update submessage model
 
         Outside infoForElm ->
             case infoForElm of
