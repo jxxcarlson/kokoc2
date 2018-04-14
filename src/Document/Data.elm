@@ -4,6 +4,7 @@ import Json.Encode as Encode exposing (..)
 import Json.Decode as Decode exposing (at, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
 import Document.Model exposing (Document, DocumentRecord, DocumentAttributes, Child, DocumentListRecord)
+import Document.Preprocess
 
 
 {- DOCUMENT DECODERS -}
@@ -68,6 +69,27 @@ documentListDecoder =
 
 
 {- ENCODERS -}
+
+
+encodeDocumentForOutside : Document -> Encode.Value
+encodeDocumentForOutside document =
+    let
+        textType =
+            document.attributes.textType
+
+        content_to_render =
+            case textType of
+                "latex" ->
+                    document.renderedContent
+
+                _ ->
+                    Document.Preprocess.preprocess document.content document
+    in
+        [ ( "id", Encode.int document.id )
+        , ( "content", Encode.string content_to_render )
+        , ( "textType", Encode.string document.attributes.textType )
+        ]
+            |> Encode.object
 
 
 encodeChild : Child -> Encode.Value

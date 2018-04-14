@@ -4,51 +4,48 @@ import Element exposing (image, paragraph, el, paragraph, newTab, row, wrappedRo
 import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
-import Msg exposing(Msg)
-import Document.Model exposing(Document)
+import Msg exposing (Msg)
 import View.Menubar as Menubar
 import View.Footer as Footer
+import View.Render as Render
 import View.TOC as TOC
 
-view : Model -> (Element.Element MyStyles variation Msg)
+
+view : Model -> Element.Element MyStyles variation Msg
 view model =
     Element.column Alternate
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
         [ Menubar.view model
-         , row Alternate [spacing 20, height fill] [tableOfContents model, mainContent model]
+        , mainRow model
         , Footer.view model
         ]
 
-mainContent : Model -> Element.Element MyStyles variation msg
-mainContent model = 
-   column Main [ height fill, paddingXY 20 20] [text model.currentDocument.content]
+
+tableOfContentsHeight model =
+    model.windowHeight - 160 |> toFloat
 
 
-tableOfContents : Model -> Element.Element MyStyles variation Msg
-tableOfContents model =
+contentsHeight model =
+    model.windowHeight - 160 |> toFloat
+
+
+tableOfContentsWidth model =
+    model.windowWidth
+        |> toFloat
+        |> \x -> 0.3 * x - 30
+
+
+
+-- , row Alternate [ spacing 20, height (fill) ] [ TOC.view model, Render.renderedContent model ]
+
+
+mainRow model =
     row Alternate
-        [ height fill, paddingXY 20 20 ] 
-           (innerTableOfContents model.currentDocument model.documentList)
-    
-
-
-innerTableOfContents : Document -> List Document -> List (Element.Element MyStyles variation Msg)
-innerTableOfContents activeDocument documentList =
-  [ column Alternate [ ] [
-          row TOCHeading [] [text "Documents"]
-        , column Alternate [ width (fillPortion 30), height fill ] ( TOC.view 100 activeDocument documentList )
+        [ height fill ]
+        [ column Alternate
+            [ width (fillPortion 30), height fill, paddingTop 30, spacing 15 ]
+            [ TOC.view (tableOfContentsWidth model) (tableOfContentsHeight model) model.currentDocument model.documentList ]
+        , column Main
+            [ alignLeft ]
+            [ Render.renderedContent model ]
         ]
-  ]
-
-{- MENU -}
-
-
-menuContent : List (Element.Element MyStyles variation msg)
-menuContent =
-    [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Sign in Menubar")
-    ]
-
-footerContent : List (Element.Element MyStyles variation msg)
-footerContent =
-    [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Sign in Footer")
-    ]

@@ -2,8 +2,9 @@ port module OutsideInfo exposing (..)
 
 import Json.Decode as Decode
 import Json.Encode as Encode
-import Msg exposing (InfoForElm(..))
+import Msg exposing (Msg, InfoForElm(..))
 import User.Data as Data
+import Model exposing (Model)
 
 
 port infoForOutside : GenericOutsideData -> Cmd msg
@@ -17,6 +18,7 @@ type InfoForOutside
     | UserData Encode.Value
     | AskToReconnectUser Encode.Value
     | DisconnectUser Encode.Value
+    | PutTextToRender Encode.Value
 
 
 type alias GenericOutsideData =
@@ -38,6 +40,9 @@ sendInfoOutside info =
         DisconnectUser value ->
             infoForOutside { tag = "DisconnectUser", data = value }
 
+        PutTextToRender value ->
+            infoForOutside { tag = "PutTextToRender", data = value }
+
 
 getInfoFromOutside : (InfoForElm -> msg) -> (String -> msg) -> Sub msg
 getInfoFromOutside tagger onError =
@@ -52,6 +57,33 @@ getInfoFromOutside tagger onError =
                         Err e ->
                             onError e
 
+                "RenderedText" ->
+                    case Decode.decodeValue Decode.string outsideInfo.data of
+                        Ok renderedText ->
+                            tagger <| RenderedText renderedText
+
+                        Err e ->
+                            onError e
+
                 _ ->
                     onError <| "Unexpected info from outside: " ++ toString outsideInfo
         )
+
+
+
+{- HEPERS -}
+
+
+updateRenderedText : Model -> String -> ( Model, Cmd Msg )
+updateRenderedText model str =
+    let
+        document =
+            model.currentDocument
+
+        newDocument =
+            { document | renderedContent = str }
+
+        newModel =
+            { model | currentDocument = newDocument }
+    in
+        ( { model | currentDocument = newDocument }, Cmd.none )

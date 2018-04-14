@@ -10,7 +10,7 @@ import Model exposing (Model, Mode(..), Page(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
-import Model exposing(Model, Page(..))
+import Model exposing (Model, Page(..))
 import User.Msg
     exposing
         ( UserMsg
@@ -28,7 +28,7 @@ menuContent model =
 
 
 leftMenu =
-    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20 ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Yo!  ") ]
+    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20 ] [ testButton ]
 
 
 centerMenu model =
@@ -43,6 +43,10 @@ rightMenu model =
 {- BUTTONS -}
 
 
+testButton =
+    Widget.button "Test" 75 [ onClick (Test) ] False
+
+
 readerPageButton model =
     Widget.button "Read" 75 [ onClick (GotoReaderPage) ] (model.page == ReaderPage)
 
@@ -50,9 +54,11 @@ readerPageButton model =
 startPageButton model =
     Widget.button "Start" 75 [ onClick (GotoStartPage) ] (model.page == StartPage)
 
+
 signInButton : { a | mode : Mode } -> Element.Element MyStyles variation Msg
 signInButton model =
     Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False
+
 
 signInButtonLabel : { a | mode : Mode } -> String
 signInButtonLabel model =

@@ -58,12 +58,7 @@
       <div id="main"></div>
 
 
-          <div id="renderedText" style="overflow:scroll;
-                  padding:2em; z-index: 100;
-                  position:absolute; top:81px; left:833px;
-                  width: 499px; height: 462px;
-                  border solid 1px;
-                  background-color: #f9f9f9;">
+          <div id="renderedText" style="overflow:scroll; padding:2em; z-index: 100; position:absolute; top:81px; left:1833px; width: 499px; height: 462px; border solid 1px; background-color: #f9f9f9;">
           </div>
 
       <script src="main.js"></script>
@@ -93,9 +88,13 @@
     // INFO FOR OUTSIDE
 
     app.ports.infoForOutside.subscribe(msg => {
+
+      console.log("app.ports.infoForOutside")
+
       switch(msg.tag) {
 
          case "PutTextToRender":
+           console.log("PutTextToRender")
            processDocumentContent(msg.data)
            break;
 
@@ -131,11 +130,11 @@
 
     var processDocumentContent = function(data) {
 
-      if (data.force == true) {
-         console.log("DEBOUNCE = TRUE")
-      } else {
-        console.log("DEBOUNCE = FALSE")
-      }
+      // if (data.force == true) {
+      //    console.log("DEBOUNCE = TRUE")
+      // } else {
+      //   console.log("DEBOUNCE = FALSE")
+      // }
 
       requestAnimationFrame(function() {
 
@@ -143,17 +142,20 @@
           switch (data.textType) {
 
             case "adoc":
+               console.log("Rendering adoc ...")
                render_asciidoc(data.content)
                break;
             case "adoc_latex":
+               console.log("Rendering adoc-latex ...")
                render_asciidoc_latex(data.content)
                break;
             case "plain":
+               console.log("Rendering plain ...")
                render_plain(data.content)
                break;
             case "latex":
-                // force = true
-                render_latex(true, data.idList, data.content)
+                console.log("Rendering latex ...")
+                render_latex(data.content)
                 break;
             default:
               console.log("Default rendering ... asciidoc")
@@ -221,16 +223,16 @@
 
        var render_asciidoc_latex = function(content) {
                if (content !== current_content) {
-                 document.getElementById('rendered_text2').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
+                 document.getElementById('renderedText').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
                  typeset()
                  current_content = content
-                 var rt = document.getElementById('rendered_text2').innerHTML
+                 var rt = document.getElementById('renderedText').innerHTML
                  app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
                }
         }
 
       var send_rendered_text = function() {
-        var rt = document.getElementById('rendered_text2').innerHTML
+        var rt = document.getElementById('renderedText').innerHTML
         app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
       }
 
@@ -244,8 +246,8 @@
       }
 
 
-      var render_latex = function(force, idList, content) {
-        document.getElementById('rendered_text2').innerHTML = content;
+      var render_latex = function(content) {
+        document.getElementById('renderedText').innerHTML = content;
         typeset()
       }
 

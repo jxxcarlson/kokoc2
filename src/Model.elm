@@ -18,6 +18,7 @@ type alias Model =
     , currentDocument : Document
     , windowWidth : Int
     , windowHeight : Int
+    , counter : Int
     }
 
 
@@ -53,5 +54,6 @@ initialModel flags =
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
      , windowWidth = flags.width
      , windowHeight = flags.height
+     , counter = 0
      }
     )

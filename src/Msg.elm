@@ -14,7 +14,9 @@ type Msg
     | LogErr String
     | GotoStartPage
     | GotoReaderPage
+    | Test
 
 
 type InfoForElm
     = UserLoginInfo User
+    | RenderedText String

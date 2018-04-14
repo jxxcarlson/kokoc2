@@ -10,6 +10,7 @@ import Style.Border as Border
 
 type MyStyles
     = Main
+    | MainContent
     | Menubar
     | Alternate
     | Panel
@@ -31,6 +32,7 @@ type MyStyles
     | TOCHeading
     | TOCItem
     | TOCItemSelected
+    | TOCItemNotLoaded
     | None
 
 
@@ -156,28 +158,33 @@ stylesheet =
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]
-
         , style TOCHeading
             [ Color.text Color.darkBlue
-            , Color.background alternateColor 
+            , Color.background alternateColor
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-             , Font.weight 800
+            , Font.weight 800
             ]
-
         , style TOCItem
             [ Color.text Color.blue
-            , Color.background alternateColor 
+            , Color.background alternateColor
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
             ]
-
         , style TOCItemSelected
-            [ Color.text Color.blue
+            [ Color.text Color.darkBlue
             , Color.background alternateColor
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
             , Font.weight 800
             ]
+        , style TOCItemNotLoaded
+            [ Color.text Color.lightCharcoal
+            , Color.background alternateColor
+            , Font.size 12 -- all units given as px
+            , Font.typeface fontList
+            , Font.weight 800
+            ]
+        , style MainContent [ Color.background Color.white ]
         , style None []
         ]

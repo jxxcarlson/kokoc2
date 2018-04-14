@@ -9,6 +9,7 @@ import Model exposing (Model, Flags, initialModel)
 import Msg exposing (Msg(..))
 import Update exposing (update)
 import View.Main
+import Document.Msg exposing (DocumentMsg(GetDocumentList))
 
 
 --
@@ -30,7 +31,7 @@ init flags =
     ( Model.initialModel flags
     , Cmd.batch
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
-        , Document.Cmd.getDocuments "" "random=public"
+        , Document.Cmd.getDocuments "" "/public/documents" "random=public" (DocumentMsg << GetDocumentList)
         ]
     )
 
