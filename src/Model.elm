@@ -29,7 +29,7 @@ type alias Flags =
 
 type Page
     = StartPage
-    | SigninPage
+    | ReaderPage
 
 
 type Mode

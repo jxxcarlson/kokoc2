@@ -27,14 +27,16 @@ import User.Msg
         )
 import View.Widget as Widget
 import View.Text as Text
+import View.Menubar as Menubar
+import View.Footer as Footer
 
 
 view model =
     Element.column Main
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
-        [ Widget.menubar model (menuContent model)
+        [ Menubar.view model
         , mainRow model
-        , Widget.footer model footerContent
+        , Footer.view model
         ]
 
 
@@ -144,40 +146,4 @@ signUpForm model =
         , row Panel [] [ Widget.formButton "Sign up" 300 [ onClick (Msg.UserMsg SignUpUser) ] False ]
         , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (Msg.UserMsg CancelSignIn) ] False ]
         ]
-    ]
-
-
-
-{- MENU -}
-
-
-menuContent model =
-    [ leftMenu, centerMenu, rightMenu model ]
-
-
-leftMenu =
-    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20 ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Yo!  ") ]
-
-
-centerMenu =
-    row Menubar [ center, width (fillPortion 35) ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Welcome!  ") ]
-
-
-rightMenu model =
-    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False ]
-
-
-signInButtonLabel model =
-    if model.mode == SignedIn then
-        "Sign out"
-    else
-        "Sign in"
-
-
-
-{- FOOTER -}
-
-
-footerContent =
-    [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Start Page Footer")
     ]

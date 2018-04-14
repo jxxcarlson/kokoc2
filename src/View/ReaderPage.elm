@@ -1,4 +1,4 @@
-module View.SigninPage exposing (view)
+module View.ReaderPage exposing (view)
 
 import Element exposing (image, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
 import Element.Attributes exposing (..)
@@ -27,7 +27,7 @@ mainRow model =
     row Main
         [ height fill ]
         [ column Alternate [ width (fillPortion 30), height fill ] [ text "TOC" ]
-        , column Main [ width (fillPortion 70), height fill ] [ text "SIGN IN PAGE" ]
+        , column Main [ width (fillPortion 70), height fill ] [ text "READER IN PAGE" ]
         ]
 
 
