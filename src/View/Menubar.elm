@@ -32,7 +32,7 @@ leftMenu =
 
 
 centerMenu model =
-    row Menubar [ center, width (fillPortion 35) ] [ readerPageButton model, startPageButton model ]
+    row Menubar [ center, width (fillPortion 35), spacing 5 ] [ readerPageButton model, startPageButton model ]
 
 
 rightMenu model =
@@ -50,11 +50,11 @@ readerPageButton model =
 startPageButton model =
     Widget.button "Start" 75 [ onClick (GotoStartPage) ] (model.page == StartPage)
 
-
+signInButton : { a | mode : Mode } -> Element.Element MyStyles variation Msg
 signInButton model =
     Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False
 
-
+signInButtonLabel : { a | mode : Mode } -> String
 signInButtonLabel model =
     if model.mode == SignedIn then
         "Sign out"
