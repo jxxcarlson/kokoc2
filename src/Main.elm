@@ -13,8 +13,7 @@ import View.Main
 
 --
 
-import Api.Request
-import Document.RequestParameters
+import Document.Cmd
 
 
 main =
@@ -31,7 +30,7 @@ init flags =
     ( Model.initialModel flags
     , Cmd.batch
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
-        , Api.Request.doRequest <| Document.RequestParameters.publicDocuments "/public/documents?random=public"
+        , Document.Cmd.getDocuments "" "random=public"
         ]
     )
 

@@ -6,7 +6,7 @@ import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, h
 import Document.Model exposing (Document, DocumentRecord, DocumentAttributes, Child, DocumentListRecord)
 
 
--- DOCUMENT DECODERS
+{- DOCUMENT DECODERS -}
 
 
 documentDecoder : Decoder Document
@@ -31,12 +31,6 @@ documentRecordDecoder : Decoder DocumentRecord
 documentRecordDecoder =
     JPipeline.decode DocumentRecord
         |> JPipeline.required "document" (documentDecoder)
-
-
-
--- document : String -> Result String Document
--- document jsonString =
---     decodeString documentDecoder jsonString
 
 
 documentAttributesDecoder : Decoder DocumentAttributes
@@ -85,14 +79,3 @@ encodeChild record =
         , ( "doc_id", Encode.int <| record.docId )
         , ( "comment", Encode.string <| record.comment )
         ]
-
-
-
--- DOCUMENTS DECODERS
--- decodeDocumentListRecord : Decoder DocumentListRecord
--- decodeDocumentListRecord =
---     JPipeline.decode DocumentListRecord
---         |> JPipeline.required "documents" (Decode.list documentDecoder)
--- documents : String -> Result String DocumentListRecord
--- documents jsonString =
---     decodeString documentListDecoder jsonString

@@ -12,13 +12,13 @@ import Json.Encode as Encode
 import Document.Data as Data
 
 
-publicDocuments : String -> RequestParameters DocumentListRecord
-publicDocuments route =
+documents : String -> String -> RequestParameters DocumentListRecord
+documents token route =
     { api = Configuration.api
     , route = route
     , payload = Encode.null
     , tagger = Msg.DocumentMsg << GetDocumentList
-    , token = ""
+    , token = token
     , decoder = Data.documentListDecoder
     , method = HB.get
     }

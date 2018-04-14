@@ -11,14 +11,14 @@ getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg
 getDocuments result model =
     case result of
         Ok documentListRecord ->
-            putDocumentList documentListRecord model
+            publicDocumentsAux documentListRecord model
 
         Err message ->
             ( model, Cmd.none )
 
 
-putDocumentList : DocumentListRecord -> Model -> ( Model, Cmd Msg )
-putDocumentList documentListRecord model =
+publicDocumentsAux : DocumentListRecord -> Model -> ( Model, Cmd Msg )
+publicDocumentsAux documentListRecord model =
     let
         documentList =
             documentListRecord.documents
