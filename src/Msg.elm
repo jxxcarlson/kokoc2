@@ -12,6 +12,8 @@ type Msg
     | DocumentMsg DocumentMsg
     | Outside InfoForElm
     | LogErr String
+    | GotoStartPage
+    | GotoReaderPage
 
 
 type InfoForElm

@@ -6,10 +6,11 @@ import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, Mode(..))
+import Model exposing (Model, Mode(..), Page(..))
 import Helper
 import View.Widget as Widget
-import Msg
+import Msg exposing (..)
+import Model exposing(Model, Page(..))
 import User.Msg
     exposing
         ( UserMsg
@@ -23,19 +24,35 @@ view model =
 
 
 menuContent model =
-    [ leftMenu, centerMenu, rightMenu model ]
+    [ leftMenu, centerMenu model, rightMenu model ]
 
 
 leftMenu =
     row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20 ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Yo!  ") ]
 
 
-centerMenu =
-    row Menubar [ center, width (fillPortion 35) ] [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Welcome!  ") ]
+centerMenu model =
+    row Menubar [ center, width (fillPortion 35) ] [ readerPageButton model, startPageButton model ]
 
 
 rightMenu model =
-    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False ]
+    row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ signInButton model ]
+
+
+
+{- BUTTONS -}
+
+
+readerPageButton model =
+    Widget.button "Read" 75 [ onClick (GotoReaderPage) ] (model.page == ReaderPage)
+
+
+startPageButton model =
+    Widget.button "Start" 75 [ onClick (GotoStartPage) ] (model.page == StartPage)
+
+
+signInButton model =
+    Widget.button (signInButtonLabel model) 75 [ onClick (Msg.UserMsg SignIn) ] False
 
 
 signInButtonLabel model =
