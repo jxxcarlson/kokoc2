@@ -12,16 +12,16 @@ import View.TOC as TOC
 
 view : Model -> (Element.Element MyStyles variation Msg)
 view model =
-    Element.column Main
+    Element.column Alternate
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
         [ Menubar.view model
-         , row Main [spacing 20, height fill] [tableOfContents model, mainContent model]
+         , row Alternate [spacing 20, height fill] [tableOfContents model, mainContent model]
         , Footer.view model
         ]
 
-
+mainContent : Model -> Element.Element MyStyles variation msg
 mainContent model = 
-   column Main [ height fill, paddingXY 20 20, center, verticalCenter] [text "MAIN CONTENT"]
+   column Main [ height fill, paddingXY 20 20] [text model.currentDocument.content]
 
 
 tableOfContents : Model -> Element.Element MyStyles variation Msg
@@ -34,8 +34,8 @@ tableOfContents model =
 
 innerTableOfContents : Document -> List Document -> List (Element.Element MyStyles variation Msg)
 innerTableOfContents activeDocument documentList =
-  [ column Main [ ] [
-          row Alternate [] [text "Documents"]
+  [ column Alternate [ ] [
+          row TOCHeading [] [text "Documents"]
         , column Alternate [ width (fillPortion 30), height fill ] ( TOC.view 100 activeDocument documentList )
         ]
   ]

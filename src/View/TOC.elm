@@ -21,7 +21,7 @@ view height_ activeDocument documentList =
 
 viewTitle : Document -> Document -> Element.Element MyStyles variation Msg.Msg 
 viewTitle activeDocument document =
-    row Main
+    row Alternate
         [ verticalCenter, paddingXY (documentIndentLevel document) 0 ]
         [ -- documentIndicator document model
          titleDisplay activeDocument document
@@ -51,7 +51,7 @@ titleDisplay selectedDocument document =
         , paddingXY 0 0
         , height (px 20)
         ]
-        (el Main [ verticalCenter ] (text title))
+        (el Alternate [ verticalCenter ] (text title))
 
 
 tocStyle selectedDocument document = 

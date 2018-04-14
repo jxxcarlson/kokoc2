@@ -28,6 +28,7 @@ type MyStyles
     | FormButtonSelected
     | SmallButton
     | SmallButtonSelected
+    | TOCHeading
     | TOCItem
     | TOCItemSelected
     | None
@@ -155,16 +156,25 @@ stylesheet =
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]
+
+        , style TOCHeading
+            [ Color.text Color.darkBlue
+            , Color.background alternateColor 
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+             , Font.weight 800
+            ]
+
         , style TOCItem
             [ Color.text Color.blue
-            , Color.background mainColor 
+            , Color.background alternateColor 
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
             ]
 
         , style TOCItemSelected
             [ Color.text Color.blue
-            , Color.background mainColor
+            , Color.background alternateColor
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
             , Font.weight 800

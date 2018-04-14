@@ -12,4 +12,4 @@ update submessage model =
         GetDocumentList result ->
             Action.getDocuments result model
         SelectDocument document -> 
-           (model, Cmd.none)
+           ({model |currentDocument = document}, Cmd.none)
