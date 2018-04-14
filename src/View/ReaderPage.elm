@@ -8,14 +8,16 @@ import Element.Keyed
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
 import View.Widget as Widget
+import View.Menubar as Menubar
+import View.Footer as Footer
 
 
 view model =
     Element.column Main
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
-        [ Widget.menubar model menuContent
+        [ Menubar.view model
         , mainRow model
-        , Widget.footer model footerContent
+        , Footer.view model
         ]
 
 
