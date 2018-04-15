@@ -19,9 +19,6 @@ getDocuments token route query tagger =
                 route
             else
                 route ++ "?" ++ query
-
-        _ =
-            Debug.log "routeAndQuery" routeAndQuery
     in
         Api.Request.doRequest <| Document.RequestParameters.getDocumentListParameters token routeAndQuery tagger
 
@@ -33,9 +30,6 @@ getOneDocument token route query tagger =
                 route
             else
                 route ++ "?" ++ query
-
-        _ =
-            Debug.log "routeAndQuery" routeAndQuery
     in
         Api.Request.doRequest <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
 
@@ -73,8 +67,7 @@ getDocumentsAndContent : String -> List Document -> Cmd Msg
 getDocumentsAndContent token documents =
     let
         idList =
-            Debug.log "idList"
-                (List.map (\doc -> doc.id) documents)
+            (List.map (\doc -> doc.id) documents)
 
         hCmd =
             \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContentAndRender)

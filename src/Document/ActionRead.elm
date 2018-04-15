@@ -60,9 +60,6 @@ loadContentsIfNecessary token currentDocument documentList =
 loadContent : Model -> DocumentRecord -> ( Model, Cmd Msg )
 loadContent model documentRecord =
     let
-        _ =
-            Debug.log "loadContent"
-
         document =
             documentRecord.document
 
@@ -87,9 +84,6 @@ hasId id document =
 loadContentAndRender : Model -> DocumentRecord -> ( Model, Cmd Msg )
 loadContentAndRender model documentRecord =
     let
-        _ =
-            Debug.log "loadContentAndRender"
-
         document =
             documentRecord.document
 
