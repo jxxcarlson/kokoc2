@@ -14,3 +14,7 @@ api =
 client : String
 client =
     "http://localhost:3000"
+
+
+maxDocs =
+    40

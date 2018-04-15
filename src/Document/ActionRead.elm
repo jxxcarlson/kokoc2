@@ -9,6 +9,7 @@ import Msg exposing (Msg)
 import Http
 import Utility
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
+import Configuration
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -33,7 +34,7 @@ getDocumentsAux documentListRecord model =
                     user.token
 
         documentList =
-            List.take 20
+            List.take Configuration.maxDocs
                 documentListRecord.documents
 
         currentDocument =
@@ -48,7 +49,7 @@ getDocumentsAux documentListRecord model =
 
 loadContentsIfNecessary token currentDocument documentList =
     if currentDocument.content == "Loading ..." then
-        Document.Cmd.getDocumentsAndContent token (List.take 20 documentList)
+        Document.Cmd.getDocumentsAndContent token (List.take Configuration.maxDocs documentList)
     else
         Cmd.none
 
