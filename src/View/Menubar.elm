@@ -10,6 +10,7 @@ import Model exposing (Model, Mode(..), Page(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
+import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery))
 import Model exposing (Model, Page(..))
 import User.Msg
     exposing
@@ -28,7 +29,7 @@ menuContent model =
 
 
 leftMenu =
-    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20 ] [ testButton ]
+    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ] [ searchField, testButton ]
 
 
 centerMenu model =
@@ -37,6 +38,16 @@ centerMenu model =
 
 rightMenu model =
     row Menubar [ alignRight, width (fillPortion 33), paddingRight 20 ] [ signInButton model ]
+
+
+
+{- FIELDS -}
+
+
+searchField =
+    el Menubar
+        [ paddingTop 2.5 ]
+        (Widget.searchField "Search" "" 200 (Msg.DocumentMsg << InputSearchQuery) (Msg.DocumentMsg << SearchOnKey))
 
 
 

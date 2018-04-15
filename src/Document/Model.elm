@@ -6,6 +6,9 @@ module Document.Model
         , AccessDict
         , DocumentRecord
         , DocumentListRecord
+        , SortType(..)
+        , SortDirection(..)
+        , SearchDomain(..)
         )
 
 import Time exposing (Time)
@@ -60,3 +63,19 @@ type alias DocumentRecord =
 type alias DocumentListRecord =
     { documents : List Document
     }
+
+
+type SearchDomain
+    = SearchPublic
+    | SearchPrivate
+    | SearchAll
+
+
+type SortDirection
+    = Ascending
+    | Descending
+
+
+type SortType
+    = Title
+    | Updated

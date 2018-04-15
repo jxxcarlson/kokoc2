@@ -3,10 +3,11 @@ module View.Widget exposing (..)
 import Element exposing (viewport, image, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
 import Element.Attributes exposing (..)
 import Element.Input
-import Element.Events exposing (onClick, onInput)
+import Element.Events exposing (onClick, onInput, on, keyCode)
 import Element.Keyed
 import Html.Attributes
 import View.Stylesheet exposing (..)
+import Json.Decode as Decode
 
 
 xcolumn columnStyle widthExpression attributes content =
@@ -53,6 +54,16 @@ inputField label_ value_ width_ action =
         }
 
 
+searchField label_ value_ width_ action searchAction =
+    Element.Input.text InputField
+        [ width (px width_), height (px 30), paddingLeft 10, onKeyUp searchAction ]
+        { onChange = action
+        , value = value_
+        , label = Element.Input.placeholder { text = label_, label = Element.Input.labelLeft Element.empty }
+        , options = []
+        }
+
+
 passwordField label_ value_ width_ action =
     Element.Input.currentPassword InputField
         [ width (px width_)
@@ -66,6 +77,15 @@ passwordField label_ value_ width_ action =
         , label = Element.Input.placeholder { text = label_, label = Element.Input.labelLeft Element.empty }
         , options = []
         }
+
+
+
+{- HELPERS -}
+
+
+onKeyUp : (Int -> msg) -> Element.Attribute variation msg
+onKeyUp tagger =
+    on "keyup" (Decode.map tagger keyCode)
 
 
 doNotAutocapitalize =

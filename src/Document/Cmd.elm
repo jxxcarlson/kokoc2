@@ -4,12 +4,13 @@ module Document.Cmd
         , getOneDocument
         , putTextToRender
         , getDocumentsAndContent
+        , search
         )
 
 import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain, SortType)
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg)
 import OutsideInfo
@@ -48,22 +49,6 @@ putTextToRender document =
         OutsideInfo.sendInfoOutside (OutsideInfo.PutTextToRender value)
 
 
-
---
--- getDocuments2 : String -> String -> Int -> String -> Cmd Msg
--- getDocuments2 route query userId token =
---     let
---         query2 =
---             query ++ "&loading"
---
---         searchTask =
---             Request.Document.getDocumentsTask route query2 token
---     in
---         Task.attempt (DocumentMsg << GetUserDocuments) (searchTask |> Task.andThen (\documentsRecord -> refreshMasterDocumentTask route token documentsRecord))
---
---
-
-
 getDocumentsAndContent : String -> List Document -> Cmd Msg
 getDocumentsAndContent token documents =
     let
@@ -95,7 +80,25 @@ getDocumentsAndContent token documents =
         Cmd.batch (tailCommands ++ [ headCommand ])
 
 
+search : String -> SearchDomain -> SortType -> String -> Cmd Msg
+search token searchDomain sortType searchQuery =
+    Cmd.none
 
+
+
+--
+-- getDocuments2 : String -> String -> Int -> String -> Cmd Msg
+-- getDocuments2 route query userId token =
+--     let
+--         query2 =
+--             query ++ "&loading"
+--
+--         searchTask =
+--             Request.Document.getDocumentsTask route query2 token
+--     in
+--         Task.attempt (DocumentMsg << GetUserDocuments) (searchTask |> Task.andThen (\documentsRecord -> refreshMasterDocumentTask route token documentsRecord))
+--
+--
 --
 --
 -- {-| Called by getDocuments

@@ -9,3 +9,5 @@ type DocumentMsg
     | SelectDocument Document
     | LoadContent (Result Http.Error DocumentRecord)
     | LoadContentAndRender (Result Http.Error DocumentRecord)
+    | SearchOnKey Int
+    | InputSearchQuery String
