@@ -21,11 +21,27 @@ view model =
         ]
 
 
+mainRow model =
+    row Alternate
+        [ height fill ]
+        [ tableOfContentsPanel model
+        , contentPanel model
+        ]
+
+
+tableOfContentsPanel model =
+    column Alternate
+        [ width (fillPortion 30), height fill, paddingTop 30, spacing 15 ]
+        [ TOC.view (tableOfContentsWidth model) (tableOfContentsHeight model) model.currentDocument model.documentList ]
+
+
+contentPanel model =
+    column Main
+        [ alignLeft ]
+        [ Render.renderedContent model ]
+
+
 tableOfContentsHeight model =
-    model.windowHeight - 160 |> toFloat
-
-
-contentsHeight model =
     model.windowHeight - 160 |> toFloat
 
 
@@ -33,19 +49,3 @@ tableOfContentsWidth model =
     model.windowWidth
         |> toFloat
         |> \x -> 0.3 * x - 30
-
-
-
--- , row Alternate [ spacing 20, height (fill) ] [ TOC.view model, Render.renderedContent model ]
-
-
-mainRow model =
-    row Alternate
-        [ height fill ]
-        [ column Alternate
-            [ width (fillPortion 30), height fill, paddingTop 30, spacing 15 ]
-            [ TOC.view (tableOfContentsWidth model) (tableOfContentsHeight model) model.currentDocument model.documentList ]
-        , column Main
-            [ alignLeft ]
-            [ Render.renderedContent model ]
-        ]

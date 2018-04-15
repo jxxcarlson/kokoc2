@@ -16,7 +16,7 @@ renderedContent model =
 
 
 mainContentHeight model =
-    toFloat model.windowHeight - 50 |> px
+    toFloat model.windowHeight - 70 |> px
 
 
 mainContentWidth model =
@@ -27,17 +27,13 @@ mainContentWidth model =
 
 
 innerRenderedContent model =
-    let
-        h =
-            toFloat model.windowHeight - 50
-    in
-        el (MainContent)
-            [ yScrollbar
-            , id "renderedText"
-            , paddingXY 50 50
-            , width (mainContentWidth model)
-            , height (mainContentHeight model)
-            , property "innerHTML"
-                (Json.Encode.string model.currentDocument.renderedContent)
-            ]
-            (text "")
+    el (MainContent)
+        [ yScrollbar
+        , id "renderedText"
+        , paddingXY 50 50
+        , width (mainContentWidth model)
+        , height (mainContentHeight model)
+        , property "innerHTML"
+            (Json.Encode.string model.currentDocument.renderedContent)
+        ]
+        (text "")

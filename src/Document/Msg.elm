@@ -1,4 +1,4 @@
-module Document.Msg exposing (..)
+module Document.Msg exposing (DocumentMsg(..))
 
 import Http
 import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)

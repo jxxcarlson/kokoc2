@@ -1,4 +1,4 @@
-module Document.RequestParameters exposing (..)
+module Document.RequestParameters exposing (getDocumentListParameters, getOneDocumentParameters)
 
 import Configuration
 import Document.Data as Data

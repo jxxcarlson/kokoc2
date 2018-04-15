@@ -1,4 +1,10 @@
-module Document.Data exposing (..)
+module Document.Data
+    exposing
+        ( documentDecoder
+        , documentRecordDecoder
+        , documentListDecoder
+        , encodeDocumentForOutside
+        )
 
 import Json.Encode as Encode exposing (..)
 import Json.Decode as Decode exposing (at, int, list, string, decodeString, Decoder)

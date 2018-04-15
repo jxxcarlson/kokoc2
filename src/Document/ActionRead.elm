@@ -1,4 +1,4 @@
-module Document.ActionRead exposing (..)
+module Document.ActionRead exposing (getDocuments, loadContent)
 
 import Document.Default
 import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
@@ -7,7 +7,6 @@ import Document.Cmd
 import Model exposing (Model)
 import Msg exposing (Msg)
 import Http
-import Utility
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
 import Configuration
 
@@ -26,12 +25,7 @@ getDocumentsAux : DocumentListRecord -> Model -> ( Model, Cmd Msg )
 getDocumentsAux documentListRecord model =
     let
         token =
-            case model.maybeCurrentUser of
-                Nothing ->
-                    ""
-
-                Just user ->
-                    user.token
+            getToken model
 
         documentList =
             List.take Configuration.maxDocs
@@ -47,6 +41,7 @@ getDocumentsAux documentListRecord model =
         )
 
 
+loadContentsIfNecessary : String -> Document -> List Document -> Cmd Msg
 loadContentsIfNecessary token currentDocument documentList =
     if currentDocument.content == "Loading ..." then
         Document.Cmd.getDocumentsAndContent token (List.take Configuration.maxDocs documentList)
@@ -54,11 +49,7 @@ loadContentsIfNecessary token currentDocument documentList =
         Cmd.none
 
 
-
---, Document.Cmd.getDocumentsAndContent token documentList
-
-
-loadContent : Model -> DocumentRecord -> ( Model, Cmd Msg )
+loadContent : Model -> DocumentRecord -> Model
 loadContent model documentRecord =
     let
         document =
@@ -68,13 +59,23 @@ loadContent model documentRecord =
             model.documentList
 
         newDocumentList =
-            Utility.replaceIf (hasId document.id) document documentsInModel
+            replaceIf (hasId document.id) document documentsInModel
     in
-        ( { model | documentList = newDocumentList }, Cmd.none )
+        { model | documentList = newDocumentList }
 
 
 
 {- HELPERS -}
+
+
+getToken : Model -> String
+getToken model =
+    case model.maybeCurrentUser of
+        Nothing ->
+            ""
+
+        Just user ->
+            user.token
 
 
 hasId : Int -> Document -> Bool
@@ -82,16 +83,13 @@ hasId id document =
     document.id == id
 
 
-loadContentAndRender : Model -> DocumentRecord -> ( Model, Cmd Msg )
-loadContentAndRender model documentRecord =
-    let
-        document =
-            documentRecord.document
-
-        documentsInModel =
-            model.documentList
-
-        newDocumentList =
-            Utility.replaceIf (hasId document.id) document documentsInModel
-    in
-        ( { model | documentList = newDocumentList, currentDocument = document }, Document.Cmd.putTextToRender document )
+replaceIf : (a -> Bool) -> a -> List a -> List a
+replaceIf predicate replacement list =
+    List.map
+        (\item ->
+            if predicate item then
+                replacement
+            else
+                item
+        )
+        list

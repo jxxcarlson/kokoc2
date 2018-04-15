@@ -1,4 +1,12 @@
-module Document.Model exposing (..)
+module Document.Model
+    exposing
+        ( Document
+        , Child
+        , DocumentAttributes
+        , AccessDict
+        , DocumentRecord
+        , DocumentListRecord
+        )
 
 import Time exposing (Time)
 import Dict

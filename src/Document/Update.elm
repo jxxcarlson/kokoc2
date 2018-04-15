@@ -15,24 +15,14 @@ update submessage model =
             ActionRead.getDocuments result model
 
         LoadContent (Ok documentRecord) ->
-            ActionRead.loadContent model documentRecord
+            ( ActionRead.loadContent model documentRecord, Cmd.none )
 
-        -- ( model, Cmd.none )
         LoadContent (Err error) ->
-            let
-                _ =
-                    Debug.log "LoadContent" "error"
-            in
-                ( { model | message = "LC: " ++ Error.httpErrorString error }, Cmd.none )
+            ( { model | message = "LC: " ++ Error.httpErrorString error }, Cmd.none )
 
         LoadContentAndRender (Ok documentRecord) ->
-            let
-                _ =
-                    Debug.log "LoadContentAndRender" "OK"
-            in
-                ActionRead.loadContentAndRender model documentRecord
+            ( ActionRead.loadContent model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
 
-        -- ( model, Cmd.none )
         LoadContentAndRender (Err error) ->
             ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 

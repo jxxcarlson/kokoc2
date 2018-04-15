@@ -1,17 +1,21 @@
-module Document.Cmd exposing (..)
+module Document.Cmd
+    exposing
+        ( getDocuments
+        , getOneDocument
+        , putTextToRender
+        , getDocumentsAndContent
+        )
 
-import Api.Request
+import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg)
 import OutsideInfo
 
 
--- getDocuments : String -> String -> String -> Cmd Msg
-
-
+getDocuments : String -> String -> String -> Tagger DocumentListRecord -> Cmd Msg
 getDocuments token route query tagger =
     let
         routeAndQuery =
@@ -23,6 +27,7 @@ getDocuments token route query tagger =
         Api.Request.doRequest <| Document.RequestParameters.getDocumentListParameters token routeAndQuery tagger
 
 
+getOneDocument : String -> String -> String -> Tagger DocumentRecord -> Cmd Msg
 getOneDocument token route query tagger =
     let
         routeAndQuery =
@@ -32,10 +37,6 @@ getOneDocument token route query tagger =
                 route ++ "?" ++ query
     in
         Api.Request.doRequest <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
-
-
-
--- route = "/public/documents?" ++ query
 
 
 putTextToRender : Document -> Cmd msg
