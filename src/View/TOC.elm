@@ -22,12 +22,17 @@ innerTableOfContents : Float -> Float -> Document -> List Document -> List (Elem
 innerTableOfContents width_ height_ activeDocument documentList =
     [ column Alternate
         []
-        [ row TOCHeading [] [ text "Documents" ]
+        [ row TOCHeading [] [ text <| documenTitle documentList ]
         , column Alternate
             [ width (px width_), height (px height_), yScrollbar ]
             (tocView activeDocument documentList)
         ]
     ]
+
+
+documenTitle : List Document -> String
+documenTitle documentList =
+    "Documents (" ++ (toString <| List.length documentList) ++ ")"
 
 
 
