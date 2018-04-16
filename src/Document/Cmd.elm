@@ -44,6 +44,9 @@ getDocumentsTask token route query tagger =
 getOneDocument : String -> String -> String -> Tagger DocumentRecord -> Cmd Msg
 getOneDocument token route query tagger =
     let
+        _ =
+            Debug.log "getOneDocument, route" route
+
         routeAndQuery =
             if query == "" then
                 route

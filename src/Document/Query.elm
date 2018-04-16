@@ -57,7 +57,7 @@ makeQueryHelper searchDomain searchOrder userId queryString =
             , querySuffix searchDomain
             ]
     in
-        buildQuery queryList
+        (buildQuery queryList) ++ "&loading"
 
 
 queryPrefix : Int -> SearchDomain -> String -> String

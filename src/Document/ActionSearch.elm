@@ -29,9 +29,6 @@ search model =
 searchPublic : Model -> ( Model, Cmd Msg )
 searchPublic model =
     let
-        _ =
-            Debug.log "searchPublic"
-
         query =
             Query.makeQuery model.searchDomain model.sortOrder 0 model.searchQuery
 
@@ -44,10 +41,10 @@ searchPublic model =
 searchWithAuthorization : Model -> ( Model, Cmd Msg )
 searchWithAuthorization model =
     let
-        _ =
-            Debug.log "searchWithAuthorization"
-
         query =
             Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) model.searchQuery
+
+        cmd =
+            Document.Cmd.getDocuments (Utility.getToken model) "/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | message = query }, Cmd.none )
+        ( { model | message = query }, cmd )

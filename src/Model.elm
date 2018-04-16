@@ -62,6 +62,6 @@ initialModel flags =
      , searchQuery = ""
      , sortDirection = Ascending
      , sortOrder = AlphabeticalOrder
-     , searchDomain = SearchPublic
+     , searchDomain = SearchAll
      }
     )
