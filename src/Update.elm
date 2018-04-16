@@ -6,9 +6,11 @@ import User.Update
 import Document.ActionRead
 import Document.Update
 import Document.Cmd
+import Document.ActionSearch as AS
 import OutsideInfo
 import User.Action
 import Model exposing (Page(..), MenuState(..), MenuStatus(..))
+import Utility
 
 
 --- TEST:
@@ -58,7 +60,9 @@ update msg model =
                 ( { model | menuAState = menuAState }, Cmd.none )
 
         ChooseSearchType searchDomain ->
-            ( { model | searchDomain = searchDomain, menuAState = MenuA MenuInactive }, Cmd.none )
+            ( { model | searchDomain = searchDomain, menuAState = MenuA MenuInactive, page = Utility.setPage model }
+            , AS.searchCmd model
+            )
 
         Test ->
             let

@@ -1,6 +1,6 @@
 module Document.ActionSearch
     exposing
-        ( search
+        ( searchCmd
         )
 
 import Document.Default
@@ -18,45 +18,27 @@ import Document.Query as Query
 import Utility
 
 
-search : Model -> ( Model, Cmd Msg )
-search model =
+searchCmd : Model -> Cmd Msg
+searchCmd model =
     if model.searchDomain == SearchPublic then
-        searchPublic model
+        searchPublicCmd model
     else
-        searchWithAuthorization model
+        searchWithAuthorizationCmd model
 
 
-searchPublic : Model -> ( Model, Cmd Msg )
-searchPublic model =
+searchPublicCmd : Model -> Cmd Msg
+searchPublicCmd model =
     let
         query =
             Query.makeQuery model.searchDomain model.sortOrder 0 model.searchQuery
-
-        cmd =
-            Document.Cmd.getDocuments "" "/public/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | page = setPage model, message = "sasearchPublic, query = " ++ query }, cmd )
+        Document.Cmd.getDocuments "" "/public/documents" query (DocumentMsg << GetDocumentList)
 
 
-searchWithAuthorization : Model -> ( Model, Cmd Msg )
-searchWithAuthorization model =
+searchWithAuthorizationCmd : Model -> Cmd Msg
+searchWithAuthorizationCmd model =
     let
         query =
             Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) model.searchQuery
-
-        cmd =
-            Document.Cmd.getDocuments (Utility.getToken model) "/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | message = "searchWithAuthorization, query = " ++ query, page = setPage model }, cmd )
-
-
-
-{- HELPERS -}
-
-
-setPage : Model -> Page
-setPage model =
-    if model.page == StartPage then
-        ReaderPage
-    else
-        model.page
+        Document.Cmd.getDocuments (Utility.getToken model) "/documents" query (DocumentMsg << GetDocumentList)

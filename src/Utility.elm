@@ -1,6 +1,6 @@
-module Utility exposing (getUserId, getToken)
+module Utility exposing (getUserId, getToken, setPage)
 
-import Model exposing (Model)
+import Model exposing (Model, Page(..))
 
 
 getUserId : Model -> Int
@@ -21,3 +21,11 @@ getToken model =
 
         Just user ->
             user.token
+
+
+setPage : Model -> Page
+setPage model =
+    if model.page == StartPage then
+        ReaderPage
+    else
+        model.page

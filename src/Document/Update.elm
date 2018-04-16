@@ -1,12 +1,13 @@
 module Document.Update exposing (..)
 
-import Model exposing (Model)
+import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
 import Document.ActionSearch as AS
 import Document.Cmd
 import Api.Error as Error
+import Utility
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -44,6 +45,10 @@ update submessage model =
 
             SearchOnKey keyCode ->
                 if keyCode == 13 then
-                    AS.search model
+                    ( { model | page = Utility.setPage model }, AS.searchCmd model )
                 else
                     ( model, Cmd.none )
+
+
+
+{- HELPERS -}
