@@ -42,11 +42,8 @@ update submessage model =
                 ( { model | searchQuery = str }, Cmd.none )
 
             SearchOnKey keyCode ->
-                let
-                    cmd =
-                        if keyCode == 13 then
-                            Document.Cmd.search token model.searchDomain model.sortType model.searchQuery
-                        else
-                            Cmd.none
-                in
-                    ( model, cmd )
+                if keyCode == 13 then
+                    ActionRead.search model
+                    -- Document.Cmd.search token model.searchDomain model.sortType model.searchQuery
+                else
+                    ( model, Cmd.none )

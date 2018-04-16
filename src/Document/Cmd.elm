@@ -14,6 +14,8 @@ import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, Se
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg)
 import OutsideInfo
+import Task exposing (Task)
+import Http
 
 
 getDocuments : String -> String -> String -> Tagger DocumentListRecord -> Cmd Msg
@@ -26,6 +28,18 @@ getDocuments token route query tagger =
                 route ++ "?" ++ query
     in
         Api.Request.doRequest <| Document.RequestParameters.getDocumentListParameters token routeAndQuery tagger
+
+
+getDocumentsTask : String -> String -> String -> Tagger DocumentListRecord -> Task Http.Error DocumentListRecord
+getDocumentsTask token route query tagger =
+    let
+        routeAndQuery =
+            if query == "" then
+                route
+            else
+                route ++ "?" ++ query
+    in
+        Api.Request.makeTask <| Document.RequestParameters.getDocumentListParameters token routeAndQuery tagger
 
 
 getOneDocument : String -> String -> String -> Tagger DocumentRecord -> Cmd Msg
@@ -82,7 +96,11 @@ getDocumentsAndContent token documents =
 
 search : String -> SearchDomain -> SortType -> String -> Cmd Msg
 search token searchDomain sortType searchQuery =
-    Cmd.none
+    let
+        _ =
+            Debug.log "SEARCH" searchQuery
+    in
+        Cmd.none
 
 
 

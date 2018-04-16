@@ -1,10 +1,11 @@
-module Api.Request exposing (doRequest, Tagger, RequestParameters, SetupRequestData)
+module Api.Request exposing (doRequest, makeTask, Tagger, RequestParameters, SetupRequestData)
 
 import Http exposing (send)
 import HttpBuilder as HB
 import Json.Encode as Encode
 import Json.Decode exposing (Decoder)
 import Msg exposing (Msg)
+import Task
 
 
 type alias Tagger resourceType =
@@ -61,6 +62,10 @@ doRequest requestData =
         Http.send requestData.tagger (request requestData |> HB.toRequest)
 
 
-
--- reallyDoRequest route token tagger =
---    doRequest <| getDocumentListParameters route token tagger
+makeTask : RequestParameters resourceType -> Task.Task Http.Error resourceType
+makeTask requestData =
+    let
+        request =
+            setupRequest requestData
+    in
+        Http.toTask (request requestData |> HB.toRequest)
