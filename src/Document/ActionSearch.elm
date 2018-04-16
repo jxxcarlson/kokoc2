@@ -8,7 +8,7 @@ import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, Se
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList))
-import Model exposing (Model)
+import Model exposing (Model, Page(..))
 import Msg exposing (Msg(DocumentMsg))
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
@@ -35,7 +35,7 @@ searchPublic model =
         cmd =
             Document.Cmd.getDocuments "" "/public/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | message = query }, cmd )
+        ( { model | page = setPage model }, cmd )
 
 
 searchWithAuthorization : Model -> ( Model, Cmd Msg )
@@ -47,4 +47,12 @@ searchWithAuthorization model =
         cmd =
             Document.Cmd.getDocuments (Utility.getToken model) "/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | message = query }, cmd )
+        ( { model | page = setPage model }, cmd )
+
+
+setPage : Model -> Page
+setPage model =
+    if model.page == StartPage then
+        ReaderPage
+    else
+        model.page
