@@ -2,7 +2,6 @@ module Document.ActionRead
     exposing
         ( getDocuments
         , loadContent
-        , search
         )
 
 import Document.Default
@@ -14,7 +13,6 @@ import Msg exposing (Msg)
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
 import Configuration
-import Document.QueryParser as QueryParser
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -68,15 +66,6 @@ loadContent model documentRecord =
             replaceIf (hasId document.id) document documentsInModel
     in
         { model | documentList = newDocumentList }
-
-
-search : Model -> ( Model, Cmd Msg )
-search model =
-    let
-        query =
-            QueryParser.parseQuery model.searchQuery
-    in
-        ( { model | message = query }, Cmd.none )
 
 
 

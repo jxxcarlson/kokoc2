@@ -4,6 +4,7 @@ import Model exposing (Model)
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
+import Document.ActionSearch as AS
 import Document.Cmd
 import Api.Error as Error
 
@@ -43,7 +44,6 @@ update submessage model =
 
             SearchOnKey keyCode ->
                 if keyCode == 13 then
-                    ActionRead.search model
-                    -- Document.Cmd.search token model.searchDomain model.sortType model.searchQuery
+                    AS.search model
                 else
                     ( model, Cmd.none )

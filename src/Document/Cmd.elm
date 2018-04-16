@@ -4,13 +4,12 @@ module Document.Cmd
         , getOneDocument
         , putTextToRender
         , getDocumentsAndContent
-        , search
         )
 
 import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain, SortType)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg)
 import OutsideInfo
@@ -92,15 +91,6 @@ getDocumentsAndContent token documents =
                     [ Cmd.none ]
     in
         Cmd.batch (tailCommands ++ [ headCommand ])
-
-
-search : String -> SearchDomain -> SortType -> String -> Cmd Msg
-search token searchDomain sortType searchQuery =
-    let
-        _ =
-            Debug.log "SEARCH" searchQuery
-    in
-        Cmd.none
 
 
 

@@ -1,6 +1,6 @@
 module Model exposing (..)
 
-import Document.Model exposing (Document, SortDirection(..), SortType(..), SearchDomain(..))
+import Document.Model exposing (Document, SortDirection(..), SortOrder(..), SearchDomain(..))
 import User.Model exposing (User)
 import Document.Default
 
@@ -21,7 +21,7 @@ type alias Model =
     , counter : Int
     , searchQuery : String
     , sortDirection : SortDirection
-    , sortType : SortType
+    , sortOrder : SortOrder
     , searchDomain : SearchDomain
     }
 
@@ -61,7 +61,7 @@ initialModel flags =
      , counter = 0
      , searchQuery = ""
      , sortDirection = Ascending
-     , sortType = Title
+     , sortOrder = AlphabeticalOrder
      , searchDomain = SearchPublic
      }
     )

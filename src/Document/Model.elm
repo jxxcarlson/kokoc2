@@ -6,7 +6,7 @@ module Document.Model
         , AccessDict
         , DocumentRecord
         , DocumentListRecord
-        , SortType(..)
+        , SortOrder(..)
         , SortDirection(..)
         , SearchDomain(..)
         )
@@ -69,6 +69,7 @@ type SearchDomain
     = SearchPublic
     | SearchPrivate
     | SearchAll
+    | SearchShared
 
 
 type SortDirection
@@ -76,6 +77,8 @@ type SortDirection
     | Descending
 
 
-type SortType
-    = Title
-    | Updated
+type SortOrder
+    = ViewedOrder
+    | UpdatedOrder
+    | CreatedOrder
+    | AlphabeticalOrder
