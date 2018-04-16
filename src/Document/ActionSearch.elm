@@ -50,6 +50,10 @@ searchWithAuthorization model =
         ( { model | page = setPage model }, cmd )
 
 
+
+{- HELPERS -}
+
+
 setPage : Model -> Page
 setPage model =
     if model.page == StartPage then

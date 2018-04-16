@@ -1,4 +1,4 @@
-module Configuration exposing (..)
+module Configuration exposing (host, api, client, maxDocs)
 
 
 host : String

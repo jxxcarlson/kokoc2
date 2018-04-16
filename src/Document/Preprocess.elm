@@ -1,7 +1,5 @@
 module Document.Preprocess exposing (preprocess, preprocessSource, transformXLinks)
 
--- module Document.Preprocess exposing(preprocess, preprocessSource)
-
 import Regex exposing (..)
 import Document.Model exposing (Document)
 import Configuration
