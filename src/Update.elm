@@ -8,7 +8,7 @@ import Document.Update
 import Document.Cmd
 import OutsideInfo
 import User.Action
-import Model exposing (Page(..))
+import Model exposing (Page(..), MenuState(..), MenuStatus(..))
 
 
 --- TEST:
@@ -44,6 +44,21 @@ update msg model =
 
         GotoStartPage ->
             ( { model | page = StartPage }, Cmd.none )
+
+        ToggleMenu menu ->
+            let
+                menuAState =
+                    case menu of
+                        MenuA MenuInactive ->
+                            MenuA MenuActive
+
+                        MenuA MenuActive ->
+                            MenuA MenuInactive
+            in
+                ( { model | menuAState = menuAState }, Cmd.none )
+
+        ChooseSearchType searchDomain ->
+            ( { model | searchDomain = searchDomain, menuAState = MenuA MenuInactive }, Cmd.none )
 
         Test ->
             let

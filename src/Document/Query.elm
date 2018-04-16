@@ -83,7 +83,7 @@ querySuffix : SearchDomain -> String
 querySuffix searchDomain =
     case searchDomain of
         SearchPrivate ->
-            "shared=yes"
+            ""
 
         SearchShared ->
             "shared_only=yes"

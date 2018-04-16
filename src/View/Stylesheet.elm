@@ -12,6 +12,7 @@ type MyStyles
     = Main
     | MainContent
     | Menubar
+    | Menu
     | Alternate
     | Panel
     | PanelHeading
@@ -25,6 +26,8 @@ type MyStyles
     | InputField
     | Button
     | ButtonSelected
+    | MenuButton
+    | MenuButtonSelected
     | FormButton
     | FormButtonSelected
     | SmallButton
@@ -57,10 +60,19 @@ myBlack =
     grayColor 60
 
 
+menubarColor =
+    grayColor 40
+
+
+menuColor =
+    grayColor 70
+
+
 stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
-        , style Menubar [ Color.background <| grayColor 40, Color.text Color.white ]
+        , style Menubar [ Color.background <| menubarColor, Color.text Color.white ]
+        , style Menu [ Color.background <| menuColor, Color.text Color.white ]
         , style Alternate [ Color.background alternateColor ]
         , style Panel [ Font.typeface fontList, Font.size 16, Color.background Color.darkBlue ]
         , style PanelHeading [ Font.typeface fontList, Font.size 24, Color.background Color.darkBlue, Color.text Color.white ]
@@ -116,6 +128,20 @@ stylesheet =
             [ Color.text Color.white
             , Color.background (Color.darkBlue)
             , Border.rounded 8
+            , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style MenuButton
+            [ Color.text Color.white
+            , Color.background menuColor
+            , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style MenuButtonSelected
+            [ Color.text Color.white
+            , Color.background (Color.darkBlue)
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList

@@ -35,7 +35,7 @@ searchPublic model =
         cmd =
             Document.Cmd.getDocuments "" "/public/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | page = setPage model }, cmd )
+        ( { model | page = setPage model, message = "sasearchPublic, query = " ++ query }, cmd )
 
 
 searchWithAuthorization : Model -> ( Model, Cmd Msg )
@@ -47,7 +47,7 @@ searchWithAuthorization model =
         cmd =
             Document.Cmd.getDocuments (Utility.getToken model) "/documents" query (DocumentMsg << GetDocumentList)
     in
-        ( { model | page = setPage model }, cmd )
+        ( { model | message = "searchWithAuthorization, query = " ++ query, page = setPage model }, cmd )
 
 
 

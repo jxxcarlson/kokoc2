@@ -1,16 +1,32 @@
 module View.Menubar exposing (view)
 
-import Element exposing (image, textLayout, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
+import Element
+    exposing
+        ( image
+        , textLayout
+        , paragraph
+        , el
+        , paragraph
+        , newTab
+        , row
+        , wrappedRow
+        , column
+        , button
+        , text
+        , empty
+        , screen
+        )
 import Element.Attributes exposing (..)
 import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, Mode(..), Page(..))
+import Model exposing (Model, Mode(..), Page(..), MenuState(..), MenuStatus(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
 import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery))
+import Document.Model exposing (SearchDomain(..))
 import Model exposing (Model, Page(..))
 import User.Msg
     exposing
@@ -25,11 +41,11 @@ view model =
 
 
 menuContent model =
-    [ leftMenu, centerMenu model, rightMenu model ]
+    [ leftMenu model, centerMenu model, rightMenu model ]
 
 
-leftMenu =
-    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ] [ searchField, testButton ]
+leftMenu model =
+    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ] [ searchField, toolsMenu model ]
 
 
 centerMenu model =
@@ -77,3 +93,56 @@ signInButtonLabel model =
         "Sign out"
     else
         "Sign in"
+
+
+
+{- MENU -}
+
+
+fooMenu1 model =
+    column Menubar
+        [ width (px 200), height (px 200), spacing 15 ]
+        [ text "AAA" ]
+
+
+toolsMenu model =
+    case model.menuAState of
+        MenuA MenuInactive ->
+            column Menu
+                [ width (px 200), height (px 200), spacing 15 ]
+                [ toggleButton model "Search" 60 (MenuA MenuInactive) ]
+
+        MenuA MenuActive ->
+            screen <|
+                column Menu
+                    [ moveRight 200, width (px 200), height (px 200), paddingTop 8, paddingLeft 15 ]
+                    [ (toggleButton model "Search" 150 (MenuA MenuActive))
+                    , searchPublic model
+                    , searchPrivate model
+                    , searchAll model
+                    , (toggleButton model "X" 50 (MenuA MenuActive))
+                    ]
+
+
+searchPublic model =
+    Widget.squareButton "Public Docs" 100 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
+
+
+searchPrivate model =
+    Widget.squareButton "My Docs" 100 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
+
+
+searchAll model =
+    Widget.squareButton "All Docs" 100 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
+
+
+testButton2 =
+    Widget.squareButton "Test" 100 [ onClick (Test) ] False
+
+
+toggleButton model labelText width msg =
+    Widget.squareButton labelText width [ onClick (ToggleMenu msg) ] False
+
+
+
+-- Widget.button labelText 75 [ onClick (ToggleMenu <| MenuA model.menuAState) ] False

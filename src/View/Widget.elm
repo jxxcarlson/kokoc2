@@ -1,6 +1,21 @@
 module View.Widget exposing (..)
 
-import Element exposing (viewport, image, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
+import Element
+    exposing
+        ( viewport
+        , image
+        , paragraph
+        , el
+        , paragraph
+        , newTab
+        , row
+        , wrappedRow
+        , column
+        , button
+        , text
+        , empty
+        , header
+        )
 import Element.Attributes exposing (..)
 import Element.Input
 import Element.Events exposing (onClick, onInput, on, keyCode)
@@ -31,6 +46,13 @@ button title width_ attrs selected =
         el ButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_), center ] ++ attrs) (el None [ center ] (text title))
     else
         el Button ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [ center ] (text title))
+
+
+squareButton title width_ attrs selected =
+    if selected then
+        el MenuButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [] (text title))
+    else
+        el MenuButton ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [] (text title))
 
 
 formButton title width_ attrs selected =

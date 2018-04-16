@@ -23,6 +23,7 @@ type alias Model =
     , sortDirection : SortDirection
     , sortOrder : SortOrder
     , searchDomain : SearchDomain
+    , menuAState : MenuState
     }
 
 
@@ -44,6 +45,15 @@ type Mode
     | SignedIn
 
 
+type MenuState
+    = MenuA MenuStatus
+
+
+type MenuStatus
+    = MenuActive
+    | MenuInactive
+
+
 initialModel : Flags -> Model
 initialModel flags =
     ({ mode = Public
@@ -63,5 +73,6 @@ initialModel flags =
      , sortDirection = Ascending
      , sortOrder = AlphabeticalOrder
      , searchDomain = SearchAll
+     , menuAState = MenuA MenuInactive
      }
     )
