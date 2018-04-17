@@ -72,7 +72,7 @@ masterDocLoaded : Model -> Document -> Bool
 masterDocLoaded model document =
     if document.attributes.docType == "master" then
         True
-    else if document.parentId == model.masterDocumentId then
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         True
     else
         False
@@ -82,7 +82,7 @@ masterDocumentId : Model -> Document -> Int
 masterDocumentId model document =
     if document.attributes.docType == "master" then
         document.id
-    else if document.parentId == model.masterDocumentId then
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         model.masterDocumentId
     else
         0
@@ -92,7 +92,7 @@ masterDocumentTitle : Model -> Document -> String
 masterDocumentTitle model document =
     if document.attributes.docType == "master" then
         document.title
-    else if document.parentId == model.masterDocumentId then
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         model.masterDocumentTitle
     else
         ""
