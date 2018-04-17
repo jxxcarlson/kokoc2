@@ -61,7 +61,7 @@ update msg model =
 
         ChooseSearchType searchDomain ->
             ( { model | searchDomain = searchDomain, menuAState = MenuA MenuInactive, page = Utility.setPage model }
-            , AS.searchCmd model
+            , Document.Cmd.search model
             )
 
         Test ->

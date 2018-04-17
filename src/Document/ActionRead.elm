@@ -8,11 +8,15 @@ import Document.Default
 import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
 import Document.Data as Data
 import Document.Cmd
+import Document.Msg exposing (DocumentMsg(GetDocumentList))
 import Model exposing (Model)
 import Msg exposing (Msg)
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
 import Configuration
+import Document.QueryParser as QueryParser
+import Document.Query as Query
+import Utility
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )

@@ -4,17 +4,22 @@ module Document.Cmd
         , getOneDocument
         , putTextToRender
         , getDocumentsAndContent
+        , search
         )
 
+import Model exposing (Model)
 import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain(..), SortOrder)
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg)
 import OutsideInfo
 import Task exposing (Task)
 import Http
+import Document.QueryParser as QueryParser
+import Document.Query as Query
+import Utility
 
 
 getDocuments : String -> String -> String -> Tagger DocumentListRecord -> Cmd Msg
@@ -91,6 +96,32 @@ getDocumentsAndContent token documents =
                     [ Cmd.none ]
     in
         Cmd.batch (tailCommands ++ [ headCommand ])
+
+
+search : Model -> Cmd Msg
+search model =
+    if model.searchDomain == SearchPublic then
+        searchPublicCmd model
+    else
+        searchWithAuthorizationCmd model
+
+
+searchPublicCmd : Model -> Cmd Msg
+searchPublicCmd model =
+    let
+        query =
+            Query.makeQuery model.searchDomain model.sortOrder 0 model.searchQuery
+    in
+        getDocuments "" "/public/documents" query (Msg.DocumentMsg << GetDocumentList)
+
+
+searchWithAuthorizationCmd : Model -> Cmd Msg
+searchWithAuthorizationCmd model =
+    let
+        query =
+            Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) model.searchQuery
+    in
+        getDocuments (Utility.getToken model) "/documents" query (Msg.DocumentMsg << GetDocumentList)
 
 
 

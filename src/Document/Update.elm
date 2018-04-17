@@ -45,7 +45,7 @@ update submessage model =
 
             SearchOnKey keyCode ->
                 if keyCode == 13 then
-                    ( { model | page = Utility.setPage model }, AS.searchCmd model )
+                    ( { model | page = Utility.setPage model }, Document.Cmd.search model )
                 else
                     ( model, Cmd.none )
 
