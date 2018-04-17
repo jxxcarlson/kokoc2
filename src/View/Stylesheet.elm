@@ -34,7 +34,9 @@ type MyStyles
     | SmallButtonSelected
     | TOCHeading
     | TOCItem
+    | TOCItemMaster
     | TOCItemSelected
+    | TOCItemMasterSelected
     | TOCItemNotLoaded
     | None
 
@@ -196,6 +198,20 @@ stylesheet =
             , Color.background alternateColor
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
+            ]
+        , style TOCItemMaster
+            [ Color.text Color.darkRed
+            , Color.background alternateColor
+            , Font.size 15 -- all units given as px
+            , Font.typeface fontList
+            , Font.weight 800
+            ]
+        , style TOCItemMasterSelected
+            [ Color.text <| Color.rgb 183 36 132
+            , Color.background alternateColor
+            , Font.size 15 -- all units given as px
+            , Font.typeface fontList
+            , Font.weight 800
             ]
         , style TOCItemSelected
             [ Color.text Color.darkBlue

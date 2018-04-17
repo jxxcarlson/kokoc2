@@ -11,18 +11,18 @@ import Element.Events exposing (onClick, onInput)
 import View.Stylesheet exposing (..)
 
 
-view : Float -> Float -> Document -> List Document -> Element.Element MyStyles variation Msg
-view width_ height_ activeDocument documentList =
+view : Float -> Float -> String -> Document -> List Document -> Element.Element MyStyles variation Msg
+view width_ height_ title activeDocument documentList =
     row Alternate
         [ paddingXY 20 20 ]
-        (innerTableOfContents width_ height_ activeDocument documentList)
+        (innerTableOfContents width_ height_ title activeDocument documentList)
 
 
-innerTableOfContents : Float -> Float -> Document -> List Document -> List (Element.Element MyStyles variation Msg)
-innerTableOfContents width_ height_ activeDocument documentList =
+innerTableOfContents : Float -> Float -> String -> Document -> List Document -> List (Element.Element MyStyles variation Msg)
+innerTableOfContents width_ height_ title activeDocument documentList =
     [ column Alternate
         []
-        [ row TOCHeading [] [ text <| documenTitle documentList ]
+        [ row TOCHeading [] [ text <| documenTitle title documentList ]
         , column Alternate
             [ width (px width_), height (px height_), yScrollbar ]
             (tocView activeDocument documentList)
@@ -30,9 +30,16 @@ innerTableOfContents width_ height_ activeDocument documentList =
     ]
 
 
-documenTitle : List Document -> String
-documenTitle documentList =
-    "Documents (" ++ (toString <| List.length documentList) ++ ")"
+documenTitle : String -> List Document -> String
+documenTitle title documentList =
+    let
+        titleWord =
+            if title == "" then
+                "Documents"
+            else
+                "Contents"
+    in
+        titleWord ++ " (" ++ (toString <| List.length documentList) ++ ")"
 
 
 
@@ -47,7 +54,7 @@ tocView activeDocument documentList =
 viewTitle : Document -> Document -> Element.Element MyStyles variation Msg.Msg
 viewTitle activeDocument document =
     row Alternate
-        [ verticalCenter, paddingXY (documentIndentLevel document) 0 ]
+        [ verticalCenter, paddingLeft (documentIndentLevel document) ]
         [ -- documentIndicator document model
           titleDisplay activeDocument document
         ]
@@ -57,13 +64,10 @@ documentIndentLevel : Document -> Float
 documentIndentLevel document =
     let
         level =
-            document.attributes.level
+            Debug.log "Level"
+                (Basics.min 1 document.attributes.level)
     in
-        0
-
-
-
--- -12.0 + 16.0 * toFloat (level - 1)
+        16.0 * toFloat level
 
 
 titleDisplay : Document -> Document -> Element.Element MyStyles variation Msg.Msg
@@ -86,8 +90,22 @@ titleDisplay selectedDocument document =
 
 tocStyle selectedDocument document =
     if selectedDocument.id == document.id then
-        TOCItemSelected
+        selectedTOCItemStyle document
     else if String.left 7 document.content == "Loading" then
         TOCItemNotLoaded
+    else
+        normalTOCItemStyle document
+
+
+selectedTOCItemStyle document =
+    if document.attributes.docType == "master" then
+        TOCItemMasterSelected
+    else
+        TOCItemSelected
+
+
+normalTOCItemStyle document =
+    if document.attributes.docType == "master" then
+        TOCItemMaster
     else
         TOCItem

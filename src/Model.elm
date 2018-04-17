@@ -16,6 +16,9 @@ type alias Model =
     , message : String
     , documentList : List Document
     , currentDocument : Document
+    , masterDocLoaded : Bool
+    , masterDocumentId : Int
+    , masterDocumentTitle : String
     , windowWidth : Int
     , windowHeight : Int
     , counter : Int
@@ -66,6 +69,9 @@ initialModel flags =
      , message = "App started"
      , documentList = []
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
+     , masterDocLoaded = False
+     , masterDocumentId = 0
+     , masterDocumentTitle = ""
      , windowWidth = flags.width
      , windowHeight = flags.height
      , counter = 0

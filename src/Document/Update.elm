@@ -5,6 +5,7 @@ import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
 import Document.Cmd
+import Document.Model exposing (Document)
 import Api.Error as Error
 import Utility
 
@@ -37,7 +38,14 @@ update submessage model =
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
-                ( { model | currentDocument = document }, Document.Cmd.selectMasterOrRender model document )
+                ( { model
+                    | currentDocument = document
+                    , masterDocLoaded = masterDocLoaded model document
+                    , masterDocumentId = masterDocumentId model document
+                    , masterDocumentTitle = masterDocumentTitle model document
+                  }
+                , Document.Cmd.selectMasterOrRender model document
+                )
 
             InputSearchQuery str ->
                 ( { model | searchQuery = str }, Cmd.none )
@@ -51,3 +59,33 @@ update submessage model =
 
 
 {- HELPERS -}
+
+
+masterDocLoaded : Model -> Document -> Bool
+masterDocLoaded model document =
+    if document.attributes.docType == "master" then
+        True
+    else if document.parentId == model.masterDocumentId then
+        True
+    else
+        False
+
+
+masterDocumentId : Model -> Document -> Int
+masterDocumentId model document =
+    if document.attributes.docType == "master" then
+        document.id
+    else if document.parentId == model.masterDocumentId then
+        model.masterDocumentId
+    else
+        0
+
+
+masterDocumentTitle : Model -> Document -> String
+masterDocumentTitle model document =
+    if document.attributes.docType == "master" then
+        document.title
+    else if document.parentId == model.masterDocumentId then
+        model.masterDocumentTitle
+    else
+        ""
