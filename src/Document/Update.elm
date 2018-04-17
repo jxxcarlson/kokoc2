@@ -52,7 +52,14 @@ update submessage model =
 
             SearchOnKey keyCode ->
                 if keyCode == 13 then
-                    ( { model | page = Utility.setPage model }, Document.Cmd.search model )
+                    ( { model
+                        | page = Utility.setPage model
+                        , masterDocLoaded = False
+                        , masterDocumentId = 0
+                        , masterDocumentTitle = ""
+                      }
+                    , Document.Cmd.search model
+                    )
                 else
                     ( model, Cmd.none )
 

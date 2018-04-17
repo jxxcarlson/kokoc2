@@ -11,30 +11,30 @@ import Element.Events exposing (onClick, onInput)
 import View.Stylesheet exposing (..)
 
 
-view : Float -> Float -> String -> Document -> List Document -> Element.Element MyStyles variation Msg
-view width_ height_ title activeDocument documentList =
+view : Model -> Document -> List Document -> Element.Element MyStyles variation Msg
+view model activeDocument documentList =
     row Alternate
         [ paddingXY 20 20 ]
-        (innerTableOfContents width_ height_ title activeDocument documentList)
+        (innerTableOfContents model activeDocument documentList)
 
 
-innerTableOfContents : Float -> Float -> String -> Document -> List Document -> List (Element.Element MyStyles variation Msg)
-innerTableOfContents width_ height_ title activeDocument documentList =
+innerTableOfContents : Model -> Document -> List Document -> List (Element.Element MyStyles variation Msg)
+innerTableOfContents model activeDocument documentList =
     [ column Alternate
         []
-        [ row TOCHeading [] [ text <| documenTitle title documentList ]
+        [ row TOCHeading [] [ text <| documenTitle model documentList ]
         , column Alternate
-            [ width (px width_), height (px height_), yScrollbar ]
-            (tocView activeDocument documentList)
+            [ width (px <| 0.3 * (toFloat model.windowWidth)), height (px <| toFloat model.windowHeight - 180), yScrollbar ]
+            (tocView model activeDocument documentList)
         ]
     ]
 
 
-documenTitle : String -> List Document -> String
-documenTitle title documentList =
+documenTitle : Model -> List Document -> String
+documenTitle model documentList =
     let
         titleWord =
-            if title == "" then
+            if model.masterDocumentTitle == "" then
                 "Documents"
             else
                 "Contents"
@@ -46,26 +46,28 @@ documenTitle title documentList =
 {- GUTS -}
 
 
-tocView : Document -> List Document -> List (Element.Element MyStyles variation Msg.Msg)
-tocView activeDocument documentList =
-    List.map (viewTitle activeDocument) documentList
+tocView : Model -> Document -> List Document -> List (Element.Element MyStyles variation Msg.Msg)
+tocView model activeDocument documentList =
+    List.map (viewTitle model activeDocument) documentList
 
 
-viewTitle : Document -> Document -> Element.Element MyStyles variation Msg.Msg
-viewTitle activeDocument document =
+viewTitle : Model -> Document -> Document -> Element.Element MyStyles variation Msg.Msg
+viewTitle model activeDocument document =
     row Alternate
-        [ verticalCenter, paddingLeft (documentIndentLevel document) ]
+        [ verticalCenter, paddingLeft (documentIndentLevel model document) ]
         [ -- documentIndicator document model
           titleDisplay activeDocument document
         ]
 
 
-documentIndentLevel : Document -> Float
-documentIndentLevel document =
+documentIndentLevel : Model -> Document -> Float
+documentIndentLevel model document =
     let
         level =
-            Debug.log "Level"
+            if model.masterDocLoaded then
                 (Basics.min 1 document.attributes.level)
+            else
+                0
     in
         16.0 * toFloat level
 

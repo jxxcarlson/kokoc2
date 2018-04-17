@@ -32,7 +32,7 @@ mainRow model =
 tableOfContentsPanel model =
     column Alternate
         [ width (fillPortion 30), height fill, paddingTop 30, spacing 15 ]
-        [ TOC.view (tableOfContentsWidth model) (tableOfContentsHeight model) model.masterDocumentTitle model.currentDocument model.documentList ]
+        [ TOC.view model model.currentDocument model.documentList ]
 
 
 contentPanel model =
