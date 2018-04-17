@@ -5,6 +5,7 @@ module Document.Cmd
         , putTextToRender
         , getDocumentsAndContent
         , search
+        , selectMasterOrRender
         )
 
 import Model exposing (Model)
@@ -13,7 +14,7 @@ import Document.RequestParameters
 import Document.Data as Data
 import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain(..), SortOrder)
 import Document.Msg exposing (DocumentMsg(..))
-import Msg exposing (Msg)
+import Msg exposing (Msg(DocumentMsg))
 import OutsideInfo
 import Task exposing (Task)
 import Http
@@ -96,6 +97,47 @@ getDocumentsAndContent token documents =
                     [ Cmd.none ]
     in
         Cmd.batch (tailCommands ++ [ headCommand ])
+
+
+
+{- MASTER DOCUMENT -}
+
+
+selectMasterOrRender : Model -> Document -> Cmd Msg
+selectMasterOrRender model document =
+    if document.attributes.docType == "master" then
+        selectMaster document model
+    else
+        putTextToRender document
+
+
+selectMaster : Document -> Model -> Cmd Msg
+selectMaster document model =
+    let
+        token =
+            Utility.getToken model
+    in
+        if document.attributes.docType == "master" then
+            selectMasterAux document.id token
+        else if document.parentId /= 0 then
+            selectMasterAux document.parentId token
+        else
+            Cmd.none
+
+
+selectMasterAux : Int -> String -> Cmd Msg
+selectMasterAux documentId token =
+    let
+        route =
+            if token == "" then
+                "/public/documents"
+            else
+                "/documents"
+
+        query =
+            "master=" ++ toString documentId ++ "&loading"
+    in
+        getDocuments token route query (DocumentMsg << GetDocumentList)
 
 
 
