@@ -4,7 +4,6 @@ import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
-import Document.ActionSearch as AS
 import Document.Cmd
 import Api.Error as Error
 import Utility
