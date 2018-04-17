@@ -5,6 +5,7 @@ import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
 import Document.Cmd
+import Document.Master
 import Api.Error as Error
 import Utility
 
@@ -37,7 +38,14 @@ update submessage model =
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
-                ( { model | currentDocument = document }, Document.Cmd.putTextToRender document )
+                let
+                    cmd =
+                        if document.attributes.docType == "master" then
+                            Document.Master.select document model
+                        else
+                            Document.Cmd.putTextToRender document
+                in
+                    ( { model | currentDocument = document }, cmd )
 
             InputSearchQuery str ->
                 ( { model | searchQuery = str }, Cmd.none )

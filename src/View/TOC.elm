@@ -87,7 +87,7 @@ titleDisplay selectedDocument document =
 tocStyle selectedDocument document =
     if selectedDocument.id == document.id then
         TOCItemSelected
-    else if document.content == "Loading ..." then
+    else if String.left 7 document.content == "Loading" then
         TOCItemNotLoaded
     else
         TOCItem

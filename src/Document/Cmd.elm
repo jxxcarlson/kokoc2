@@ -98,6 +98,10 @@ getDocumentsAndContent token documents =
         Cmd.batch (tailCommands ++ [ headCommand ])
 
 
+
+{- SEARCH -}
+
+
 search : Model -> Cmd Msg
 search model =
     if model.searchDomain == SearchPublic then
