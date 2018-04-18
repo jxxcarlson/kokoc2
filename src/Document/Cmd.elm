@@ -77,37 +77,6 @@ getDocumentsAndContent token documents =
         idList =
             (List.map (\doc -> doc.id) documents)
 
-        hCmd =
-            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContentAndRender)
-
-        tCmd =
-            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
-
-        headCommand =
-            case List.head idList of
-                Just id ->
-                    hCmd id
-
-                Nothing ->
-                    Cmd.none
-
-        tailCommands =
-            case List.tail idList of
-                Just ids ->
-                    List.map tCmd (List.reverse ids)
-
-                Nothing ->
-                    [ Cmd.none ]
-    in
-        Cmd.batch (tailCommands ++ [ headCommand ])
-
-
-getDocumentsAndContent2 : String -> List Document -> Cmd Msg
-getDocumentsAndContent2 token documents =
-    let
-        idList =
-            (List.map (\doc -> doc.id) documents)
-
         cmd =
             \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
     in
