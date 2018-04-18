@@ -5,6 +5,7 @@ module Document.Cmd
         , putTextToRender
         , getDocumentsAndContent
         , search
+        , selectMaster
         , selectMasterOrRender
         )
 

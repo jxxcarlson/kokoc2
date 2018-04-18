@@ -5,10 +5,13 @@ import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
 import Msg exposing (Msg)
+import Document.Msg exposing (DocumentMsg(LoadParent))
 import View.Menubar as Menubar
 import View.Footer as Footer
 import View.Render as Render
 import View.TOC as TOC
+import View.Widget as Widget
+import Element.Events exposing (onClick)
 
 
 view : Model -> Element.Element MyStyles variation Msg
@@ -38,7 +41,14 @@ tableOfContentsPanel model =
 contentPanel model =
     column Main
         [ alignLeft ]
-        [ Render.renderedContent model ]
+        [ row Menubar2 [ width fill, height (px 35) ] [ parentButton model ], Render.renderedContent model ]
+
+
+parentButton model =
+    if model.currentDocument.parentId > 0 && model.masterDocLoaded == False then
+        Widget.button "Load Parent" 100 [ onClick (Msg.DocumentMsg LoadParent) ] False
+    else
+        empty
 
 
 tableOfContentsHeight model =

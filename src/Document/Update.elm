@@ -4,8 +4,8 @@ import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
-import Document.Cmd
 import Document.Model exposing (Document)
+import Document.Cmd
 import Api.Error as Error
 import Utility
 
@@ -36,6 +36,9 @@ update submessage model =
 
             LoadContentAndRender (Err error) ->
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
+
+            LoadParent ->
+                ActionRead.loadParentDocument model
 
             SelectDocument document ->
                 ( { model

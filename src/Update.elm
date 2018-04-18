@@ -64,14 +64,10 @@ update msg model =
             )
 
         Test ->
-            let
-                cmd =
-                    case model.maybeCurrentUser of
-                        Just user ->
-                            Document.Cmd.getDocuments user.token "/documents" "random&loading" (DocumentMsg << GetDocumentList)
-
-                        ---Document.Cmd.getOneDocument user.token "/documents/109" "" (DocumentMsg << LoadContentAndRender)
-                        Nothing ->
-                            Cmd.none
-            in
-                ( model, cmd )
+            ( { model
+                | masterDocLoaded = True
+                , masterDocumentId = model.currentDocument.parentId
+                , masterDocumentTitle = model.currentDocument.parentTitle
+              }
+            , Document.Cmd.selectMaster model.currentDocument model
+            )

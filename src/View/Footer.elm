@@ -9,6 +9,7 @@ import View.Stylesheet exposing (..)
 import Model exposing (Model, Mode(..))
 import Helper
 import View.Widget as Widget
+import Msg exposing (Msg(Test))
 
 
 view model =
@@ -16,5 +17,9 @@ view model =
 
 
 footerContent =
-    [ el Menubar [ verticalCenter, paddingLeft 20, paddingRight 20 ] (text "Start Page Footer")
+    [ testButton
     ]
+
+
+testButton =
+    Widget.button "Test" 75 [ onClick (Test) ] False

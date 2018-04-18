@@ -70,10 +70,6 @@ searchField =
 {- BUTTONS -}
 
 
-testButton =
-    Widget.button "Test" 75 [ onClick (Test) ] False
-
-
 readerPageButton model =
     Widget.button "Read" 75 [ onClick (GotoReaderPage) ] (model.page == ReaderPage)
 

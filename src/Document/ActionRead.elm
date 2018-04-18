@@ -2,6 +2,7 @@ module Document.ActionRead
     exposing
         ( getDocuments
         , loadContent
+        , loadParentDocument
         )
 
 import Document.Default
@@ -70,6 +71,21 @@ loadContent model documentRecord =
             replaceIf (hasId document.id) document documentsInModel
     in
         { model | documentList = newDocumentList }
+
+
+
+{- MASTER DOCUMENT -}
+
+
+loadParentDocument : Model -> ( Model, Cmd Msg )
+loadParentDocument model =
+    ( { model
+        | masterDocLoaded = True
+        , masterDocumentId = model.currentDocument.parentId
+        , masterDocumentTitle = model.currentDocument.parentTitle
+      }
+    , Document.Cmd.selectMaster model.currentDocument model
+    )
 
 
 

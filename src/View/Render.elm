@@ -16,7 +16,7 @@ renderedContent model =
 
 
 mainContentHeight model =
-    toFloat model.windowHeight - 70 |> px
+    toFloat model.windowHeight - 105 |> px
 
 
 mainContentWidth model =

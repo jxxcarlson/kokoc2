@@ -12,6 +12,7 @@ type MyStyles
     = Main
     | MainContent
     | Menubar
+    | Menubar2
     | Menu
     | Alternate
     | Panel
@@ -66,6 +67,10 @@ menubarColor =
     grayColor 40
 
 
+menubar2Color =
+    grayColor 70
+
+
 menuColor =
     grayColor 70
 
@@ -74,6 +79,7 @@ stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
         , style Menubar [ Color.background <| menubarColor, Color.text Color.white ]
+        , style Menubar2 [ Color.background <| menubar2Color, Color.text Color.white ]
         , style Menu [ Color.background <| menuColor, Color.text Color.white ]
         , style Alternate [ Color.background alternateColor ]
         , style Panel [ Font.typeface fontList, Font.size 16, Color.background Color.darkBlue ]

@@ -43,9 +43,9 @@ footer model footerContent =
 
 button title width_ attrs selected =
     if selected then
-        el ButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_), center ] ++ attrs) (el None [ center ] (text title))
+        el ButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 33), width (px width_), center ] ++ attrs) (el None [ center ] (text title))
     else
-        el Button ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [ center ] (text title))
+        el Button ([ paddingLeft 8, paddingTop 8, height (px 33), width (px width_) ] ++ attrs) (el None [ center ] (text title))
 
 
 squareButton title width_ attrs selected =
