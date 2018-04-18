@@ -37,8 +37,8 @@ update submessage model =
             LoadContentAndRender (Err error) ->
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
-            LoadParent ->
-                ActionRead.loadParentDocument model
+            LoadParent currentDocument ->
+                ActionRead.loadParentDocument model currentDocument
 
             SelectDocument document ->
                 ( { model

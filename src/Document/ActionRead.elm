@@ -77,12 +77,13 @@ loadContent model documentRecord =
 {- MASTER DOCUMENT -}
 
 
-loadParentDocument : Model -> ( Model, Cmd Msg )
-loadParentDocument model =
+loadParentDocument : Model -> Document -> ( Model, Cmd Msg )
+loadParentDocument model document =
     ( { model
         | masterDocLoaded = True
         , masterDocumentId = model.currentDocument.parentId
         , masterDocumentTitle = model.currentDocument.parentTitle
+        , currentDocument = document
       }
     , Document.Cmd.selectMaster model.currentDocument model
     )

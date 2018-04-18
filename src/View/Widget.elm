@@ -41,6 +41,10 @@ footer model footerContent =
         footerContent
 
 
+bareButton style title width_ attrs =
+    el style ([ paddingLeft 8, paddingTop 8, height (px 33), width (px width_) ] ++ attrs) (el None [] (text title))
+
+
 button title width_ attrs selected =
     if selected then
         el ButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 33), width (px width_), center ] ++ attrs) (el None [ center ] (text title))

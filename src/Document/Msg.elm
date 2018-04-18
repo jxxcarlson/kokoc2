@@ -11,4 +11,4 @@ type DocumentMsg
     | LoadContentAndRender (Result Http.Error DocumentRecord)
     | SearchOnKey Int
     | InputSearchQuery String
-    | LoadParent
+    | LoadParent Document

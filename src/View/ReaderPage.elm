@@ -46,7 +46,12 @@ contentPanel model =
 
 parentButton model =
     if model.currentDocument.parentId > 0 && model.masterDocLoaded == False then
-        Widget.button "Load Parent" 100 [ onClick (Msg.DocumentMsg LoadParent) ] False
+        Widget.bareButton Button
+            ("Open: " ++ model.currentDocument.parentTitle)
+            400
+            [ paddingLeft 10
+            , onClick ((Msg.DocumentMsg << LoadParent) model.currentDocument)
+            ]
     else
         empty
 
