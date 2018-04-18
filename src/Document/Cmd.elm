@@ -4,6 +4,7 @@ module Document.Cmd
         , getOneDocument
         , putTextToRender
         , getDocumentsAndContent
+        , getDocumentsAndContent2
         , search
         , selectMaster
         , selectMasterTask
@@ -99,6 +100,18 @@ getDocumentsAndContent token documents =
                     [ Cmd.none ]
     in
         Cmd.batch (tailCommands ++ [ headCommand ])
+
+
+getDocumentsAndContent2 : String -> List Document -> Cmd Msg
+getDocumentsAndContent2 token documents =
+    let
+        idList =
+            (List.map (\doc -> doc.id) documents)
+
+        cmd =
+            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
+    in
+        Cmd.batch <| List.map cmd <| List.reverse idList
 
 
 
