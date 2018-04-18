@@ -11,13 +11,14 @@ import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList))
 import Model exposing (Model)
-import Msg exposing (Msg)
+import Msg exposing (Msg(DocumentMsg))
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
 import Configuration
 import Document.QueryParser as QueryParser
 import Document.Query as Query
 import Utility
+import Task exposing (Task)
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -85,7 +86,9 @@ loadParentDocument model document =
         , masterDocumentTitle = model.currentDocument.parentTitle
         , currentDocument = document
       }
-    , Document.Cmd.selectMaster model.currentDocument model
+    , -- Document.Cmd.selectMaster model.currentDocument model
+      -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
+      Task.attempt (DocumentMsg << GetDocumentList) (Document.Cmd.selectMasterTask document.parentId (Utility.getToken model))
     )
 
 

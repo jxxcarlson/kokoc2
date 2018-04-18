@@ -6,6 +6,7 @@ module Document.Cmd
         , getDocumentsAndContent
         , search
         , selectMaster
+        , selectMasterTask
         , selectMasterOrRender
         )
 
@@ -138,7 +139,22 @@ selectMasterAux documentId token =
         query =
             "master=" ++ toString documentId ++ "&loading"
     in
-        getDocuments token route query (DocumentMsg << GetDocumentList)
+        Task.attempt (DocumentMsg << GetDocumentList) (getDocumentsTask token route query (DocumentMsg << GetDocumentList))
+
+
+selectMasterTask : Int -> String -> Task Http.Error DocumentListRecord
+selectMasterTask documentId token =
+    let
+        route =
+            if token == "" then
+                "/public/documents"
+            else
+                "/documents"
+
+        query =
+            "master=" ++ toString documentId ++ "&loading"
+    in
+        (getDocumentsTask token route query (DocumentMsg << GetDocumentList))
 
 
 
