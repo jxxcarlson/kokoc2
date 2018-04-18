@@ -41,10 +41,16 @@ getDocumentsAux documentListRecord model =
             List.take Configuration.maxDocs
                 documentListRecord.documents
 
+        documentIdList =
+            List.map .id documentList
+
         currentDocument =
-            documentList
-                |> List.head
-                |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
+            if List.member model.currentDocument.id documentIdList then
+                model.currentDocument
+            else
+                documentList
+                    |> List.head
+                    |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
     in
         ( { model | currentDocument = currentDocument, documentList = documentList }
         , loadContentsIfNecessary token currentDocument documentList
