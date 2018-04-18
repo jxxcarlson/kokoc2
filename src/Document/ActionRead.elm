@@ -44,6 +44,11 @@ getDocumentsAux documentListRecord model =
         documentIdList =
             List.map .id documentList
 
+        headDocument =
+            documentList
+                |> List.head
+                |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
+
         currentDocument =
             if List.member model.currentDocument.id documentIdList then
                 model.currentDocument
@@ -53,7 +58,7 @@ getDocumentsAux documentListRecord model =
                     |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
     in
         ( { model | currentDocument = currentDocument, documentList = documentList }
-        , loadContentsIfNecessary token currentDocument documentList
+        , loadContentsIfNecessary token headDocument documentList
         )
 
 
