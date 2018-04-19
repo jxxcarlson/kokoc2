@@ -16,6 +16,7 @@ type Msg
     | LogErr String
     | GotoStartPage
     | GotoReaderPage
+    | GotoEditorPage
     | Test
     | ToggleDocumentMenu DocumentMenuState
     | ToggleSearchMenu SearchMenuState

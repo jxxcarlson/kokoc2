@@ -1,11 +1,11 @@
-module View.ReaderPage exposing (view)
+module View.EditorPage exposing (view)
 
 import Element exposing (image, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
 import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
-import Msg exposing (Msg)
-import Document.Msg exposing (DocumentMsg(LoadParent))
+import Msg exposing (Msg(DocumentMsg))
+import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText))
 import View.Menubar as Menubar
 import View.Footer as Footer
 import View.Render as Render
@@ -24,17 +24,11 @@ view model =
         ]
 
 
-mainContentWidth model =
-    model.windowWidth
-        |> toFloat
-        |> (\x -> 0.7 * x)
-        |> px
-
-
 mainRow model =
     row Alternate
         [ height fill ]
         [ tableOfContentsPanel model
+        , editorPanel model
         , contentPanel model
         ]
 
@@ -45,24 +39,20 @@ tableOfContentsPanel model =
         [ TOC.view model model.currentDocument model.documentList ]
 
 
+editorPanel model =
+    column Main
+        [ alignLeft ]
+        [ row Menubar2 [ width (contentsWidth model), height (px 35) ] []
+        , Widget.textArea model.counter (contentsWidth model) (contentsHeight model) "" model.currentDocument.content (DocumentMsg << InputEditorText)
+        ]
+
+
 contentPanel model =
     column Main
         [ alignLeft ]
-        [ row Menubar2 [ width fill, height (px 35) ] [ parentButton model ], Render.renderedContent model (contentsWidth model) ]
-
-
-tableOfContentsWidth model =
-    model.windowWidth
-        |> toFloat
-        |> (\x -> 0.2 * x)
-        |> px
-
-
-contentsWidth model =
-    model.windowWidth
-        |> toFloat
-        |> (\x -> Basics.max 700 (0.4 * x))
-        |> px
+        [ row Menubar2 [ width (contentsWidth model), height (px 35) ] [ parentButton model ]
+        , Render.renderedContent model (contentsWidth model)
+        ]
 
 
 parentButton model =
@@ -79,3 +69,21 @@ parentButton model =
 
 tableOfContentsHeight model =
     model.windowHeight - 160 |> toFloat
+
+
+contentsWidth model =
+    model.windowWidth
+        |> toFloat
+        |> (\x -> 0.4 * x)
+        |> px
+
+
+contentsHeight model =
+    model.windowHeight - 160 |> toFloat |> px
+
+
+tableOfContentsWidth model =
+    model.windowWidth
+        |> toFloat
+        |> (\x -> 0.2 * x)
+        |> px

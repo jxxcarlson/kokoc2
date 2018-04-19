@@ -40,6 +40,7 @@ type alias Flags =
 type Page
     = StartPage
     | ReaderPage
+    | EditorPage
 
 
 type Mode

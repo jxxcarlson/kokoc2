@@ -49,7 +49,12 @@ leftMenu model =
 
 
 centerMenu model =
-    row Menubar [ center, width (fillPortion 35), spacing 5 ] [ readerPageButton model, startPageButton model ]
+    row Menubar
+        [ center, width (fillPortion 35), spacing 5 ]
+        [ startPageButton model
+        , readerPageButton model
+        , editorPageButton model
+        ]
 
 
 rightMenu model =
@@ -68,6 +73,10 @@ searchField =
 
 
 {- BUTTONS -}
+
+
+editorPageButton model =
+    Widget.button "Edit" 75 [ onClick (GotoEditorPage) ] (model.page == EditorPage)
 
 
 readerPageButton model =
@@ -100,13 +109,13 @@ documentMenu model =
         DocumentMenu MenuInactive ->
             screen <|
                 column Menu
-                    [ moveRight 350, width (px 120), height (px 35), spacing 15 ]
+                    [ moveRight 350, width (px 100), height (px 35), spacing 15 ]
                     [ toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive) ]
 
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 340, width (px 120), height (px 200), paddingTop 8, paddingLeft 15 ]
+                    [ moveRight 340, width (px 100), height (px 200), paddingTop 8, paddingLeft 15 ]
                     [ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                     , printDocument model
                     , (toggleDocumentMenuButton

@@ -64,7 +64,17 @@ update submessage model =
                     , Document.Cmd.search model
                     )
                 else
-                    ( model, Cmd.none )
+                    ( { model | counter = model.counter + 1 }, Cmd.none )
+
+            InputEditorText str ->
+                let
+                    document =
+                        model.currentDocument
+
+                    updatedDocument =
+                        { document | content = str }
+                in
+                    ( { model | currentDocument = updatedDocument }, Cmd.none )
 
 
 

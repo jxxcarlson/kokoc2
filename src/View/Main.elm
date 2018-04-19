@@ -4,8 +4,9 @@ import Element exposing (viewport)
 import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model, Page(..))
-import View.ReaderPage as ReaderPage
 import View.StartPage as StartPage
+import View.ReaderPage as ReaderPage
+import View.EditorPage as EditorPage
 import Html
 import Msg exposing (Msg)
 
@@ -26,3 +27,6 @@ dispatcher model =
 
         ReaderPage ->
             ReaderPage.view model
+
+        EditorPage ->
+            EditorPage.view model

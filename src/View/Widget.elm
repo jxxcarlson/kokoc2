@@ -105,6 +105,21 @@ passwordField label_ value_ width_ action =
         }
 
 
+textArea counter width_ height_ label_ value_ action =
+    Element.Keyed.row TextPanel
+        []
+        [ ( (toString counter)
+          , Element.Input.multiline TextPanel
+                [ width (width_), height (height_), padding 10 ]
+                { onChange = action
+                , value = value_
+                , label = Element.Input.placeholder { text = label_, label = Element.Input.labelLeft Element.empty }
+                , options = []
+                }
+          )
+        ]
+
+
 
 {- HELPERS -}
 

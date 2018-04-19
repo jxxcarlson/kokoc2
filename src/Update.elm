@@ -40,6 +40,9 @@ update msg model =
         LogErr error ->
             ( { model | message = "Error: " ++ error }, Cmd.none )
 
+        GotoEditorPage ->
+            ( { model | page = EditorPage }, Cmd.none )
+
         GotoReaderPage ->
             ( { model | page = ReaderPage }, Cmd.none )
 

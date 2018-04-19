@@ -11,8 +11,8 @@ import Model exposing (Model)
 -- renderedContent : Model -> Element Styles variation msg
 
 
-renderedContent model =
-    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model ) ]
+renderedContent model width_ =
+    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ ) ]
 
 
 mainContentHeight model =
@@ -26,12 +26,12 @@ mainContentWidth model =
         |> px
 
 
-innerRenderedContent model =
+innerRenderedContent model width_ =
     el (MainContent)
         [ yScrollbar
         , id "renderedText"
         , paddingXY 50 50
-        , width (mainContentWidth model)
+        , width width_
         , height (mainContentHeight model)
         , property "innerHTML"
             (Json.Encode.string model.currentDocument.renderedContent)

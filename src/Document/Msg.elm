@@ -12,3 +12,4 @@ type DocumentMsg
     | SearchOnKey Int
     | InputSearchQuery String
     | LoadParent Document
+    | InputEditorText String
