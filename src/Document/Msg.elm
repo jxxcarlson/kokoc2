@@ -13,3 +13,4 @@ type DocumentMsg
     | InputSearchQuery String
     | LoadParent Document
     | InputEditorText String
+    | RenderContent

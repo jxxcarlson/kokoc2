@@ -5,7 +5,7 @@ import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
 import Msg exposing (Msg(DocumentMsg))
-import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText))
+import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText, RenderContent))
 import View.Menubar as Menubar
 import View.Footer as Footer
 import View.Render as Render
@@ -42,7 +42,7 @@ tableOfContentsPanel model =
 editorPanel model =
     column Main
         [ alignLeft ]
-        [ row Menubar2 [ width (contentsWidth model), height (px 35) ] []
+        [ row Menubar2 [ width (contentsWidth model), height (px 35) ] [ renderContentButton model ]
         , Widget.textArea model.counter (contentsWidth model) (contentsHeight model) "" model.currentDocument.content (DocumentMsg << InputEditorText)
         ]
 
@@ -52,6 +52,15 @@ contentPanel model =
         [ alignLeft ]
         [ row Menubar2 [ width (contentsWidth model), height (px 35) ] [ parentButton model ]
         , Render.renderedContent model (contentsWidth model)
+        ]
+
+
+renderContentButton model =
+    Widget.bareButton Button
+        "Render"
+        90
+        [ paddingLeft 10
+        , onClick (Msg.DocumentMsg RenderContent)
         ]
 
 

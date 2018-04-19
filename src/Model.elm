@@ -3,6 +3,8 @@ module Model exposing (..)
 import Document.Model exposing (Document, SortDirection(..), SortOrder(..), SearchDomain(..))
 import User.Model exposing (User)
 import Document.Default
+import MiniLatex.Differ exposing (EditRecord)
+import MiniLatex.Driver
 
 
 type alias Model =
@@ -16,6 +18,7 @@ type alias Model =
     , message : String
     , documentList : List Document
     , currentDocument : Document
+    , editRecord : EditRecord
     , masterDocLoaded : Bool
     , masterDocumentId : Int
     , masterDocumentTitle : String
@@ -75,6 +78,7 @@ initialModel flags =
      , message = "App started"
      , documentList = []
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
+     , editRecord = MiniLatex.Driver.setup 0 ""
      , masterDocLoaded = False
      , masterDocumentId = 0
      , masterDocumentTitle = ""

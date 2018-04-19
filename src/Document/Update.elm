@@ -8,6 +8,8 @@ import Document.Model exposing (Document)
 import Document.Cmd
 import Api.Error as Error
 import Utility
+import Document.ActionEdit as ActionEdit
+import MiniLatex.Driver
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -46,6 +48,8 @@ update submessage model =
                     , masterDocLoaded = masterDocLoaded model document
                     , masterDocumentId = masterDocumentId model document
                     , masterDocumentTitle = masterDocumentTitle model document
+                    , editRecord = MiniLatex.Driver.emptyEditRecord
+                    , counter = model.counter + 1
                   }
                 , Document.Cmd.selectMasterOrRender model document
                 )
@@ -76,8 +80,12 @@ update submessage model =
                 in
                     ( { model | currentDocument = updatedDocument }, Cmd.none )
 
+            RenderContent ->
+                ActionEdit.renderLatex model
 
 
+
+-- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
 {- HELPERS -}
 
 
