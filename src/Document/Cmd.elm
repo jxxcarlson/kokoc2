@@ -4,7 +4,6 @@ module Document.Cmd
         , getOneDocument
         , putTextToRender
         , getDocumentsAndContent
-        , getDocumentsAndContent2
         , search
         , selectMaster
         , selectMasterTask

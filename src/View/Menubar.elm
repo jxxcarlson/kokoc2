@@ -95,28 +95,22 @@ signInButtonLabel model =
 {- MENU -}
 
 
-fooMenu1 model =
-    column Menubar
-        [ width (px 200), height (px 200), spacing 15 ]
-        [ text "AAA" ]
-
-
 toolsMenu model =
     case model.menuAState of
-        MenuA MenuInactive ->
+        SearchMenu MenuInactive ->
             column Menu
-                [ width (px 200), height (px 200), spacing 15 ]
-                [ toggleButton model "Search" 60 (MenuA MenuInactive) ]
+                [ width (px 120), height (px 200), spacing 15 ]
+                [ toggleButton model "Search" 60 (SearchMenu MenuInactive) ]
 
-        MenuA MenuActive ->
+        SearchMenu SearchMenuctive ->
             screen <|
                 column Menu
-                    [ moveRight 200, width (px 200), height (px 200), paddingTop 8, paddingLeft 15 ]
-                    [ (toggleButton model "Search" 150 (MenuA MenuActive))
+                    [ moveRight 200, width (px 120), height (px 200), paddingTop 8, paddingLeft 15 ]
+                    [ (toggleButton model "Search" 60 (SearchMenu SearchMenuctive))
                     , searchPublic model
                     , searchPrivate model
                     , searchAll model
-                    , (toggleButton model "X" 50 (MenuA MenuActive))
+                    , (toggleButton model "X" 50 (SearchMenu SearchMenuctive))
                     ]
 
 
@@ -141,4 +135,4 @@ toggleButton model labelText width msg =
 
 
 
--- Widget.button labelText 75 [ onClick (ToggleMenu <| MenuA model.menuAState) ] False
+-- Widget.button labelText 75 [ onClick (ToggleMenu <| SearchMenu model.menuAState) ] False

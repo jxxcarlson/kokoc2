@@ -50,16 +50,16 @@ update msg model =
             let
                 menuAState =
                     case menu of
-                        MenuA MenuInactive ->
-                            MenuA MenuActive
+                        SearchMenu MenuInactive ->
+                            SearchMenu SearchMenuctive
 
-                        MenuA MenuActive ->
-                            MenuA MenuInactive
+                        SearchMenu SearchMenuctive ->
+                            SearchMenu MenuInactive
             in
                 ( { model | menuAState = menuAState }, Cmd.none )
 
         ChooseSearchType searchDomain ->
-            ( { model | searchDomain = searchDomain, menuAState = MenuA MenuInactive, page = Utility.setPage model }
+            ( { model | searchDomain = searchDomain, menuAState = SearchMenu MenuInactive, page = Utility.setPage model }
             , Document.Cmd.search model
             )
 

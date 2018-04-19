@@ -49,11 +49,11 @@ type Mode
 
 
 type MenuState
-    = MenuA MenuStatus
+    = SearchMenu MenuStatus
 
 
 type MenuStatus
-    = MenuActive
+    = SearchMenuctive
     | MenuInactive
 
 
@@ -79,6 +79,6 @@ initialModel flags =
      , sortDirection = Ascending
      , sortOrder = AlphabeticalOrder
      , searchDomain = SearchAll
-     , menuAState = MenuA MenuInactive
+     , menuAState = SearchMenu MenuInactive
      }
     )
