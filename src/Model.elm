@@ -26,7 +26,8 @@ type alias Model =
     , sortDirection : SortDirection
     , sortOrder : SortOrder
     , searchDomain : SearchDomain
-    , menuAState : MenuState
+    , searchMenuState : SearchMenuState
+    , documentMenuState : DocumentMenuState
     }
 
 
@@ -48,12 +49,16 @@ type Mode
     | SignedIn
 
 
-type MenuState
+type SearchMenuState
     = SearchMenu MenuStatus
 
 
+type DocumentMenuState
+    = DocumentMenu MenuStatus
+
+
 type MenuStatus
-    = SearchMenuctive
+    = MenuActive
     | MenuInactive
 
 
@@ -79,6 +84,7 @@ initialModel flags =
      , sortDirection = Ascending
      , sortOrder = AlphabeticalOrder
      , searchDomain = SearchAll
-     , menuAState = SearchMenu MenuInactive
+     , searchMenuState = SearchMenu MenuInactive
+     , documentMenuState = DocumentMenu MenuInactive
      }
     )

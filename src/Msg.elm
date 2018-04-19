@@ -2,7 +2,7 @@ module Msg exposing (..)
 
 import Http
 import User.Model exposing (User)
-import Model exposing (MenuState)
+import Model exposing (SearchMenuState, DocumentMenuState)
 import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
 import Document.Model exposing (SearchDomain(..))
@@ -17,8 +17,10 @@ type Msg
     | GotoStartPage
     | GotoReaderPage
     | Test
-    | ToggleMenu MenuState
+    | ToggleDocumentMenu DocumentMenuState
+    | ToggleSearchMenu SearchMenuState
     | ChooseSearchType SearchDomain
+    | CloseMenus
 
 
 type InfoForElm

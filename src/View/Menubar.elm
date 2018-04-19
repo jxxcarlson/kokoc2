@@ -2,7 +2,8 @@ module View.Menubar exposing (view)
 
 import Element
     exposing
-        ( image
+        ( Element
+        , image
         , textLayout
         , paragraph
         , el
@@ -12,6 +13,7 @@ import Element
         , wrappedRow
         , column
         , button
+        , link
         , text
         , empty
         , screen
@@ -21,19 +23,15 @@ import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, Mode(..), Page(..), MenuState(..), MenuStatus(..))
+import Model exposing (Model, Mode(..), Page(..), SearchMenuState(..), DocumentMenuState(..), MenuStatus(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
+import Configuration
 import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery))
-import Document.Model exposing (SearchDomain(..))
+import Document.Model exposing (Document, SearchDomain(..))
 import Model exposing (Model, Page(..))
-import User.Msg
-    exposing
-        ( UserMsg
-            ( SignIn
-            )
-        )
+import User.Msg exposing (UserMsg(SignIn))
 
 
 view model =
@@ -45,7 +43,9 @@ menuContent model =
 
 
 leftMenu model =
-    row Menubar [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ] [ searchField, toolsMenu model ]
+    row Menubar
+        [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ]
+        [ searchField, searchMenu model, documentMenu model ]
 
 
 centerMenu model =
@@ -95,22 +95,49 @@ signInButtonLabel model =
 {- MENU -}
 
 
-toolsMenu model =
-    case model.menuAState of
+documentMenu model =
+    case model.documentMenuState of
+        DocumentMenu MenuInactive ->
+            screen <|
+                column Menu
+                    [ moveRight 350, width (px 120), height (px 35), spacing 15 ]
+                    [ toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive) ]
+
+        DocumentMenu MenuActive ->
+            screen <|
+                column Menu
+                    [ moveRight 340, width (px 120), height (px 200), paddingTop 8, paddingLeft 15 ]
+                    [ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
+                    , printDocument model
+                    , (toggleDocumentMenuButton
+                        model
+                        "X"
+                        50
+                        (DocumentMenu MenuActive)
+                      )
+                    ]
+
+
+printDocument model =
+    printButton model.currentDocument
+
+
+searchMenu model =
+    case model.searchMenuState of
         SearchMenu MenuInactive ->
             column Menu
                 [ width (px 120), height (px 200), spacing 15 ]
-                [ toggleButton model "Search" 60 (SearchMenu MenuInactive) ]
+                [ toggleSearchMenuButton model "Search" 60 (SearchMenu MenuInactive) ]
 
-        SearchMenu SearchMenuctive ->
+        SearchMenu MenuActive ->
             screen <|
                 column Menu
                     [ moveRight 200, width (px 120), height (px 200), paddingTop 8, paddingLeft 15 ]
-                    [ (toggleButton model "Search" 60 (SearchMenu SearchMenuctive))
+                    [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
                     , searchPublic model
                     , searchPrivate model
                     , searchAll model
-                    , (toggleButton model "X" 50 (SearchMenu SearchMenuctive))
+                    , (toggleSearchMenuButton model "X" 50 (SearchMenu MenuActive))
                     ]
 
 
@@ -130,9 +157,60 @@ testButton2 =
     Widget.squareButton "Test" 100 [ onClick (Test) ] False
 
 
-toggleButton model labelText width msg =
-    Widget.squareButton labelText width [ onClick (ToggleMenu msg) ] False
+toggleDocumentMenuButton model labelText width msg =
+    Widget.squareButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
+
+
+toggleSearchMenuButton model labelText width msg =
+    Widget.squareButton labelText width [ onClick (ToggleSearchMenu msg) ] False
 
 
 
--- Widget.button labelText 75 [ onClick (ToggleMenu <| SearchMenu model.menuAState) ] False
+{- PRINT -}
+-- printButton : Document -> Element Styles variation Msg
+
+
+printButton document =
+    link (printUrl document) <|
+        el Menu [ verticalCenter, onClick CloseMenus ] (text "Print")
+
+
+
+-- link (printUrl document) <|
+--         el Zero [ verticalCenter, target "_blank" ] (html (FontAwesome.print Color.white 25))
+-- link "http://zombo.com"
+--     <| el MyStyle (text "Welcome to Zombocom")
+
+
+printUrl : Document -> String
+printUrl document =
+    Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
+
+
+printTypeString : Document -> String
+printTypeString document =
+    case document.attributes.textType of
+        "plain" ->
+            "text=plain"
+
+        "adoc" ->
+            "text=adoc"
+
+        "adoc:latex" ->
+            "text=adoc_latex"
+
+        "adoc_latex" ->
+            "text=adoc_latex"
+
+        "latex" ->
+            "text=latex"
+
+        "markdown" ->
+            "text=markdown"
+
+        _ ->
+            "text=plain"
+
+
+
+-- Widget.button labelText 75 [ onClick (ToggleSearchMenu <| SearchMenu model.searchMenuState) ] False

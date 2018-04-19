@@ -8,7 +8,7 @@ import Document.Update
 import Document.Cmd
 import OutsideInfo
 import User.Action
-import Model exposing (Page(..), MenuState(..), MenuStatus(..))
+import Model exposing (Page(..), DocumentMenuState(..), SearchMenuState(..), MenuStatus(..))
 import Utility
 
 
@@ -46,22 +46,37 @@ update msg model =
         GotoStartPage ->
             ( { model | page = StartPage }, Cmd.none )
 
-        ToggleMenu menu ->
+        ToggleSearchMenu menu ->
             let
-                menuAState =
+                searchMenuState =
                     case menu of
                         SearchMenu MenuInactive ->
-                            SearchMenu SearchMenuctive
+                            SearchMenu MenuActive
 
-                        SearchMenu SearchMenuctive ->
+                        SearchMenu MenuActive ->
                             SearchMenu MenuInactive
             in
-                ( { model | menuAState = menuAState }, Cmd.none )
+                ( { model | searchMenuState = searchMenuState }, Cmd.none )
+
+        ToggleDocumentMenu menu ->
+            let
+                documentMenuState =
+                    case menu of
+                        DocumentMenu MenuInactive ->
+                            DocumentMenu MenuActive
+
+                        DocumentMenu MenuActive ->
+                            DocumentMenu MenuInactive
+            in
+                ( { model | documentMenuState = documentMenuState }, Cmd.none )
 
         ChooseSearchType searchDomain ->
-            ( { model | searchDomain = searchDomain, menuAState = SearchMenu MenuInactive, page = Utility.setPage model }
+            ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
             , Document.Cmd.search model
             )
+
+        CloseMenus ->
+            ( { model | searchMenuState = SearchMenu MenuInactive, documentMenuState = DocumentMenu MenuInactive }, Cmd.none )
 
         Test ->
             ( { model
