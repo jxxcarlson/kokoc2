@@ -171,7 +171,7 @@ toggleSearchMenuButton model labelText width msg =
 
 
 printButton document =
-    link (printUrl document) <|
+    newTab (printUrl document) <|
         el Menu [ verticalCenter, onClick CloseMenus ] (text "Print")
 
 
