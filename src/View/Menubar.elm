@@ -28,7 +28,7 @@ import Helper
 import View.Widget as Widget
 import Msg exposing (..)
 import Configuration
-import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery))
+import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery, NewDocument))
 import Document.Model exposing (Document, SearchDomain(..))
 import Model exposing (Model, Page(..))
 import User.Msg exposing (UserMsg(SignIn))
@@ -50,7 +50,7 @@ leftMenu model =
 
 centerMenu model =
     row Menubar
-        [ center, width (fillPortion 35), spacing 5 ]
+        [ center, width (fillPortion 35), spacing 8 ]
         [ startPageButton model
         , readerPageButton model
         , editorPageButton model
@@ -109,39 +109,61 @@ documentMenu model =
         DocumentMenu MenuInactive ->
             screen <|
                 column Menu
-                    [ moveRight 350, width (px 100), height (px 35), spacing 15 ]
+                    [ moveRight 340, width (px 80), height (px 35), spacing 15, paddingTop 4 ]
                     [ toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive) ]
 
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 340, width (px 100), height (px 200), paddingTop 8, paddingLeft 15 ]
-                    [ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
-                    , printDocument model
-                    , (toggleDocumentMenuButton
-                        model
-                        "X"
-                        50
-                        (DocumentMenu MenuActive)
-                      )
-                    ]
+                    [ moveRight 330, width (px 90), height (px 200), paddingTop 8, paddingLeft 15, paddingTop 4 ]
+                    ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
+                        ++ editingCommmands model
+                        ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
+                    )
+
+
+editingCommmands model =
+    if model.page == EditorPage then
+        [ newDocument model
+        , deleteDocument model
+        , togglePublic model
+        ]
+    else
+        []
 
 
 printDocument model =
     printButton model.currentDocument
 
 
+printButton document =
+    newTab (printUrl document) <|
+        el MenuButton [ paddingTop 6, paddingBottom 8, verticalCenter, onClick CloseMenus ] (text "Print")
+
+
+newDocument model =
+    Widget.menuButton "New" 60 [ onClick (DocumentMsg NewDocument) ] False
+
+
+deleteDocument model =
+    Widget.menuButton "Delete" 60 [ onClick (NoOpz) ] False
+
+
+togglePublic model =
+    Widget.menuButton "Public" 60 [ onClick (NoOpz) ] False
+
+
 searchMenu model =
     case model.searchMenuState of
         SearchMenu MenuInactive ->
             column Menu
-                [ width (px 120), height (px 200), spacing 15 ]
+                [ width (px 110), height (px 200), spacing 15, paddingTop 4 ]
                 [ toggleSearchMenuButton model "Search" 60 (SearchMenu MenuInactive) ]
 
         SearchMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 200, width (px 120), height (px 200), paddingTop 8, paddingLeft 15 ]
+                    [ moveRight 200, width (px 110), height (px 200), paddingTop 8, paddingLeft 15, paddingTop 4 ]
                     [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
                     , searchPublic model
                     , searchPrivate model
@@ -151,40 +173,32 @@ searchMenu model =
 
 
 searchPublic model =
-    Widget.squareButton "Public Docs" 100 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
+    Widget.menuButton "Public Docs" 90 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
 
 
 searchPrivate model =
-    Widget.squareButton "My Docs" 100 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
+    Widget.menuButton "My Docs" 90 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
 
 
 searchAll model =
-    Widget.squareButton "All Docs" 100 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
+    Widget.menuButton "All Docs" 90 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
 
 
 testButton2 =
-    Widget.squareButton "Test" 100 [ onClick (Test) ] False
+    Widget.menuButton "Test" 100 [ onClick (Test) ] False
 
 
 toggleDocumentMenuButton model labelText width msg =
-    Widget.squareButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
+    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
 
 
 toggleSearchMenuButton model labelText width msg =
-    Widget.squareButton labelText width [ onClick (ToggleSearchMenu msg) ] False
+    Widget.menuButton labelText width [ onClick (ToggleSearchMenu msg) ] False
 
 
 
 {- PRINT -}
 -- printButton : Document -> Element Styles variation Msg
-
-
-printButton document =
-    newTab (printUrl document) <|
-        el Menu [ verticalCenter, onClick CloseMenus ] (text "Print")
-
-
-
 -- link (printUrl document) <|
 --         el Zero [ verticalCenter, target "_blank" ] (html (FontAwesome.print Color.white 25))
 -- link "http://zombo.com"

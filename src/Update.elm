@@ -59,7 +59,7 @@ update msg model =
                         SearchMenu MenuActive ->
                             SearchMenu MenuInactive
             in
-                ( { model | searchMenuState = searchMenuState }, Cmd.none )
+                ( { model | documentMenuState = DocumentMenu MenuInactive, searchMenuState = searchMenuState }, Cmd.none )
 
         ToggleDocumentMenu menu ->
             let
@@ -71,7 +71,7 @@ update msg model =
                         DocumentMenu MenuActive ->
                             DocumentMenu MenuInactive
             in
-                ( { model | documentMenuState = documentMenuState }, Cmd.none )
+                ( { model | searchMenuState = SearchMenu MenuInactive, documentMenuState = documentMenuState }, Cmd.none )
 
         ChooseSearchType searchDomain ->
             ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }

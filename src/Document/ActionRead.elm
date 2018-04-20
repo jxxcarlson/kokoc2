@@ -9,7 +9,7 @@ import Document.Default
 import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
 import Document.Data as Data
 import Document.Cmd
-import Document.Msg exposing (DocumentMsg(GetDocumentList))
+import Document.Msg exposing (DocumentMsg(GetDocumentList, LoadContentAndRender))
 import Model exposing (Model)
 import Msg exposing (Msg(DocumentMsg))
 import Http
@@ -92,16 +92,27 @@ loadContent model documentRecord =
 
 loadParentDocument : Model -> Document -> ( Model, Cmd Msg )
 loadParentDocument model document =
-    ( { model
-        | masterDocLoaded = True
-        , masterDocumentId = model.currentDocument.parentId
-        , masterDocumentTitle = model.currentDocument.parentTitle
-        , currentDocument = document
-      }
-    , -- Document.Cmd.selectMaster model.currentDocument model
-      -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
-      Task.attempt (DocumentMsg << GetDocumentList) (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
-    )
+    let
+        token =
+            Utility.getToken model
+
+        route =
+            "/documents/" ++ toString model.currentDocument.id
+    in
+        ( { model
+            | masterDocLoaded = True
+            , masterDocumentId = model.currentDocument.parentId
+            , masterDocumentTitle = model.currentDocument.parentTitle
+            , currentDocument = document
+          }
+        , -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
+          Task.attempt (Msg.DocumentMsg << GetDocumentList)
+            (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
+          -- Task.attempt (Msg.DocumentMsg << LoadContentAndRender)
+          --   ((Document.Task.selectMasterTask document.parentId (Utility.getToken model))
+          --       |> Task.andThen (\_ -> Document.Task.getOneDocumentTask token route "" (Msg.DocumentMsg << LoadContentAndRender))
+          --   )
+        )
 
 
 

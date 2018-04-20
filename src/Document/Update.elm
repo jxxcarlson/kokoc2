@@ -11,6 +11,7 @@ import Utility
 import Document.ActionEdit as ActionEdit
 import MiniLatex.Driver
 import Task
+import Document.Default
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -48,6 +49,15 @@ update submessage model =
 
             LoadParent currentDocument ->
                 ActionRead.loadParentDocument model currentDocument
+
+            NewDocument ->
+                ActionEdit.createDocument model (Document.Default.make "New Document (X)" "Write something here ... ")
+
+            CreateDocument (Ok documentRecord) ->
+                ActionEdit.selectNewDocument model documentRecord.document
+
+            CreateDocument (Err error) ->
+                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
                 ( { model

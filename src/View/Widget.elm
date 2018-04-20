@@ -59,6 +59,13 @@ squareButton title width_ attrs selected =
         el MenuButton ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [] (text title))
 
 
+menuButton title width_ attrs selected =
+    if selected then
+        el MenuButtonSelected ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+    else
+        el MenuButton ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+
+
 formButton title width_ attrs selected =
     if selected then
         el FormButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_), center ] ++ attrs) (el None [ center ] (text title))

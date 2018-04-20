@@ -3,6 +3,7 @@ module Document.RequestParameters
         ( getDocumentListParameters
         , getOneDocumentParameters
         , updateDocumentParameters
+        , postDocumentRecordParameters
         )
 
 import Configuration
@@ -50,4 +51,16 @@ updateDocumentParameters token route encodedValue tagger =
     , token = token
     , decoder = Data.documentRecordDecoder
     , method = HB.put
+    }
+
+
+postDocumentRecordParameters : Api.Request.SetupRequestDataWithPayload DocumentRecord
+postDocumentRecordParameters token route encodedValue tagger =
+    { api = Configuration.api
+    , route = route
+    , payload = encodedValue
+    , tagger = tagger
+    , token = token
+    , decoder = Data.documentRecordDecoder
+    , method = HB.post
     }

@@ -1,6 +1,7 @@
 module Document.Task
     exposing
         ( getDocumentsTask
+        , getOneDocumentTask
         , selectMasterTask
         , saveDocumentTask
         )
@@ -56,3 +57,15 @@ saveDocumentTask token document =
             Msg.DocumentMsg << SaveDocument
     in
         Api.Request.makeTask <| Document.RequestParameters.updateDocumentParameters token route encodedValue tagger
+
+
+getOneDocumentTask : String -> String -> String -> Tagger DocumentRecord -> Task Http.Error DocumentRecord
+getOneDocumentTask token route query tagger =
+    let
+        routeAndQuery =
+            if query == "" then
+                route
+            else
+                route ++ "?" ++ query
+    in
+        Api.Request.makeTask <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
