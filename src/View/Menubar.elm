@@ -32,6 +32,7 @@ import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery, NewDocu
 import Document.Model exposing (Document, SearchDomain(..))
 import Model exposing (Model, Page(..))
 import User.Msg exposing (UserMsg(SignIn))
+import View.DocumentMenu as DocumentMenu
 
 
 view model =
@@ -45,7 +46,7 @@ menuContent model =
 leftMenu model =
     row Menubar
         [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ]
-        [ searchField, searchMenu model, documentMenu model ]
+        [ searchField, searchMenu model, DocumentMenu.view model ]
 
 
 centerMenu model =
@@ -104,55 +105,6 @@ signInButtonLabel model =
 {- MENU -}
 
 
-documentMenu model =
-    case model.documentMenuState of
-        DocumentMenu MenuInactive ->
-            screen <|
-                column Menu
-                    [ moveRight 340, width (px 80), height (px 35), spacing 15, paddingTop 4 ]
-                    [ toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive) ]
-
-        DocumentMenu MenuActive ->
-            screen <|
-                column Menu
-                    [ moveRight 330, width (px 90), height (px 200), paddingTop 8, paddingLeft 15, paddingTop 4 ]
-                    ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
-                        ++ editingCommmands model
-                        ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
-                    )
-
-
-editingCommmands model =
-    if model.page == EditorPage then
-        [ newDocument model
-        , deleteDocument model
-        , togglePublic model
-        ]
-    else
-        []
-
-
-printDocument model =
-    printButton model.currentDocument
-
-
-printButton document =
-    newTab (printUrl document) <|
-        el MenuButton [ paddingTop 6, paddingBottom 8, verticalCenter, onClick CloseMenus ] (text "Print")
-
-
-newDocument model =
-    Widget.menuButton "New" 60 [ onClick (DocumentMsg NewDocument) ] False
-
-
-deleteDocument model =
-    Widget.menuButton "Delete" 60 [ onClick (NoOpz) ] False
-
-
-togglePublic model =
-    Widget.menuButton "Public" 60 [ onClick (NoOpz) ] False
-
-
 searchMenu model =
     case model.searchMenuState of
         SearchMenu MenuInactive ->
@@ -188,52 +140,5 @@ testButton2 =
     Widget.menuButton "Test" 100 [ onClick (Test) ] False
 
 
-toggleDocumentMenuButton model labelText width msg =
-    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
-
-
 toggleSearchMenuButton model labelText width msg =
     Widget.menuButton labelText width [ onClick (ToggleSearchMenu msg) ] False
-
-
-
-{- PRINT -}
--- printButton : Document -> Element Styles variation Msg
--- link (printUrl document) <|
---         el Zero [ verticalCenter, target "_blank" ] (html (FontAwesome.print Color.white 25))
--- link "http://zombo.com"
---     <| el MyStyle (text "Welcome to Zombocom")
-
-
-printUrl : Document -> String
-printUrl document =
-    Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
-
-
-printTypeString : Document -> String
-printTypeString document =
-    case document.attributes.textType of
-        "plain" ->
-            "text=plain"
-
-        "adoc" ->
-            "text=adoc"
-
-        "adoc:latex" ->
-            "text=adoc_latex"
-
-        "adoc_latex" ->
-            "text=adoc_latex"
-
-        "latex" ->
-            "text=latex"
-
-        "markdown" ->
-            "text=markdown"
-
-        _ ->
-            "text=plain"
-
-
-
--- Widget.button labelText 75 [ onClick (ToggleSearchMenu <| SearchMenu model.searchMenuState) ] False

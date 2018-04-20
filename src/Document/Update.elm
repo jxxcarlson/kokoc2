@@ -105,6 +105,7 @@ update submessage model =
 
 
 
+{- 12 ACTIONS -}
 -- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
 {- HELPERS -}
 
