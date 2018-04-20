@@ -5,20 +5,20 @@ import Element.Attributes exposing (..)
 import Json.Encode
 import Element.Keyed as Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model)
+import Model exposing(Model)
 
 
--- renderedContent : Model -> Element Styles variation msg
-
-
+renderedContent : Model -> Length -> Element MyStyles variation msg
 renderedContent model width_ =
     Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ ) ]
 
 
+mainContentHeight : Model -> Length
 mainContentHeight model =
     toFloat model.windowHeight - 105 |> px
 
 
+mainContentWidth : Model -> Length
 mainContentWidth model =
     model.windowWidth
         |> toFloat
@@ -26,6 +26,7 @@ mainContentWidth model =
         |> px
 
 
+innerRenderedContent : Model -> Length -> Element MyStyles variation msg
 innerRenderedContent model width_ =
     el (MainContent)
         [ yScrollbar

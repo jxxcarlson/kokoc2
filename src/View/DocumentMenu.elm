@@ -1,23 +1,6 @@
 module View.DocumentMenu exposing (view)
 
-import Element
-    exposing
-        ( Element
-        , image
-        , textLayout
-        , paragraph
-        , el
-        , paragraph
-        , newTab
-        , row
-        , wrappedRow
-        , column
-        , button
-        , link
-        , text
-        , empty
-        , screen
-        )
+import Element exposing(..)
 import Element.Attributes exposing (..)
 import Element.Input
 import Element.Events exposing (onClick, onInput)

@@ -7,6 +7,7 @@ import Model exposing (Model)
 import Msg exposing (Msg(DocumentMsg))
 import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText, RenderContent))
 import View.Menubar as Menubar
+
 import View.Footer as Footer
 import View.Render as Render
 import View.TOC as TOC
