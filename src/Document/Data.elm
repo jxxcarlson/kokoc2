@@ -4,6 +4,7 @@ module Document.Data
         , documentRecordDecoder
         , documentListDecoder
         , encodeDocumentForOutside
+        , encodeDocumentRecord
         )
 
 import Json.Encode as Encode exposing (..)
@@ -14,6 +15,12 @@ import Document.Preprocess
 
 
 {- DOCUMENT DECODERS -}
+
+
+documentRecordDecoder : Decoder DocumentRecord
+documentRecordDecoder =
+    JPipeline.decode DocumentRecord
+        |> JPipeline.required "document" (documentDecoder)
 
 
 documentDecoder : Decoder Document
@@ -32,12 +39,6 @@ documentDecoder =
         |> JPipeline.required "children" (Decode.list decodeChild)
         |> JPipeline.required "parent_id" Decode.int
         |> JPipeline.required "parent_title" Decode.string
-
-
-documentRecordDecoder : Decoder DocumentRecord
-documentRecordDecoder =
-    JPipeline.decode DocumentRecord
-        |> JPipeline.required "document" (documentDecoder)
 
 
 documentAttributesDecoder : Decoder DocumentAttributes
@@ -75,6 +76,43 @@ documentListDecoder =
 
 
 {- ENCODERS -}
+
+
+encodeDocumentRecord : Document -> Encode.Value
+encodeDocumentRecord document =
+    Encode.object
+        [ ( "document"
+          , encodeDocument document
+          )
+        ]
+
+
+encodeDocument : Document -> Encode.Value
+encodeDocument document =
+    Encode.object
+        [ ( "title", Encode.string <| document.title )
+        , ( "rendered_content", Encode.string <| document.renderedContent )
+        , ( "id", Encode.int <| document.id )
+        , ( "identifier", Encode.string <| document.identifier )
+        , ( "content", Encode.string <| document.content )
+        , ( "author_id", Encode.int <| document.authorId )
+        , ( "attributes", encodeDocumentAttributes <| document.attributes )
+        , ( "tags", Encode.list <| List.map Encode.string <| document.tags )
+        , ( "parent_id", Encode.int <| document.parentId )
+        , ( "parent_title", Encode.string <| document.parentTitle )
+        ]
+
+
+encodeDocumentAttributes : DocumentAttributes -> Encode.Value
+encodeDocumentAttributes record =
+    Encode.object
+        [ ( "text_type", Encode.string <| record.textType )
+        , ( "public", Encode.bool <| record.public )
+        , ( "doc_type", Encode.string <| record.docType )
+        , ( "level", Encode.int <| record.level )
+        , ( "archive", Encode.string <| record.archive )
+        , ( "version", Encode.int <| record.version )
+        ]
 
 
 encodeDocumentForOutside : Document -> Encode.Value

@@ -19,6 +19,7 @@ import Document.QueryParser as QueryParser
 import Document.Query as Query
 import Utility
 import Task exposing (Task)
+import Document.Task
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -99,7 +100,7 @@ loadParentDocument model document =
       }
     , -- Document.Cmd.selectMaster model.currentDocument model
       -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
-      Task.attempt (DocumentMsg << GetDocumentList) (Document.Cmd.selectMasterTask document.parentId (Utility.getToken model))
+      Task.attempt (DocumentMsg << GetDocumentList) (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
     )
 
 

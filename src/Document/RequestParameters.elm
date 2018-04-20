@@ -1,4 +1,9 @@
-module Document.RequestParameters exposing (getDocumentListParameters, getOneDocumentParameters)
+module Document.RequestParameters
+    exposing
+        ( getDocumentListParameters
+        , getOneDocumentParameters
+        , updateDocumentParameters
+        )
 
 import Configuration
 import Document.Data as Data
@@ -33,4 +38,16 @@ getOneDocumentParameters token route tagger =
     , token = token
     , decoder = Data.documentRecordDecoder
     , method = HB.get
+    }
+
+
+updateDocumentParameters : Api.Request.SetupRequestDataWithPayload DocumentRecord
+updateDocumentParameters token route encodedValue tagger =
+    { api = Configuration.api
+    , route = route
+    , payload = encodedValue
+    , tagger = tagger
+    , token = token
+    , decoder = Data.documentRecordDecoder
+    , method = HB.put
     }

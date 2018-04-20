@@ -48,7 +48,21 @@ tableOfContentsPanel model =
 contentPanel model =
     column Main
         [ alignLeft ]
-        [ row Menubar2 [ width fill, height (px 35) ] [ parentButton model ], Render.renderedContent model (contentsWidth model) ]
+        [ row Menubar2 [ width fill, height (px 35), spacing 10 ] [ parentButton model, docInfo model ], Render.renderedContent model (contentsWidth model) ]
+
+
+docInfo model =
+    let
+        author =
+            model.currentDocument.authorName
+
+        id =
+            toString model.currentDocument.id
+
+        message =
+            author ++ ", doc id = " ++ id
+    in
+        el Menubar2 [ paddingTop 10, paddingLeft 10 ] (text message)
 
 
 tableOfContentsWidth model =

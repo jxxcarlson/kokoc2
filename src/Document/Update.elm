@@ -1,4 +1,4 @@
-module Document.Update exposing (..)
+module Document.Update exposing (update)
 
 import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
@@ -10,6 +10,7 @@ import Api.Error as Error
 import Utility
 import Document.ActionEdit as ActionEdit
 import MiniLatex.Driver
+import Task
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -38,6 +39,12 @@ update submessage model =
 
             LoadContentAndRender (Err error) ->
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
+
+            SaveDocument (Ok documentRecord) ->
+                ( model, Cmd.none )
+
+            SaveDocument (Err error) ->
+                ( { model | message = "Save: " ++ Error.httpErrorString error }, Cmd.none )
 
             LoadParent currentDocument ->
                 ActionRead.loadParentDocument model currentDocument
@@ -81,7 +88,10 @@ update submessage model =
                     ( { model | currentDocument = updatedDocument }, Cmd.none )
 
             RenderContent ->
-                ActionEdit.renderLatex model
+                if model.currentDocument.attributes.textType == "latex" then
+                    ActionEdit.renderLatex model
+                else
+                    ( model, Document.Cmd.renderNonLatexCmd model )
 
 
 

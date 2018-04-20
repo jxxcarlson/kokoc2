@@ -1,4 +1,12 @@
-module Api.Request exposing (doRequest, makeTask, Tagger, RequestParameters, SetupRequestData)
+module Api.Request
+    exposing
+        ( doRequest
+        , makeTask
+        , Tagger
+        , RequestParameters
+        , SetupRequestData
+        , SetupRequestDataWithPayload
+        )
 
 import Http exposing (send)
 import HttpBuilder as HB
