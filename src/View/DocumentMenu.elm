@@ -1,19 +1,27 @@
-module View.DocumentMenu exposing (view)
+module View.DocumentMenu exposing (view, newDocumentPanel)
 
-import Element exposing(..)
+import Element exposing (..)
 import Element.Attributes exposing (..)
 import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, Mode(..), Page(..), SearchMenuState(..), DocumentMenuState(..), MenuStatus(..))
+import Model
+    exposing
+        ( Model
+        , Mode(..)
+        , Page(..)
+        , SearchMenuState(..)
+        , DocumentMenuState(..)
+        , MenuStatus(..)
+        , NewDocumentPanelState(..)
+        )
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
 import Configuration
 import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery, NewDocument))
 import Document.Model exposing (Document, SearchDomain(..))
-import Model exposing (Model, Page(..))
 import User.Msg exposing (UserMsg(SignIn))
 
 
@@ -33,6 +41,24 @@ view model =
                         ++ editingCommmands model
                         ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
                     )
+
+
+newDocumentPanel model =
+    if model.newDocumentPanelState == NewDocumentPanelActive then
+        screen <|
+            column Menu
+                [ moveRight 390, moveDown 80, width (px 350), height (px 450), padding 15, spacing 10 ]
+                [ text "New Document"
+                , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
+                , Widget.menuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
+                , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
+                ]
+    else
+        empty
+
+
+dismissNewDocumentPanel =
+    Widget.menuButton "Done" 60 [ onClick (CancelNewDocument) ] False
 
 
 editingCommmands model =
@@ -60,7 +86,7 @@ printUrl document =
 
 
 newDocument model =
-    Widget.menuButton "New" 60 [ onClick (DocumentMsg NewDocument) ] False
+    Widget.menuButton "New" 60 [ onClick (DisplayNewDocumentPanel) ] False
 
 
 deleteDocument model =

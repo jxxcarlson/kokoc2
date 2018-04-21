@@ -22,6 +22,9 @@ type Msg
     | ToggleSearchMenu SearchMenuState
     | ChooseSearchType SearchDomain
     | CloseMenus
+    | DisplayNewDocumentPanel
+    | CancelNewDocument
+    | InputNewDocumentTitle String
 
 
 type InfoForElm

@@ -8,7 +8,14 @@ import Document.Update
 import Document.Cmd
 import OutsideInfo
 import User.Action
-import Model exposing (Page(..), DocumentMenuState(..), SearchMenuState(..), MenuStatus(..))
+import Model
+    exposing
+        ( Page(..)
+        , DocumentMenuState(..)
+        , SearchMenuState(..)
+        , MenuStatus(..)
+        , NewDocumentPanelState(..)
+        )
 import Utility
 
 
@@ -80,6 +87,15 @@ update msg model =
 
         CloseMenus ->
             ( { model | searchMenuState = SearchMenu MenuInactive, documentMenuState = DocumentMenu MenuInactive }, Cmd.none )
+
+        DisplayNewDocumentPanel ->
+            ( { model | newDocumentPanelState = NewDocumentPanelActive }, Cmd.none )
+
+        CancelNewDocument ->
+            ( { model | newDocumentPanelState = NewDocumentPanelInactive }, Cmd.none )
+
+        InputNewDocumentTitle str ->
+            ( { model | newDocumentTitle = str }, Cmd.none )
 
         Test ->
             ( { model

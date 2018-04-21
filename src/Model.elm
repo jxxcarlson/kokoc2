@@ -31,6 +31,9 @@ type alias Model =
     , searchDomain : SearchDomain
     , searchMenuState : SearchMenuState
     , documentMenuState : DocumentMenuState
+    , newDocumentPanelState : NewDocumentPanelState
+    , newDocumentTitle : String
+    , deletetDocumentState : DeleteDocumentState
     }
 
 
@@ -66,6 +69,17 @@ type MenuStatus
     | MenuInactive
 
 
+type NewDocumentPanelState
+    = NewDocumentPanelActive
+    | NewDocumentPanelInactive
+
+
+type DeleteDocumentState
+    = DeleteDocumentInactive
+    | DeleteDocumentPending
+    | DeleteDocumentFiring
+
+
 initialModel : Flags -> Model
 initialModel flags =
     ({ mode = Public
@@ -91,5 +105,8 @@ initialModel flags =
      , searchDomain = SearchAll
      , searchMenuState = SearchMenu MenuInactive
      , documentMenuState = DocumentMenu MenuInactive
+     , newDocumentPanelState = NewDocumentPanelInactive
+     , newDocumentTitle = "New Document"
+     , deletetDocumentState = DeleteDocumentInactive
      }
     )

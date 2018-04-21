@@ -1,6 +1,6 @@
 module View.Menubar exposing (view)
 
-import Element exposing(..)
+import Element exposing (..)
 import Element.Attributes exposing (..)
 import Element.Events exposing (onClick, onInput)
 import View.Stylesheet exposing (..)
@@ -34,6 +34,7 @@ centerMenu model =
         [ startPageButton model
         , readerPageButton model
         , editorPageButton model
+        , DocumentMenu.newDocumentPanel model
         ]
 
 

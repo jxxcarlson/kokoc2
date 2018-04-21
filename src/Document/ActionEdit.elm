@@ -10,7 +10,14 @@ import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList, SaveDocument))
-import Model exposing (Model, Page(EditorPage), DocumentMenuState(..), MenuStatus(..))
+import Model
+    exposing
+        ( Model
+        , Page(EditorPage)
+        , DocumentMenuState(..)
+        , MenuStatus(..)
+        , NewDocumentPanelState(..)
+        )
 import Msg exposing (Msg(DocumentMsg))
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
@@ -25,7 +32,13 @@ import MiniLatex.Driver
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
 createDocument model document =
-    ( { model | page = EditorPage, documentMenuState = DocumentMenu MenuInactive }, Document.Cmd.createDocumentCmd document (Utility.getToken model) )
+    ( { model
+        | page = EditorPage
+        , documentMenuState = DocumentMenu MenuInactive
+        , newDocumentPanelState = NewDocumentPanelInactive
+      }
+    , Document.Cmd.createDocumentCmd document (Utility.getToken model)
+    )
 
 
 selectNewDocument : Model -> Document -> ( Model, Cmd Msg )

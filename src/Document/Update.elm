@@ -51,7 +51,14 @@ update submessage model =
                 ActionRead.loadParentDocument model currentDocument
 
             NewDocument ->
-                ActionEdit.createDocument model (Document.Default.make "New Document (X)" "Write something here ... ")
+                let
+                    title =
+                        if model.newDocumentTitle /= "" then
+                            model.newDocumentTitle
+                        else
+                            "New Document (Y)"
+                in
+                    ActionEdit.createDocument model (Document.Default.make title "Write something here ... ")
 
             CreateDocument (Ok documentRecord) ->
                 ActionEdit.selectNewDocument model documentRecord.document
