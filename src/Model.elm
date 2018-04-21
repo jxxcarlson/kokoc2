@@ -32,8 +32,10 @@ type alias Model =
     , searchMenuState : SearchMenuState
     , documentMenuState : DocumentMenuState
     , newDocumentPanelState : NewDocumentPanelState
+    , documentAttributePanelState : DocumentAttributePanelState
     , newDocumentTitle : String
     , deleteDocumentState : DeleteDocumentState
+    , documentTextType : TextType
     }
 
 
@@ -56,6 +58,11 @@ type Mode
     | SignedIn
 
 
+type TextType
+    = MiniLatex
+    | Asciidoc
+
+
 type SearchMenuState
     = SearchMenu MenuStatus
 
@@ -72,6 +79,11 @@ type MenuStatus
 type NewDocumentPanelState
     = NewDocumentPanelActive
     | NewDocumentPanelInactive
+
+
+type DocumentAttributePanelState
+    = DocumentAttributePanelActive
+    | DocumentAttributePanelInactive
 
 
 type DeleteDocumentState
@@ -105,7 +117,9 @@ initialModel flags =
      , searchMenuState = SearchMenu MenuInactive
      , documentMenuState = DocumentMenu MenuInactive
      , newDocumentPanelState = NewDocumentPanelInactive
+     , documentAttributePanelState = DocumentAttributePanelInactive
      , newDocumentTitle = "New Document"
      , deleteDocumentState = DeleteDocumentInactive
+     , documentTextType = MiniLatex
      }
     )

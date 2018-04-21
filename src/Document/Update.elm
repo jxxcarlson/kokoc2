@@ -1,6 +1,14 @@
 module Document.Update exposing (update)
 
-import Model exposing (Model, Page(..), DeleteDocumentState(..), DocumentMenuState(..), MenuStatus(..))
+import Model
+    exposing
+        ( Model
+        , Page(..)
+        , DeleteDocumentState(..)
+        , DocumentMenuState(..)
+        , MenuStatus(..)
+        , TextType(..)
+        )
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
@@ -57,8 +65,20 @@ update submessage model =
                             model.newDocumentTitle
                         else
                             "New Document (Y)"
+
+                    newDocument =
+                        Document.Default.make title "Write something here ... "
+
+                    newDocumentAttributes =
+                        newDocument.attributes
+
+                    amendedAttributes =
+                        { newDocumentAttributes | textType = textTypeToString model.documentTextType }
+
+                    amendedNewDocument =
+                        { newDocument | attributes = amendedAttributes }
                 in
-                    ActionEdit.createDocument model (Document.Default.make title "Write something here ... ")
+                    ActionEdit.createDocument model amendedNewDocument
 
             CreateDocument (Ok documentRecord) ->
                 ActionEdit.selectNewDocument model documentRecord.document
@@ -153,6 +173,16 @@ update submessage model =
 {- 12 ACTIONS -}
 -- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
 {- HELPERS -}
+
+
+textTypeToString : TextType -> String
+textTypeToString textType =
+    case textType of
+        MiniLatex ->
+            "latex"
+
+        Asciidoc ->
+            "adoc_latex"
 
 
 masterDocLoaded : Model -> Document -> Bool

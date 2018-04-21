@@ -110,6 +110,9 @@ update msg model =
         InputNewDocumentTitle str ->
             ( { model | newDocumentTitle = str }, Cmd.none )
 
+        SetDocumentTextType textType ->
+            ( { model | documentTextType = textType }, Cmd.none )
+
         Test ->
             ( { model
                 | masterDocLoaded = True

@@ -16,6 +16,7 @@ import Model
         , MenuStatus(..)
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
+        , TextType(..)
         )
 import Helper
 import View.Widget as Widget
@@ -57,10 +58,30 @@ newDocumentPanel model =
     if model.newDocumentPanelState == NewDocumentPanelActive then
         screen <|
             column Menu
-                [ moveRight 390, moveDown 80, width (px 350), height (px 450), padding 15, spacing 10 ]
-                [ text "New Document"
+                [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
+                [ el Menu [ paddingBottom 8 ] (text "New Document")
                 , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
                 , Widget.menuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
+                , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
+                , el Menu [ paddingTop 12 ] (text "Text type")
+                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                ]
+    else
+        empty
+
+
+documentAttributesPanel model =
+    if model.newDocumentPanelState == NewDocumentPanelActive then
+        screen <|
+            column Menu
+                [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
+                [ el Menu [ paddingBottom 8 ] (text "Document attributes")
+                , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
+                , el Menu [ paddingTop 12 ] (text "Text type")
+                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                , Widget.menuButton "Update" 60 [ onClick (CancelNewDocument) ] False
                 , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
                 ]
     else
