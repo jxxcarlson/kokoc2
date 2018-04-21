@@ -3,6 +3,7 @@ module Document.ActionEdit
         ( renderLatex
         , createDocument
         , selectNewDocument
+        , deleteDocumentFromList
         )
 
 import Document.Default
@@ -78,21 +79,20 @@ renderLatex model =
         )
 
 
-deleteDocument document model =
+deleteDocumentFromList : Document -> Model -> Model
+deleteDocumentFromList document model =
     let
         documentList =
             model.documentList
 
-        updatedDocuments =
+        updatedDocumentList =
             Utility.removeWhen (\doc -> doc.id == model.currentDocument.id) documentList
 
         newCurrentDocument =
-            List.head updatedDocuments |> Maybe.withDefault (Document.Default.make "Error" "There was an error deleting this documents.")
+            List.head updatedDocumentList |> Maybe.withDefault (Document.Default.make "Error" "There was an error deleting this documents.")
     in
-        ( { model
-            | message = "Document deleted, remaining = " ++ toString (List.length updatedDocuments)
-            , documents = updatedDocuments
-            , current_document = newCurrentDocument
-          }
-        , Cmd.none
-        )
+        { model
+            | message = "Document deleted, remaining = " ++ toString (List.length updatedDocumentList)
+            , documentList = updatedDocumentList
+            , currentDocument = newCurrentDocument
+        }

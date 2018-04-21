@@ -67,10 +67,21 @@ update submessage model =
                 ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             DeleteDocument (Ok str) ->
-                ( model, Cmd.none )
+                let
+                    document =
+                        model.currentDocument
+
+                    _ =
+                        Debug.log "GOOD BrANCH"
+                in
+                    ( ActionEdit.deleteDocumentFromList document model, Cmd.none )
 
             DeleteDocument (Err error) ->
-                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
+                let
+                    _ =
+                        Debug.log "BAD BrANCH"
+                in
+                    ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
                 ( { model
@@ -126,8 +137,11 @@ update submessage model =
 
                     token =
                         Utility.getToken model
+
+                    newModel =
+                        ActionEdit.deleteDocumentFromList model.currentDocument model
                 in
-                    ( { model
+                    ( { newModel
                         | deleteDocumentState = DeleteDocumentInactive
                         , documentMenuState = DocumentMenu MenuInactive
                       }
