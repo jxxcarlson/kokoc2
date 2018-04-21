@@ -17,3 +17,5 @@ type DocumentMsg
     | LoadParent Document
     | InputEditorText String
     | RenderContent
+    | PrepareToDeleteDocument
+    | DeleteDocument

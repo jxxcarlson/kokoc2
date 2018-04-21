@@ -1,6 +1,6 @@
 module Document.Update exposing (update)
 
-import Model exposing (Model, Page(..))
+import Model exposing (Model, Page(..), DeleteDocumentState(..), DocumentMenuState(..), MenuStatus(..))
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
@@ -109,6 +109,17 @@ update submessage model =
                     ActionEdit.renderLatex model
                 else
                     ( model, Document.Cmd.renderNonLatexCmd model )
+
+            PrepareToDeleteDocument ->
+                ( { model | deleteDocumentState = DeleteDocumentPending }, Cmd.none )
+
+            DeleteDocument ->
+                ( { model
+                    | deleteDocumentState = DeleteDocumentInactive
+                    , documentMenuState = DocumentMenu MenuInactive
+                  }
+                , Cmd.none
+                )
 
 
 

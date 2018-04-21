@@ -15,6 +15,7 @@ import Model
         , SearchMenuState(..)
         , MenuStatus(..)
         , NewDocumentPanelState(..)
+        , DeleteDocumentState(..)
         )
 import Utility
 
@@ -78,7 +79,13 @@ update msg model =
                         DocumentMenu MenuActive ->
                             DocumentMenu MenuInactive
             in
-                ( { model | searchMenuState = SearchMenu MenuInactive, documentMenuState = documentMenuState }, Cmd.none )
+                ( { model
+                    | searchMenuState = SearchMenu MenuInactive
+                    , documentMenuState = documentMenuState
+                    , deleteDocumentState = DeleteDocumentInactive
+                  }
+                , Cmd.none
+                )
 
         ChooseSearchType searchDomain ->
             ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
@@ -86,7 +93,13 @@ update msg model =
             )
 
         CloseMenus ->
-            ( { model | searchMenuState = SearchMenu MenuInactive, documentMenuState = DocumentMenu MenuInactive }, Cmd.none )
+            ( { model
+                | searchMenuState = SearchMenu MenuInactive
+                , documentMenuState = DocumentMenu MenuInactive
+                , deleteDocumentState = DeleteDocumentInactive
+              }
+            , Cmd.none
+            )
 
         DisplayNewDocumentPanel ->
             ( { model | newDocumentPanelState = NewDocumentPanelActive }, Cmd.none )

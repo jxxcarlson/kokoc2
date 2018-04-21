@@ -15,12 +15,22 @@ import Model
         , DocumentMenuState(..)
         , MenuStatus(..)
         , NewDocumentPanelState(..)
+        , DeleteDocumentState(..)
         )
 import Helper
 import View.Widget as Widget
 import Msg exposing (..)
 import Configuration
-import Document.Msg exposing (DocumentMsg(SearchOnKey, InputSearchQuery, NewDocument))
+import Document.Msg
+    exposing
+        ( DocumentMsg
+            ( SearchOnKey
+            , InputSearchQuery
+            , NewDocument
+            , PrepareToDeleteDocument
+            , DeleteDocument
+            )
+        )
 import Document.Model exposing (Document, SearchDomain(..))
 import User.Msg exposing (UserMsg(SignIn))
 
@@ -90,7 +100,12 @@ newDocument model =
 
 
 deleteDocument model =
-    Widget.menuButton "Delete" 60 [ onClick (NoOpz) ] False
+    case model.deleteDocumentState of
+        DeleteDocumentInactive ->
+            Widget.menuButton "Delete" 60 [ onClick (DocumentMsg PrepareToDeleteDocument) ] False
+
+        DeleteDocumentPending ->
+            Widget.menuButton "DELETE!" 60 [ onClick (DocumentMsg DeleteDocument) ] True
 
 
 togglePublic model =

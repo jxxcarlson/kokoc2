@@ -33,7 +33,7 @@ type alias Model =
     , documentMenuState : DocumentMenuState
     , newDocumentPanelState : NewDocumentPanelState
     , newDocumentTitle : String
-    , deletetDocumentState : DeleteDocumentState
+    , deleteDocumentState : DeleteDocumentState
     }
 
 
@@ -77,7 +77,6 @@ type NewDocumentPanelState
 type DeleteDocumentState
     = DeleteDocumentInactive
     | DeleteDocumentPending
-    | DeleteDocumentFiring
 
 
 initialModel : Flags -> Model
@@ -107,6 +106,6 @@ initialModel flags =
      , documentMenuState = DocumentMenu MenuInactive
      , newDocumentPanelState = NewDocumentPanelInactive
      , newDocumentTitle = "New Document"
-     , deletetDocumentState = DeleteDocumentInactive
+     , deleteDocumentState = DeleteDocumentInactive
      }
     )
