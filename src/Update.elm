@@ -16,6 +16,7 @@ import Model
         , MenuStatus(..)
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
+        , DocumentAttributePanelState(..)
         )
 import Utility
 
@@ -97,12 +98,16 @@ update msg model =
                 | searchMenuState = SearchMenu MenuInactive
                 , documentMenuState = DocumentMenu MenuInactive
                 , deleteDocumentState = DeleteDocumentInactive
+                , documentAttributePanelState = DocumentAttributePanelInactive
               }
             , Cmd.none
             )
 
         DisplayNewDocumentPanel ->
             ( { model | newDocumentPanelState = NewDocumentPanelActive }, Cmd.none )
+
+        DisplayDocumentAttributesPanel ->
+            ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
 
         CancelNewDocument ->
             ( { model | newDocumentPanelState = NewDocumentPanelInactive }, Cmd.none )

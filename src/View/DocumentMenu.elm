@@ -1,4 +1,4 @@
-module View.DocumentMenu exposing (view, newDocumentPanel)
+module View.DocumentMenu exposing (view, newDocumentPanel, documentAttributesPanel)
 
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -16,6 +16,7 @@ import Model
         , MenuStatus(..)
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
+        , DocumentAttributePanelState(..)
         , TextType(..)
         )
 import Helper
@@ -72,7 +73,7 @@ newDocumentPanel model =
 
 
 documentAttributesPanel model =
-    if model.newDocumentPanelState == NewDocumentPanelActive then
+    if model.documentAttributePanelState == DocumentAttributePanelActive then
         screen <|
             column Menu
                 [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
@@ -81,8 +82,8 @@ documentAttributesPanel model =
                 , el Menu [ paddingTop 12 ] (text "Text type")
                 , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
-                , Widget.menuButton "Update" 60 [ onClick (CancelNewDocument) ] False
-                , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
+                , Widget.menuButton "Update" 60 [ onClick (CloseMenus) ] False
+                , Widget.menuButton "Cancel" 60 [ onClick (CloseMenus) ] False
                 ]
     else
         empty
@@ -96,6 +97,7 @@ editingCommmands model =
     if model.page == EditorPage then
         [ newDocument model
         , deleteDocument model
+        , documentAttributes model
         , togglePublic model
         ]
     else
@@ -118,6 +120,10 @@ printUrl document =
 
 newDocument model =
     Widget.menuButton "New" 60 [ onClick (DisplayNewDocumentPanel) ] False
+
+
+documentAttributes model =
+    Widget.menuButton "Attributes" 60 [ onClick (DisplayDocumentAttributesPanel) ] False
 
 
 deleteDocument model =

@@ -23,6 +23,7 @@ type Msg
     | ChooseSearchType SearchDomain
     | CloseMenus
     | DisplayNewDocumentPanel
+    | DisplayDocumentAttributesPanel
     | CancelNewDocument
     | InputNewDocumentTitle String
     | SetDocumentTextType TextType

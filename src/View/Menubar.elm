@@ -35,6 +35,7 @@ centerMenu model =
         , readerPageButton model
         , editorPageButton model
         , DocumentMenu.newDocumentPanel model
+        , DocumentMenu.documentAttributesPanel model
         ]
 
 
