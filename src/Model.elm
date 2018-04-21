@@ -1,6 +1,6 @@
 module Model exposing (..)
 
-import Document.Model exposing (Document, SortDirection(..), SortOrder(..), SearchDomain(..))
+import Document.Model exposing (Document, SortDirection(..), SortOrder(..), SearchDomain(..), TextType(..))
 import User.Model exposing (User)
 import Document.Default
 import MiniLatex.Differ exposing (EditRecord)
@@ -56,11 +56,6 @@ type Mode
     | SigningIn
     | SigningUp
     | SignedIn
-
-
-type TextType
-    = MiniLatex
-    | Asciidoc
 
 
 type SearchMenuState

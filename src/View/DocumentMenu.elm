@@ -17,7 +17,6 @@ import Model
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
         , DocumentAttributePanelState(..)
-        , TextType(..)
         )
 import Helper
 import View.Widget as Widget
@@ -33,7 +32,7 @@ import Document.Msg
             , DoDeleteDocument
             )
         )
-import Document.Model exposing (Document, SearchDomain(..))
+import Document.Model exposing (Document, SearchDomain(..), TextType(..))
 import User.Msg exposing (UserMsg(SignIn))
 
 

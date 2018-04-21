@@ -9,6 +9,7 @@ module Document.Model
         , SortOrder(..)
         , SortDirection(..)
         , SearchDomain(..)
+        , TextType(..)
         )
 
 import Time exposing (Time)
@@ -54,6 +55,11 @@ type alias DocumentAttributes =
     , version : Int
     , lastViewed : Maybe Time
     }
+
+
+type TextType
+    = MiniLatex
+    | Asciidoc
 
 
 type alias DocumentRecord =

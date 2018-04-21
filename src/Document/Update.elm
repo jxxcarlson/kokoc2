@@ -7,12 +7,11 @@ import Model
         , DeleteDocumentState(..)
         , DocumentMenuState(..)
         , MenuStatus(..)
-        , TextType(..)
         )
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
-import Document.Model exposing (Document)
+import Document.Model exposing (Document, TextType(..))
 import Document.Cmd
 import Api.Error as Error
 import Utility
