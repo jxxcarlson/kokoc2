@@ -28,7 +28,7 @@ import Document.Msg
             , InputSearchQuery
             , NewDocument
             , PrepareToDeleteDocument
-            , DeleteDocument
+            , DoDeleteDocument
             )
         )
 import Document.Model exposing (Document, SearchDomain(..))
@@ -105,7 +105,7 @@ deleteDocument model =
             Widget.menuButton "Delete" 60 [ onClick (DocumentMsg PrepareToDeleteDocument) ] False
 
         DeleteDocumentPending ->
-            Widget.menuButton "DELETE!" 60 [ onClick (DocumentMsg DeleteDocument) ] True
+            Widget.menuButton "DELETE!" 60 [ onClick (DocumentMsg DoDeleteDocument) ] True
 
 
 togglePublic model =

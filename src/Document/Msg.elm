@@ -11,6 +11,7 @@ type DocumentMsg
     | LoadContent (Result Http.Error DocumentRecord)
     | LoadContentAndRender (Result Http.Error DocumentRecord)
     | SaveDocument (Result Http.Error DocumentRecord)
+    | DeleteDocument (Result Http.Error String)
     | NewDocument
     | SearchOnKey Int
     | InputSearchQuery String
@@ -18,4 +19,8 @@ type DocumentMsg
     | InputEditorText String
     | RenderContent
     | PrepareToDeleteDocument
-    | DeleteDocument
+    | DoDeleteDocument
+
+
+
+-- DoDeleteDocument (Result Http.Error ())

@@ -1,4 +1,4 @@
-module Utility exposing (getUserId, getToken, setPage)
+module Utility exposing (getUserId, getToken, setPage, removeWhen)
 
 import Model exposing (Model, Page(..))
 
@@ -29,3 +29,8 @@ setPage model =
         ReaderPage
     else
         model.page
+
+
+removeWhen : (a -> Bool) -> List a -> List a
+removeWhen pred list =
+    List.filter (not << pred) list

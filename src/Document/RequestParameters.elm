@@ -4,6 +4,7 @@ module Document.RequestParameters
         , getOneDocumentParameters
         , updateDocumentParameters
         , postDocumentRecordParameters
+        , deleteDocumentParameters
         )
 
 import Configuration
@@ -64,3 +65,26 @@ postDocumentRecordParameters token route encodedValue tagger =
     , decoder = Data.documentRecordDecoder
     , method = HB.post
     }
+
+
+deleteDocumentParameters : Api.Request.SetupRequestData String
+deleteDocumentParameters token route tagger =
+    { api = Configuration.api
+    , route = route
+    , payload = Encode.null
+    , tagger = tagger
+    , token = token
+    , decoder = Data.decodeDeleteDocumentReply
+    , method = HB.delete
+    }
+
+
+
+-- deleteCurrentDocument : Model -> Cmd Msg
+-- deleteCurrentDocument model =
+--     let
+--         request =
+--             deleteCurrentDocumentRB model
+--                 |> HB.toRequest
+--     in
+--         Http.send (DocMsg << DoDeleteDocument) request

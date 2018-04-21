@@ -66,6 +66,12 @@ update submessage model =
             CreateDocument (Err error) ->
                 ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
+            DeleteDocument (Ok str) ->
+                ( model, Cmd.none )
+
+            DeleteDocument (Err error) ->
+                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
+
             SelectDocument document ->
                 ( { model
                     | currentDocument = document
@@ -113,13 +119,20 @@ update submessage model =
             PrepareToDeleteDocument ->
                 ( { model | deleteDocumentState = DeleteDocumentPending }, Cmd.none )
 
-            DeleteDocument ->
-                ( { model
-                    | deleteDocumentState = DeleteDocumentInactive
-                    , documentMenuState = DocumentMenu MenuInactive
-                  }
-                , Cmd.none
-                )
+            DoDeleteDocument ->
+                let
+                    documentToDelete =
+                        model.currentDocument
+
+                    token =
+                        Utility.getToken model
+                in
+                    ( { model
+                        | deleteDocumentState = DeleteDocumentInactive
+                        , documentMenuState = DocumentMenu MenuInactive
+                      }
+                    , Document.Cmd.deleteDocument token documentToDelete.id
+                    )
 
 
 

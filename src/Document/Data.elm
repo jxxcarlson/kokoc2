@@ -3,6 +3,7 @@ module Document.Data
         ( documentDecoder
         , documentRecordDecoder
         , documentListDecoder
+        , decodeDeleteDocumentReply
         , encodeDocumentForOutside
         , encodeDocumentRecord
         )
@@ -61,6 +62,15 @@ decodeChild =
         |> JPipeline.required "doc_identifier" (Decode.string)
         |> JPipeline.required "doc_id" (Decode.int)
         |> JPipeline.required "comment" (Decode.string)
+
+
+
+-- send_resp(conn, :no_content, "")
+
+
+decodeDeleteDocumentReply : Decoder String
+decodeDeleteDocumentReply =
+    Decode.field "no_content" Decode.string
 
 
 

@@ -9,6 +9,7 @@ module Document.Cmd
         , selectMasterOrRender
         , renderNonLatexCmd
         , createDocumentCmd
+        , deleteDocument
         )
 
 import Model exposing (Model)
@@ -49,6 +50,15 @@ getOneDocument token route query tagger =
                 route ++ "?" ++ query
     in
         Api.Request.doRequest <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
+
+
+deleteDocument : String -> Int -> Cmd Msg
+deleteDocument token documentId =
+    let
+        route =
+            "/documents/" ++ toString documentId
+    in
+        Api.Request.doRequest <| Document.RequestParameters.deleteDocumentParameters token route (Msg.DocumentMsg << DeleteDocument)
 
 
 putTextToRender : Document -> Cmd msg

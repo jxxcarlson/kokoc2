@@ -76,3 +76,23 @@ renderLatex model =
                 (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
             ]
         )
+
+
+deleteDocument document model =
+    let
+        documentList =
+            model.documentList
+
+        updatedDocuments =
+            Utility.removeWhen (\doc -> doc.id == model.currentDocument.id) documentList
+
+        newCurrentDocument =
+            List.head updatedDocuments |> Maybe.withDefault (Document.Default.make "Error" "There was an error deleting this documents.")
+    in
+        ( { model
+            | message = "Document deleted, remaining = " ++ toString (List.length updatedDocuments)
+            , documents = updatedDocuments
+            , current_document = newCurrentDocument
+          }
+        , Cmd.none
+        )
