@@ -149,23 +149,8 @@ toggleDocumentMenuButton model labelText width msg =
 printTypeString : Document -> String
 printTypeString document =
     case document.attributes.textType of
-        "plain" ->
-            "text=plain"
-
-        "adoc" ->
-            "text=adoc"
-
-        "adoc:latex" ->
+        Asciidoc ->
             "text=adoc_latex"
 
-        "adoc_latex" ->
-            "text=adoc_latex"
-
-        "latex" ->
+        MiniLatex ->
             "text=latex"
-
-        "markdown" ->
-            "text=markdown"
-
-        _ ->
-            "text=plain"

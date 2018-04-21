@@ -139,7 +139,7 @@ var processUserState = function(data) {
 
 document.getElementById("rendered_text2").style.visibility = "hidden";
 
-  var render_asciidoc = function(content) {
+  var render_asciidoc_old = function(content) {
       request_in_progress = true;
       var millisecondsToWait = 100;
       setTimeout(function() {
@@ -152,7 +152,7 @@ document.getElementById("rendered_text2").style.visibility = "hidden";
       }  , millisecondsToWait);
    }
 
-   var render_asciidoc_latex = function(content) {
+   var render_asciidoc = function(content) {
            if (content !== current_content) {
              document.getElementById('rendered_text2').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
              typeset()

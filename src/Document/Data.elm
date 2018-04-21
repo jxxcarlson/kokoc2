@@ -11,7 +11,15 @@ module Document.Data
 import Json.Encode as Encode exposing (..)
 import Json.Decode as Decode exposing (at, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
-import Document.Model exposing (Document, DocumentRecord, DocumentAttributes, Child, DocumentListRecord)
+import Document.Model
+    exposing
+        ( Document
+        , DocumentRecord
+        , DocumentAttributes
+        , Child
+        , DocumentListRecord
+        , TextType(..)
+        )
 import Document.Preprocess
 
 
@@ -46,12 +54,31 @@ documentAttributesDecoder : Decoder DocumentAttributes
 documentAttributesDecoder =
     JPipeline.decode DocumentAttributes
         |> JPipeline.required "public" (Decode.bool)
-        |> JPipeline.required "text_type" (Decode.string)
+        |> JPipeline.required "text_type" (Decode.string |> Decode.andThen decodeTextType)
         |> JPipeline.required "doc_type" (Decode.string)
         |> JPipeline.required "level" (Decode.int)
         |> JPipeline.optional "archive" (Decode.string) "default"
         |> JPipeline.optional "version" (Decode.int) 0
         |> JPipeline.hardcoded Nothing
+
+
+decodeTextType : String -> Decoder TextType
+decodeTextType textTypeString =
+    case textTypeString of
+        "adoc" ->
+            Decode.succeed Asciidoc
+
+        "adoc_latex" ->
+            Decode.succeed Asciidoc
+
+        "plain" ->
+            Decode.succeed Asciidoc
+
+        "latex" ->
+            Decode.succeed MiniLatex
+
+        _ ->
+            Decode.fail <| "I don't know a textType named " ++ textTypeString
 
 
 decodeChild : Decoder Child
@@ -116,7 +143,7 @@ encodeDocument document =
 encodeDocumentAttributes : DocumentAttributes -> Encode.Value
 encodeDocumentAttributes record =
     Encode.object
-        [ ( "text_type", Encode.string <| record.textType )
+        [ ( "text_type", encodeTextType <| record.textType )
         , ( "public", Encode.bool <| record.public )
         , ( "doc_type", Encode.string <| record.docType )
         , ( "level", Encode.int <| record.level )
@@ -133,7 +160,7 @@ encodeDocumentForOutside document =
 
         content_to_render =
             case textType of
-                "latex" ->
+                MiniLatex ->
                     document.renderedContent
 
                 _ ->
@@ -141,9 +168,19 @@ encodeDocumentForOutside document =
     in
         [ ( "id", Encode.int document.id )
         , ( "content", Encode.string content_to_render )
-        , ( "textType", Encode.string document.attributes.textType )
+        , ( "textType", encodeTextType document.attributes.textType )
         ]
             |> Encode.object
+
+
+encodeTextType : TextType -> Encode.Value
+encodeTextType textType =
+    case textType of
+        Asciidoc ->
+            Encode.string "adoc"
+
+        MiniLatex ->
+            Encode.string "latex"
 
 
 encodeChild : Child -> Encode.Value

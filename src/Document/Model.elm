@@ -48,7 +48,7 @@ type alias AccessDict =
 
 type alias DocumentAttributes =
     { public : Bool
-    , textType : String
+    , textType : TextType
     , docType : String
     , level : Int
     , archive : String

@@ -72,7 +72,7 @@ update submessage model =
                         newDocument.attributes
 
                     amendedAttributes =
-                        { newDocumentAttributes | textType = textTypeToString model.documentTextType }
+                        { newDocumentAttributes | textType = model.documentTextType }
 
                     amendedNewDocument =
                         { newDocument | attributes = amendedAttributes }
@@ -141,7 +141,7 @@ update submessage model =
                     ( { model | currentDocument = updatedDocument }, Cmd.none )
 
             RenderContent ->
-                if model.currentDocument.attributes.textType == "latex" then
+                if model.currentDocument.attributes.textType == MiniLatex then
                     ActionEdit.renderLatex model
                 else
                     ( model, Document.Cmd.renderNonLatexCmd model )
@@ -172,16 +172,6 @@ update submessage model =
 {- 12 ACTIONS -}
 -- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
 {- HELPERS -}
-
-
-textTypeToString : TextType -> String
-textTypeToString textType =
-    case textType of
-        MiniLatex ->
-            "latex"
-
-        Asciidoc ->
-            "adoc_latex"
 
 
 masterDocLoaded : Model -> Document -> Bool
