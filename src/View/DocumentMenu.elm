@@ -87,7 +87,7 @@ documentAttributesPanel model =
                 , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 , Widget.menuButton "Update" 125 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
-                , Widget.menuButton "Cancel" 125 [ paddingBottom 25, paddingTop20, onClick (CloseMenus) ] False
+                , Widget.menuButton "Cancel" 125 [ paddingBottom 25, paddingTop 20, onClick (CloseMenus) ] False
                 ]
     else
         empty

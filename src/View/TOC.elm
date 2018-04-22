@@ -65,11 +65,11 @@ documentIndentLevel model document =
     let
         level =
             if model.masterDocLoaded then
-                (Basics.min 1 document.attributes.level)
+                (Basics.max 1 document.attributes.level)
             else
                 0
     in
-        16.0 * toFloat level
+        16.0 * toFloat (level - 1)
 
 
 titleDisplay : Document -> Document -> Element.Element MyStyles variation Msg.Msg
