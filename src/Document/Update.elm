@@ -16,7 +16,6 @@ import Document.Cmd
 import Api.Error as Error
 import Utility
 import Document.ActionEdit as ActionEdit
-import MiniLatex.Driver
 import Task
 import Document.Default
 
@@ -49,12 +48,12 @@ update submessage model =
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
-                let
-                    updatedDocument =
-                        documentRecord.document
-                in
-                    -- ( { model | currentDocument = updatedDocument }, Cmd.none )
-                    ( model, Cmd.none )
+                -- let
+                --     updatedDocument =
+                --         documentRecord.document
+                -- in
+                -- ( { model | currentDocument = updatedDocument }, Cmd.none )
+                ( { model | message = "Document saved: " ++ documentRecord.document.title }, Cmd.none )
 
             SaveDocument (Err error) ->
                 ( { model | message = "Save: " ++ Error.httpErrorString error }, Cmd.none )
@@ -72,33 +71,13 @@ update submessage model =
                 ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             DeleteDocument (Ok str) ->
-                let
-                    document =
-                        model.currentDocument
-
-                    _ =
-                        Debug.log "GOOD BrANCH"
-                in
-                    ( ActionEdit.deleteDocumentFromList document model, Cmd.none )
+                ( ActionEdit.deleteDocumentFromList model.currentDocument model, Cmd.none )
 
             DeleteDocument (Err error) ->
-                let
-                    _ =
-                        Debug.log "BAD BrANCH"
-                in
-                    ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
-                ( { model
-                    | currentDocument = document
-                    , masterDocLoaded = masterDocLoaded model document
-                    , masterDocumentId = masterDocumentId model document
-                    , masterDocumentTitle = masterDocumentTitle model document
-                    , editRecord = MiniLatex.Driver.emptyEditRecord
-                    , counter = model.counter + 1
-                  }
-                , Document.Cmd.selectMasterOrRender model document
-                )
+                ActionRead.selectDocument model document
 
             InputSearchQuery str ->
                 ( { model | searchQuery = str }, Cmd.none )
@@ -143,33 +122,3 @@ update submessage model =
 {- 12 ACTIONS -}
 -- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
 {- HELPERS -}
-
-
-masterDocLoaded : Model -> Document -> Bool
-masterDocLoaded model document =
-    if document.attributes.docType == Master then
-        True
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        True
-    else
-        False
-
-
-masterDocumentId : Model -> Document -> Int
-masterDocumentId model document =
-    if document.attributes.docType == Master then
-        document.id
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        model.masterDocumentId
-    else
-        0
-
-
-masterDocumentTitle : Model -> Document -> String
-masterDocumentTitle model document =
-    if document.attributes.docType == Master then
-        document.title
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        model.masterDocumentTitle
-    else
-        ""

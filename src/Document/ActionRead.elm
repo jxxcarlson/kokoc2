@@ -3,10 +3,11 @@ module Document.ActionRead
         ( getDocuments
         , loadContent
         , loadParentDocument
+        , selectDocument
         )
 
 import Document.Default
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, DocType(..))
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList, LoadContentAndRender))
@@ -20,6 +21,7 @@ import Document.Query as Query
 import Utility
 import Task exposing (Task)
 import Document.Task
+import MiniLatex.Driver
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -86,6 +88,19 @@ loadContent model documentRecord =
         { model | documentList = newDocumentList }
 
 
+selectDocument model document =
+    ( { model
+        | currentDocument = document
+        , masterDocLoaded = masterDocLoaded model document
+        , masterDocumentId = masterDocumentId model document
+        , masterDocumentTitle = masterDocumentTitle model document
+        , editRecord = MiniLatex.Driver.emptyEditRecord
+        , counter = model.counter + 1
+      }
+    , Document.Cmd.selectMasterOrRender model document
+    )
+
+
 
 {- MASTER DOCUMENT -}
 
@@ -145,3 +160,33 @@ replaceIf predicate replacement list =
                 item
         )
         list
+
+
+masterDocLoaded : Model -> Document -> Bool
+masterDocLoaded model document =
+    if document.attributes.docType == Master then
+        True
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
+        True
+    else
+        False
+
+
+masterDocumentId : Model -> Document -> Int
+masterDocumentId model document =
+    if document.attributes.docType == Master then
+        document.id
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
+        model.masterDocumentId
+    else
+        0
+
+
+masterDocumentTitle : Model -> Document -> String
+masterDocumentTitle model document =
+    if document.attributes.docType == Master then
+        document.title
+    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
+        model.masterDocumentTitle
+    else
+        ""
