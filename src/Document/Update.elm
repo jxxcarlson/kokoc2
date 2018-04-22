@@ -156,22 +156,7 @@ update submessage model =
                 ( { model | deleteDocumentState = DeleteDocumentPending }, Cmd.none )
 
             DoDeleteDocument ->
-                let
-                    documentToDelete =
-                        model.currentDocument
-
-                    token =
-                        Utility.getToken model
-
-                    newModel =
-                        ActionEdit.deleteDocumentFromList model.currentDocument model
-                in
-                    ( { newModel
-                        | deleteDocumentState = DeleteDocumentInactive
-                        , documentMenuState = DocumentMenu MenuInactive
-                      }
-                    , Document.Cmd.deleteDocument token documentToDelete.id
-                    )
+                ActionEdit.deleteDocument model
 
 
 

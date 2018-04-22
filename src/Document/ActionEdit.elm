@@ -3,6 +3,7 @@ module Document.ActionEdit
         ( renderLatex
         , createDocument
         , selectNewDocument
+        , deleteDocument
         , deleteDocumentFromList
         )
 
@@ -18,6 +19,7 @@ import Model
         , DocumentMenuState(..)
         , MenuStatus(..)
         , NewDocumentPanelState(..)
+        , DeleteDocumentState(..)
         )
 import Msg exposing (Msg(DocumentMsg))
 import Http
@@ -96,3 +98,22 @@ deleteDocumentFromList document model =
             , documentList = updatedDocumentList
             , currentDocument = newCurrentDocument
         }
+
+
+deleteDocument model =
+    let
+        documentToDelete =
+            model.currentDocument
+
+        token =
+            Utility.getToken model
+
+        newModel =
+            deleteDocumentFromList model.currentDocument model
+    in
+        ( { newModel
+            | deleteDocumentState = DeleteDocumentInactive
+            , documentMenuState = DocumentMenu MenuInactive
+          }
+        , Document.Cmd.deleteDocument token documentToDelete.id
+        )
