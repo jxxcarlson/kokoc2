@@ -6,6 +6,8 @@ module Document.ActionEdit
         , deleteDocument
         , deleteDocumentFromList
         , newDocument
+        , updateDocument
+        , updateAttributesOfCurrentDocument
         )
 
 import Document.Default
@@ -21,6 +23,7 @@ import Model
         , MenuStatus(..)
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
+        , DocumentAttributePanelState(..)
         )
 import Msg exposing (Msg(DocumentMsg))
 import Http
@@ -142,3 +145,32 @@ newDocument model =
                 { newDocument | attributes = amendedAttributes }
     in
         createDocument model amendedNewDocument
+
+
+updateDocument : Model -> Document -> Cmd Msg
+updateDocument model document =
+    Document.Cmd.saveDocumentCmd document (Utility.getToken model)
+
+
+updateAttributesOfCurrentDocument : Model -> ( Model, Cmd Msg )
+updateAttributesOfCurrentDocument model =
+    let
+        document =
+            model.currentDocument
+
+        attributes =
+            document.attributes
+
+        updatedAttributes =
+            { attributes | textType = model.documentTextType }
+
+        updatedDocument =
+            { document | title = model.newDocumentTitle, attributes = updatedAttributes }
+    in
+        ( { model
+            | currentDocument = updatedDocument
+            , documentMenuState = DocumentMenu MenuInactive
+            , documentAttributePanelState = DocumentAttributePanelInactive
+          }
+        , updateDocument model updatedDocument
+        )

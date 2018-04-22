@@ -30,6 +30,7 @@ import Document.Msg
             , NewDocument
             , PrepareToDeleteDocument
             , DoDeleteDocument
+            , UpdateDocumentAttributes
             )
         )
 import Document.Model exposing (Document, SearchDomain(..), TextType(..))
@@ -79,13 +80,13 @@ documentAttributesPanel model =
             column Menu
                 [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
-                , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
+                , Widget.inputField "Title" model.newDocumentTitle 300 (InputNewDocumentTitle)
                 , el Menu [ paddingTop 12 ] (text "Text type")
                 , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
                 , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
                 , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
-                , Widget.menuButton "Update" 60 [ onClick (CloseMenus) ] False
+                , Widget.menuButton "Update" 60 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
                 , Widget.menuButton "Cancel" 60 [ onClick (CloseMenus) ] False
                 ]
     else

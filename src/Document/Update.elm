@@ -117,6 +117,9 @@ update submessage model =
             DoDeleteDocument ->
                 ActionEdit.deleteDocument model
 
+            UpdateDocumentAttributes ->
+                ActionEdit.updateAttributesOfCurrentDocument model
+
 
 
 {- 12 ACTIONS -}

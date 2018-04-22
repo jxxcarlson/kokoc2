@@ -115,7 +115,13 @@ update msg model =
             ( { model | newDocumentPanelState = NewDocumentPanelActive }, Cmd.none )
 
         DisplayDocumentAttributesPanel ->
-            ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
+            ( { model
+                | documentAttributePanelState = DocumentAttributePanelActive
+                , newDocumentTitle = model.currentDocument.title
+                , documentTextType = model.currentDocument.attributes.textType
+              }
+            , Cmd.none
+            )
 
         CancelNewDocument ->
             ( { model | newDocumentPanelState = NewDocumentPanelInactive }, Cmd.none )

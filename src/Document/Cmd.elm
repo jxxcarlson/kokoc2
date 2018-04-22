@@ -10,6 +10,7 @@ module Document.Cmd
         , renderNonLatexCmd
         , createDocumentCmd
         , deleteDocument
+        , saveDocumentCmd
         )
 
 import Model exposing (Model)
@@ -224,6 +225,11 @@ createDocumentCmd document token =
     in
         Api.Request.doRequest <|
             Document.RequestParameters.postDocumentRecordParameters token "/documents" encodedDocument (Msg.DocumentMsg << CreateDocument)
+
+
+saveDocumentCmd : Document -> String -> Cmd Msg
+saveDocumentCmd document token =
+    Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token document)
 
 
 

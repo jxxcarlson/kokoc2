@@ -20,6 +20,7 @@ type DocumentMsg
     | RenderContent
     | PrepareToDeleteDocument
     | DoDeleteDocument
+    | UpdateDocumentAttributes
 
 
 
