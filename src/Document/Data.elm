@@ -19,6 +19,7 @@ import Document.Model
         , Child
         , DocumentListRecord
         , TextType(..)
+        , DocType(..)
         )
 import Document.Preprocess
 
@@ -55,11 +56,24 @@ documentAttributesDecoder =
     JPipeline.decode DocumentAttributes
         |> JPipeline.required "public" (Decode.bool)
         |> JPipeline.required "text_type" (Decode.string |> Decode.andThen decodeTextType)
-        |> JPipeline.required "doc_type" (Decode.string)
+        |> JPipeline.required "doc_type" (Decode.string |> Decode.andThen decodeDocType)
         |> JPipeline.required "level" (Decode.int)
         |> JPipeline.optional "archive" (Decode.string) "default"
         |> JPipeline.optional "version" (Decode.int) 0
         |> JPipeline.hardcoded Nothing
+
+
+decodeDocType : String -> Decoder DocType
+decodeDocType docTypeString =
+    case docTypeString of
+        "standard" ->
+            Decode.succeed Standard
+
+        "master" ->
+            Decode.succeed Master
+
+        _ ->
+            Decode.fail <| "I don't know a docType named " ++ docTypeString
 
 
 decodeTextType : String -> Decoder TextType
@@ -145,7 +159,7 @@ encodeDocumentAttributes record =
     Encode.object
         [ ( "text_type", encodeTextType <| record.textType )
         , ( "public", Encode.bool <| record.public )
-        , ( "doc_type", Encode.string <| record.docType )
+        , ( "doc_type", encodeDocType <| record.docType )
         , ( "level", Encode.int <| record.level )
         , ( "archive", Encode.string <| record.archive )
         , ( "version", Encode.int <| record.version )
@@ -171,6 +185,16 @@ encodeDocumentForOutside document =
         , ( "textType", encodeTextType document.attributes.textType )
         ]
             |> Encode.object
+
+
+encodeDocType : DocType -> Encode.Value
+encodeDocType docType =
+    case docType of
+        Standard ->
+            Encode.string "standard"
+
+        Master ->
+            Encode.string "master"
 
 
 encodeTextType : TextType -> Encode.Value

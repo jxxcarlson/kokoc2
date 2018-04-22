@@ -1,7 +1,7 @@
 module Document.Preprocess exposing (preprocess, preprocessSource, transformXLinks)
 
 import Regex exposing (..)
-import Document.Model exposing (Document)
+import Document.Model exposing (Document, DocType(..))
 import Configuration
 import String.Extra
 
@@ -12,7 +12,7 @@ preprocess content document =
         _ =
             Debug.log "Master, in Document.Preprocessor I obey your command for" document.id
     in
-        if document.attributes.docType == "master" then
+        if document.attributes.docType == Master then
             preprocessMaster content
         else
             basicPreprocess content

@@ -11,7 +11,7 @@ import Model
 import Msg exposing (Msg)
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
-import Document.Model exposing (Document, TextType(..))
+import Document.Model exposing (Document, TextType(..), DocType(..))
 import Document.Cmd
 import Api.Error as Error
 import Utility
@@ -182,7 +182,7 @@ update submessage model =
 
 masterDocLoaded : Model -> Document -> Bool
 masterDocLoaded model document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         True
     else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         True
@@ -192,7 +192,7 @@ masterDocLoaded model document =
 
 masterDocumentId : Model -> Document -> Int
 masterDocumentId model document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         document.id
     else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         model.masterDocumentId
@@ -202,7 +202,7 @@ masterDocumentId model document =
 
 masterDocumentTitle : Model -> Document -> String
 masterDocumentTitle model document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         document.title
     else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
         model.masterDocumentTitle

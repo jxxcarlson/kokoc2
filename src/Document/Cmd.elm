@@ -16,7 +16,7 @@ import Model exposing (Model)
 import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain(..), SortOrder)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain(..), SortOrder, DocType(..))
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg(DocumentMsg))
 import OutsideInfo
@@ -136,7 +136,7 @@ getDocumentsAndContent2 token documents =
 
 selectMasterOrRender : Model -> Document -> Cmd Msg
 selectMasterOrRender model document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         selectMaster document model
     else
         putTextToRender document
@@ -148,7 +148,7 @@ selectMaster document model =
         token =
             Utility.getToken model
     in
-        if document.attributes.docType == "master" then
+        if document.attributes.docType == Master then
             selectMasterAux document.id token
         else if document.parentId /= 0 then
             selectMasterAux document.parentId token

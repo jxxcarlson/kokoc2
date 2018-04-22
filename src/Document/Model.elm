@@ -10,6 +10,7 @@ module Document.Model
         , SortDirection(..)
         , SearchDomain(..)
         , TextType(..)
+        , DocType(..)
         )
 
 import Time exposing (Time)
@@ -49,12 +50,17 @@ type alias AccessDict =
 type alias DocumentAttributes =
     { public : Bool
     , textType : TextType
-    , docType : String
+    , docType : DocType
     , level : Int
     , archive : String
     , version : Int
     , lastViewed : Maybe Time
     }
+
+
+type DocType
+    = Standard
+    | Master
 
 
 type TextType

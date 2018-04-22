@@ -1,7 +1,7 @@
 module View.TOC exposing (view)
 
 import Document.ActionRead
-import Document.Model exposing (Document, DocumentAttributes)
+import Document.Model exposing (Document, DocumentAttributes, DocType(..))
 import Model exposing (Model)
 import Msg exposing (Msg)
 import Document.Msg exposing (DocumentMsg(SelectDocument))
@@ -100,14 +100,14 @@ tocStyle selectedDocument document =
 
 
 selectedTOCItemStyle document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         TOCItemMasterSelected
     else
         TOCItemSelected
 
 
 normalTOCItemStyle document =
-    if document.attributes.docType == "master" then
+    if document.attributes.docType == Master then
         TOCItemMaster
     else
         TOCItem

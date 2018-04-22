@@ -1,6 +1,6 @@
 module Document.Default exposing (make)
 
-import Document.Model exposing (Document, DocumentAttributes, TextType(..))
+import Document.Model exposing (Document, DocumentAttributes, TextType(..), DocType(..))
 import Dict
 
 
@@ -33,4 +33,4 @@ emptyDocument =
 
 defaultAttributes : DocumentAttributes
 defaultAttributes =
-    DocumentAttributes False MiniLatex "standard" 0 "default" 0 Nothing
+    DocumentAttributes False MiniLatex Standard 0 "default" 0 Nothing
