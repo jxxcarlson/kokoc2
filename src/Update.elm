@@ -44,7 +44,15 @@ update msg model =
                     ( User.Action.reconnectUser model userLoginRecord, Cmd.none )
 
                 RenderedText renderedText ->
-                    OutsideInfo.updateRenderedText model renderedText
+                    let
+                        document =
+                            model.currentDocument
+
+                        updatedDocument =
+                            { document | renderedContent = renderedText }
+                    in
+                        -- OutsideInfo.updateRenderedText model renderedText
+                        ( { model | currentDocument = updatedDocument }, Cmd.none )
 
         LogErr error ->
             ( { model | message = "Error: " ++ error }, Cmd.none )

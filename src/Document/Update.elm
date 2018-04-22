@@ -49,7 +49,12 @@ update submessage model =
                 ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
-                ( model, Cmd.none )
+                let
+                    updatedDocument =
+                        documentRecord.document
+                in
+                    -- ( { model | currentDocument = updatedDocument }, Cmd.none )
+                    ( model, Cmd.none )
 
             SaveDocument (Err error) ->
                 ( { model | message = "Save: " ++ Error.httpErrorString error }, Cmd.none )

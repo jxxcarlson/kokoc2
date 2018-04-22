@@ -5,6 +5,10 @@ import Json.Encode as Encode
 import Msg exposing (Msg, InfoForElm(..))
 import User.Data as Data
 import Model exposing (Model)
+import Utility
+import Task
+import Document.Msg exposing (DocumentMsg(SaveDocument))
+import Document.Task
 
 
 port infoForOutside : GenericOutsideData -> Cmd msg
@@ -74,6 +78,8 @@ getInfoFromOutside tagger onError =
 {- HEPERS -}
 
 
+{-| Called by OutsideInfo, getInfoFromOutside, when tag is "RenderedText"
+-}
 updateRenderedText : Model -> String -> ( Model, Cmd Msg )
 updateRenderedText model str =
     let
@@ -85,5 +91,10 @@ updateRenderedText model str =
 
         newModel =
             { model | currentDocument = newDocument }
+
+        token =
+            Utility.getToken model
     in
-        ( { model | currentDocument = newDocument }, Cmd.none )
+        ( { model | currentDocument = newDocument }
+        , Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token newDocument)
+        )
