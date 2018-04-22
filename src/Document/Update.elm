@@ -63,27 +63,7 @@ update submessage model =
                 ActionRead.loadParentDocument model currentDocument
 
             NewDocument ->
-                let
-                    title =
-                        if model.newDocumentTitle /= "" then
-                            model.newDocumentTitle
-                        else
-                            "New Document (Y)"
-
-                    newDocument =
-                        Document.Default.make title "Write something here ... "
-
-                    newDocumentAttributes =
-                        newDocument.attributes
-
-                    amendedAttributes =
-                        { newDocumentAttributes | textType = model.documentTextType }
-
-                    amendedNewDocument =
-                        Debug.log "amendedNewDocument"
-                            { newDocument | attributes = amendedAttributes }
-                in
-                    ActionEdit.createDocument model amendedNewDocument
+                ActionEdit.newDocument model
 
             CreateDocument (Ok documentRecord) ->
                 ActionEdit.selectNewDocument model documentRecord.document

@@ -5,6 +5,7 @@ module Document.ActionEdit
         , selectNewDocument
         , deleteDocument
         , deleteDocumentFromList
+        , newDocument
         )
 
 import Document.Default
@@ -117,3 +118,27 @@ deleteDocument model =
           }
         , Document.Cmd.deleteDocument token documentToDelete.id
         )
+
+
+newDocument model =
+    let
+        title =
+            if model.newDocumentTitle /= "" then
+                model.newDocumentTitle
+            else
+                "New Document (Y)"
+
+        newDocument =
+            Document.Default.make title "Write something here ... "
+
+        newDocumentAttributes =
+            newDocument.attributes
+
+        amendedAttributes =
+            { newDocumentAttributes | textType = model.documentTextType }
+
+        amendedNewDocument =
+            Debug.log "amendedNewDocument"
+                { newDocument | attributes = amendedAttributes }
+    in
+        createDocument model amendedNewDocument
