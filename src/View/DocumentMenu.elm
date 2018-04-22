@@ -48,7 +48,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 90), height (px 200), paddingTop 8, paddingLeft 15, paddingTop 4 ]
+                    [ moveRight 330, width (px 100), height (px 300), paddingTop 8, paddingLeft 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
                         ++ editingCommmands model
                         ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
@@ -82,12 +82,12 @@ documentAttributesPanel model =
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
                 , Widget.inputField "Title" model.newDocumentTitle 300 (InputNewDocumentTitle)
                 , el Menu [ paddingTop 12 ] (text "Text type")
-                , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
-                , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
-                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
-                , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
-                , Widget.menuButton "Update" 60 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
-                , Widget.menuButton "Cancel" 60 [ onClick (CloseMenus) ] False
+                , Widget.menuButton "Asciidoc" 125 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                , Widget.menuButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
+                , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
+                , Widget.menuButton "Update" 125 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
+                , Widget.menuButton "Cancel" 125 [ paddingBottom 25, paddingTop20, onClick (CloseMenus) ] False
                 ]
     else
         empty
