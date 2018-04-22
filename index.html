@@ -139,6 +139,8 @@
       requestAnimationFrame(function() {
 
           count = count + 1
+
+          console.log("XXX: " + data.textType)
           switch (data.textType) {
 
             case "adoc":
@@ -146,7 +148,7 @@
                render_asciidoc(data.content)
                break;
             case "adoc_latex":
-               console.log("Rendering adoc-latex ...")
+               console.log("Rendering adoc_latex ...")
                render_asciidoc_latex(data.content)
                break;
             case "plain":
@@ -209,6 +211,7 @@
     document.getElementById("renderedText").style.visibility = "hidden";
 
       var render_asciidoc = function(content) {
+          console.log("XXX: render_asciidoc")
           request_in_progress = true;
           var millisecondsToWait = 100;
           setTimeout(function() {
@@ -222,6 +225,7 @@
        }
 
        var render_asciidoc_latex = function(content) {
+               console.log("XXX: render_asciidoc")
                if (content !== current_content) {
                  document.getElementById('renderedText').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
                  typeset()
@@ -232,17 +236,14 @@
         }
 
       var send_rendered_text = function() {
+        console.log("XXX: send_rendered_text")
         var rt = document.getElementById('renderedText').innerHTML
         app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
       }
 
        function typeset() {
+        console.log("XXX: typeset")
         MathJax.Hub.Queue( ["Typeset", MathJax.Hub, send_rendered_text] );
-      }
-
-      function typeset2() {
-        console.log(":: typesetting document ... ")
-        MathJax.Hub.Queue( ["Typeset", MathJax.Hub, ] );
       }
 
 
@@ -252,6 +253,7 @@
       }
 
        var render_plain = function(content) {
+           console.log("XXX: render_plain")
            request_in_progress = true;
            var millisecondsToWait = 100;
            setTimeout(function() {

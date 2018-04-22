@@ -60,6 +60,8 @@ type alias DocumentAttributes =
 type TextType
     = MiniLatex
     | Asciidoc
+    | AsciidocLatex
+    | Plain
 
 
 type alias DocumentRecord =

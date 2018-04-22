@@ -75,7 +75,8 @@ update submessage model =
                         { newDocumentAttributes | textType = model.documentTextType }
 
                     amendedNewDocument =
-                        { newDocument | attributes = amendedAttributes }
+                        Debug.log "amendedNewDocument"
+                            { newDocument | attributes = amendedAttributes }
                 in
                     ActionEdit.createDocument model amendedNewDocument
 

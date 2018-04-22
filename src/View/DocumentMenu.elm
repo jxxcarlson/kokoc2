@@ -64,8 +64,10 @@ newDocumentPanel model =
                 , Widget.menuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
                 , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
                 , el Menu [ paddingTop 12 ] (text "Text type")
-                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
+                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 ]
     else
         empty
@@ -79,8 +81,10 @@ documentAttributesPanel model =
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
                 , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
                 , el Menu [ paddingTop 12 ] (text "Text type")
-                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
+                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 , Widget.menuButton "Update" 60 [ onClick (CloseMenus) ] False
                 , Widget.menuButton "Cancel" 60 [ onClick (CloseMenus) ] False
                 ]
@@ -150,7 +154,13 @@ printTypeString : Document -> String
 printTypeString document =
     case document.attributes.textType of
         Asciidoc ->
+            "text=adoc"
+
+        AsciidocLatex ->
             "text=adoc_latex"
 
         MiniLatex ->
+            "text=latex"
+
+        Plain ->
             "text=latex"

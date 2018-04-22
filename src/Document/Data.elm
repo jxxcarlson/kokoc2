@@ -69,7 +69,7 @@ decodeTextType textTypeString =
             Decode.succeed Asciidoc
 
         "adoc_latex" ->
-            Decode.succeed Asciidoc
+            Decode.succeed AsciidocLatex
 
         "plain" ->
             Decode.succeed Asciidoc
@@ -179,8 +179,14 @@ encodeTextType textType =
         Asciidoc ->
             Encode.string "adoc"
 
+        AsciidocLatex ->
+            Encode.string "adoc_latex"
+
         MiniLatex ->
             Encode.string "latex"
+
+        Plain ->
+            Encode.string "plain"
 
 
 encodeChild : Child -> Encode.Value
