@@ -1,6 +1,14 @@
 module Model exposing (..)
 
-import Document.Model exposing (Document, SortDirection(..), SortOrder(..), SearchDomain(..), TextType(..))
+import Document.Model
+    exposing
+        ( Document
+        , SortDirection(..)
+        , SortOrder(..)
+        , SearchDomain(..)
+        , TextType(..)
+        , DocType(..)
+        )
 import User.Model exposing (User)
 import Document.Default
 import MiniLatex.Differ exposing (EditRecord)
@@ -34,8 +42,10 @@ type alias Model =
     , newDocumentPanelState : NewDocumentPanelState
     , documentAttributePanelState : DocumentAttributePanelState
     , newDocumentTitle : String
+    , newDocumentDocType : DocType
     , deleteDocumentState : DeleteDocumentState
     , documentTextType : TextType
+    , documentType : DocType
     }
 
 
@@ -114,7 +124,9 @@ initialModel flags =
      , newDocumentPanelState = NewDocumentPanelInactive
      , documentAttributePanelState = DocumentAttributePanelInactive
      , newDocumentTitle = "New Document"
+     , newDocumentDocType = Standard
      , deleteDocumentState = DeleteDocumentInactive
      , documentTextType = MiniLatex
+     , documentType = Standard
      }
     )

@@ -11,7 +11,7 @@ module Document.ActionEdit
         )
 
 import Document.Default
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord)
+import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, DocType(..), TextType(..))
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList, SaveDocument))
@@ -132,13 +132,23 @@ newDocument model =
                 "New Document (Y)"
 
         newDocument =
-            Document.Default.make title "Write something here ... "
+            case model.documentType of
+                Standard ->
+                    Document.Default.make title "Write something here ... "
+
+                Master ->
+                    Document.Default.make title Document.Default.masterDocText
 
         newDocumentAttributes =
             newDocument.attributes
 
         amendedAttributes =
-            { newDocumentAttributes | textType = model.documentTextType }
+            case model.documentType of
+                Standard ->
+                    { newDocumentAttributes | textType = model.documentTextType, docType = model.documentType }
+
+                Master ->
+                    { newDocumentAttributes | textType = Asciidoc, docType = model.documentType }
 
         amendedNewDocument =
             Debug.log "amendedNewDocument"
@@ -162,7 +172,7 @@ updateAttributesOfCurrentDocument model =
             document.attributes
 
         updatedAttributes =
-            { attributes | textType = model.documentTextType }
+            { attributes | textType = model.documentTextType, docType = model.documentType }
 
         updatedDocument =
             { document | title = model.newDocumentTitle, attributes = updatedAttributes }

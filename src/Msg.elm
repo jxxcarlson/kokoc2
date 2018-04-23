@@ -5,7 +5,7 @@ import User.Model exposing (User)
 import Model exposing (SearchMenuState, DocumentMenuState)
 import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
-import Document.Model exposing (SearchDomain(..), TextType(..))
+import Document.Model exposing (SearchDomain(..), TextType(..), DocType(..))
 
 
 type Msg
@@ -27,6 +27,7 @@ type Msg
     | CancelNewDocument
     | InputNewDocumentTitle String
     | SetDocumentTextType TextType
+    | SetDocumentType DocType
 
 
 type InfoForElm

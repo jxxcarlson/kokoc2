@@ -33,7 +33,13 @@ import Document.Msg
             , UpdateDocumentAttributes
             )
         )
-import Document.Model exposing (Document, SearchDomain(..), TextType(..))
+import Document.Model
+    exposing
+        ( Document
+        , SearchDomain(..)
+        , TextType(..)
+        , DocType(..)
+        )
 import User.Msg exposing (UserMsg(SignIn))
 
 
@@ -48,7 +54,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 100), height (px 300), paddingTop 8, paddingLeft 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 100), height (px 360), paddingTop 8, paddingLeft 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
                         ++ editingCommmands model
                         ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
@@ -59,7 +65,7 @@ newDocumentPanel model =
     if model.newDocumentPanelState == NewDocumentPanelActive then
         screen <|
             column Menu
-                [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
+                [ moveRight 430, moveDown 80, width (px 350), height (px 480), padding 25, spacing 4 ]
                 [ el Menu [ paddingBottom 8 ] (text "New Document")
                 , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
                 , Widget.menuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
@@ -69,6 +75,9 @@ newDocumentPanel model =
                 , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
                 , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
+                , el Menu [ paddingTop 12 ] (text "Document type")
+                , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
+                , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
                 ]
     else
         empty
@@ -78,7 +87,7 @@ documentAttributesPanel model =
     if model.documentAttributePanelState == DocumentAttributePanelActive then
         screen <|
             column Menu
-                [ moveRight 430, moveDown 80, width (px 350), height (px 450), padding 25, spacing 4 ]
+                [ moveRight 430, moveDown 80, width (px 300), height (px 480), padding 25, spacing 4 ]
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
                 , Widget.inputField "Title" model.newDocumentTitle 300 (InputNewDocumentTitle)
                 , el Menu [ paddingTop 12 ] (text "Text type")
@@ -87,6 +96,10 @@ documentAttributesPanel model =
                 , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 , Widget.menuButton "Update" 125 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
+                , el Menu [ paddingTop 12 ] (text "Document type")
+                , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
+                , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
+                , Widget.menuButton "Update" 125 [ paddingTop 24, onClick (DocumentMsg UpdateDocumentAttributes) ] False
                 , Widget.menuButton "Cancel" 125 [ paddingBottom 25, paddingTop 20, onClick (CloseMenus) ] False
                 ]
     else

@@ -6,6 +6,7 @@ import User.Update
 import Document.ActionRead
 import Document.Update
 import Document.Cmd
+import Document.Model exposing (DocType(..))
 import OutsideInfo
 import User.Action
 import Model
@@ -112,13 +113,19 @@ update msg model =
             )
 
         DisplayNewDocumentPanel ->
-            ( { model | newDocumentPanelState = NewDocumentPanelActive }, Cmd.none )
+            ( { model
+                | newDocumentPanelState = NewDocumentPanelActive
+                , documentType = Standard
+              }
+            , Cmd.none
+            )
 
         DisplayDocumentAttributesPanel ->
             ( { model
                 | documentAttributePanelState = DocumentAttributePanelActive
                 , newDocumentTitle = model.currentDocument.title
                 , documentTextType = model.currentDocument.attributes.textType
+                , documentType = model.currentDocument.attributes.docType
               }
             , Cmd.none
             )
@@ -131,6 +138,9 @@ update msg model =
 
         SetDocumentTextType textType ->
             ( { model | documentTextType = textType }, Cmd.none )
+
+        SetDocumentType docType ->
+            ( { model | documentType = docType }, Cmd.none )
 
         Test ->
             ( { model

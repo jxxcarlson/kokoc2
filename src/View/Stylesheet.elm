@@ -149,7 +149,7 @@ stylesheet =
             ]
         , style MenuButtonSelected
             [ Color.text Color.white
-            , Color.background (Color.darkRed)
+            , Color.background (Color.rgb 172 57 57)
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
