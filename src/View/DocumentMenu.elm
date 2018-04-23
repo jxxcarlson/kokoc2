@@ -17,6 +17,7 @@ import Model
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
         , DocumentAttributePanelState(..)
+        , SubdocumentPosition(..)
         )
 import Helper
 import View.Widget as Widget
@@ -54,7 +55,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 100), height (px 360), paddingTop 8, paddingLeft 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 100), height (px 360), paddingTop 8, paddingLeft 15, paddingBottom 15, spacing 5 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
                         ++ editingCommmands model
                         ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
@@ -65,22 +66,48 @@ newDocumentPanel model =
     if model.newDocumentPanelState == NewDocumentPanelActive then
         screen <|
             column Menu
-                [ moveRight 430, moveDown 80, width (px 350), height (px 480), padding 25, spacing 4 ]
-                [ el Menu [ paddingBottom 8 ] (text "New Document")
-                , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
-                , Widget.menuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
-                , Widget.menuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
-                , el Menu [ paddingTop 12 ] (text "Text type")
-                , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
-                , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
-                , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
-                , Widget.menuButton "Plain" 90 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
-                , el Menu [ paddingTop 12 ] (text "Document type")
-                , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
-                , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
-                ]
+                [ moveRight 445, moveDown 80, width (px 350), height (newDocumentMenuHeight model), padding 25, spacing 3 ]
+                ([ el Menu [ paddingBottom 8 ] (text "New Document")
+                 , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
+                 , Widget.strongMenuButton "Create" 60 [ paddingTop 8, onClick (DocumentMsg NewDocument) ] False
+                 , Widget.strongMenuButton "Cancel" 60 [ paddingBottom 12, paddingTop 6, onClick (CancelNewDocument) ] False
+                 , hairline Hairline
+                 , el Menu [ paddingTop 12 ] (text "Text type")
+                 , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                 , Widget.menuButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
+                 , Widget.menuButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                 , Widget.menuButton "Plain" 90 [ paddingBottom 12, paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
+                 , hairline Hairline
+                 , el Menu [ paddingTop 12 ] (text "Document type")
+                 , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
+                 , Widget.menuButton "Master" 125 [ paddingBottom 12, paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
+                 ]
+                    ++ masterDocuParameters model
+                )
     else
         empty
+
+
+newDocumentMenuHeight : Model -> Length
+newDocumentMenuHeight model =
+    if model.masterDocLoaded == True then
+        615 |> px
+    else
+        480 |> px
+
+
+masterDocuParameters model =
+    if model.masterDocLoaded then
+        [ hairline Hairline
+        , el Menu [ paddingTop 12 ] (text "Insert new document")
+        , Widget.menuButton "At top" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtTop) ] (model.subdocumentPosition == SubdocumentAtTop)
+        , Widget.menuButton "Above current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAboveCurrent) ] (model.subdocumentPosition == SubdocumentAboveCurrent)
+        , Widget.menuButton "Below current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentBelowCurrent) ] (model.subdocumentPosition == SubdocumentBelowCurrent)
+        , Widget.menuButton "At bottom" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtBottom) ] (model.subdocumentPosition == SubdocumentAtBottom)
+        , Widget.menuButton "Don't insert" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition DoNotAttachSubdocument) ] (model.subdocumentPosition == DoNotAttachSubdocument)
+        ]
+    else
+        [ empty ]
 
 
 documentAttributesPanel model =

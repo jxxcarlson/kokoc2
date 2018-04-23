@@ -46,6 +46,7 @@ type alias Model =
     , deleteDocumentState : DeleteDocumentState
     , documentTextType : TextType
     , documentType : DocType
+    , subdocumentPosition : SubdocumentPosition
     }
 
 
@@ -96,6 +97,14 @@ type DeleteDocumentState
     | DeleteDocumentPending
 
 
+type SubdocumentPosition
+    = SubdocumentAtTop
+    | SubdocumentAtBottom
+    | SubdocumentAboveCurrent
+    | SubdocumentBelowCurrent
+    | DoNotAttachSubdocument
+
+
 initialModel : Flags -> Model
 initialModel flags =
     ({ mode = Public
@@ -128,5 +137,6 @@ initialModel flags =
      , deleteDocumentState = DeleteDocumentInactive
      , documentTextType = MiniLatex
      , documentType = Standard
+     , subdocumentPosition = DoNotAttachSubdocument
      }
     )

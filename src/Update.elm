@@ -131,7 +131,12 @@ update msg model =
             )
 
         CancelNewDocument ->
-            ( { model | newDocumentPanelState = NewDocumentPanelInactive }, Cmd.none )
+            ( { model
+                | newDocumentPanelState = NewDocumentPanelInactive
+                , documentMenuState = DocumentMenu MenuInactive
+              }
+            , Cmd.none
+            )
 
         InputNewDocumentTitle str ->
             ( { model | newDocumentTitle = str }, Cmd.none )
@@ -141,6 +146,9 @@ update msg model =
 
         SetDocumentType docType ->
             ( { model | documentType = docType }, Cmd.none )
+
+        SetSubdocumentPosition subdocumentPosition ->
+            ( { model | subdocumentPosition = subdocumentPosition }, Cmd.none )
 
         Test ->
             ( { model

@@ -29,6 +29,8 @@ type MyStyles
     | ButtonSelected
     | MenuButton
     | MenuButtonSelected
+    | MenuButtonStrong
+    | MenuButtonStrongSelected
     | FormButton
     | FormButtonSelected
     | SmallButton
@@ -39,6 +41,7 @@ type MyStyles
     | TOCItemSelected
     | TOCItemMasterSelected
     | TOCItemNotLoaded
+    | Hairline
     | None
 
 
@@ -85,6 +88,7 @@ stylesheet =
         , style Panel [ Font.typeface fontList, Font.size 16, Color.background Color.darkBlue ]
         , style PanelHeading [ Font.typeface fontList, Font.size 24, Color.background Color.darkBlue, Color.text Color.white ]
         , style TextPanel [ Font.typeface fontList, Color.background (grayColor 245) ]
+        , style Hairline [ Color.background Color.white ]
         , style Title
             [ Color.text Color.black
             , Color.background mainColor
@@ -148,10 +152,24 @@ stylesheet =
             , Font.typeface fontList
             ]
         , style MenuButtonSelected
-            [ Color.text Color.white
-            , Color.background (Color.rgb 172 57 57)
+            [ Color.text (Color.rgb 230 57 57)
+            , Color.background menuColor
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 14 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style MenuButtonStrong
+            [ Color.text (Color.green)
+            , Color.background menuColor
+            , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style MenuButtonStrongSelected
+            [ Color.text (Color.blue)
+            , Color.background menuColor
+            , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]
         , style FormButton

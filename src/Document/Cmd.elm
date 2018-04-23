@@ -233,6 +233,26 @@ saveDocumentCmd document token =
 
 
 
+-- addSubdocumentCommand : Model ->  Cmd Msg
+-- addSubdocumentCommand model =
+--     let
+--
+--         route =
+--             "documents"
+--
+--         query =
+--             "master=" ++ toString model.master_document.id
+--
+--         saveTask =
+--             Request.Document.saveDocumentTask model.appState.command model.master_document model
+--
+--         refreshMasterDocumentTask =
+--             Request.Document.getDocumentsTask route query model.current_user.token
+--     in
+--     ( { model | appState = newAppState, message = model.appState.command }
+--       -- , Cmd.batch [ cmd1 ]
+--     , Task.attempt (DocMsg << GetUserDocuments) (saveTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
+--     )
 --
 -- getDocuments2 : String -> String -> Int -> String -> Cmd Msg
 -- getDocuments2 route query userId token =
