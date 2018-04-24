@@ -147,6 +147,7 @@ encodeDocument document =
         , ( "identifier", Encode.string <| document.identifier )
         , ( "content", Encode.string <| document.content )
         , ( "author_id", Encode.int <| document.authorId )
+        , ( "author_name", Encode.string <| document.authorName )
         , ( "attributes", encodeDocumentAttributes <| document.attributes )
         , ( "tags", Encode.list <| List.map Encode.string <| document.tags )
         , ( "parent_id", Encode.int <| document.parentId )

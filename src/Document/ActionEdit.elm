@@ -24,6 +24,7 @@ import Model
         , NewDocumentPanelState(..)
         , DeleteDocumentState(..)
         , DocumentAttributePanelState(..)
+        , SubdocumentPosition(..)
         )
 import Msg exposing (Msg(DocumentMsg))
 import Http
@@ -43,6 +44,7 @@ createDocument model document =
         | page = EditorPage
         , documentMenuState = DocumentMenu MenuInactive
         , newDocumentPanelState = NewDocumentPanelInactive
+        , currentDocument = document
       }
     , Document.Cmd.createDocumentCmd document (Utility.getToken model)
     )
@@ -70,8 +72,7 @@ renderLatex model =
             MiniLatex.Driver.update 666 model.editRecord document.content
 
         renderedContent =
-            Debug.log "renderedContent"
-                (MiniLatex.Driver.getRenderedText "" newEditRecord)
+            (MiniLatex.Driver.getRenderedText "" newEditRecord)
 
         updatedDocument =
             { document | renderedContent = renderedContent }
@@ -125,36 +126,65 @@ deleteDocument model =
 
 newDocument model =
     let
+        newDocument =
+            makeNewDocument model |> putParent model |> putAuthorInfo model
+
+        amendedAttributes =
+            newDocument.attributes |> putTextAndDocumentType model
+
+        amendedNewDocument =
+            { newDocument | attributes = amendedAttributes }
+    in
+        createDocument model amendedNewDocument
+
+
+
+{- New document helpers -}
+
+
+makeNewDocument model =
+    let
         title =
             if model.newDocumentTitle /= "" then
                 model.newDocumentTitle
             else
-                "New Document (Y)"
-
-        newDocument =
-            case model.documentType of
-                Standard ->
-                    Document.Default.make title "Write something here ... "
-
-                Master ->
-                    Document.Default.make title Document.Default.masterDocText
-
-        newDocumentAttributes =
-            newDocument.attributes
-
-        amendedAttributes =
-            case model.documentType of
-                Standard ->
-                    { newDocumentAttributes | textType = model.documentTextType, docType = model.documentType }
-
-                Master ->
-                    { newDocumentAttributes | textType = Asciidoc, docType = model.documentType }
-
-        amendedNewDocument =
-            Debug.log "amendedNewDocument"
-                { newDocument | attributes = amendedAttributes }
+                "New Document"
     in
-        createDocument model amendedNewDocument
+        case model.documentType of
+            Standard ->
+                Document.Default.make title "Write something here ... "
+
+            Master ->
+                Document.Default.make title Document.Default.masterDocText
+
+
+putAuthorInfo model document =
+    case model.maybeCurrentUser of
+        Nothing ->
+            document
+
+        Just currentUser ->
+            { document | authorId = currentUser.id, authorName = currentUser.username }
+
+
+putParent model document =
+    if model.masterDocLoaded && model.subdocumentPosition /= DoNotAttachSubdocument then
+        { document | parentId = model.masterDocumentId, parentTitle = model.masterDocumentTitle }
+    else
+        document
+
+
+putTextAndDocumentType model documentAttributes =
+    case model.documentType of
+        Standard ->
+            { documentAttributes | textType = model.documentTextType, docType = model.documentType }
+
+        Master ->
+            { documentAttributes | textType = Asciidoc, docType = model.documentType }
+
+
+
+{- End new document helpers -}
 
 
 updateDocument : Model -> Document -> Cmd Msg
