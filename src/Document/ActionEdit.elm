@@ -52,14 +52,26 @@ createDocument model document =
 
 selectNewDocument : Model -> Document -> ( Model, Cmd Msg )
 selectNewDocument model document =
-    ( { model
-        | currentDocument = document
-        , documentList = [ document ] ++ model.documentList
-        , message = "New document added: " ++ document.title
-        , counter = model.counter + 1
-      }
-    , Document.Cmd.putTextToRender document
-    )
+    let
+        token =
+            Utility.getToken model
+
+        commands =
+            if document.parentId > 0 then
+                [ Document.Cmd.putTextToRender document
+                , Task.attempt (Msg.DocumentMsg << SaveDocument) <| Document.Task.attachChildToMasterDocumentTask model token document.id
+                ]
+            else
+                [ Document.Cmd.putTextToRender document ]
+    in
+        ( { model
+            | currentDocument = document
+            , documentList = [ document ] ++ model.documentList
+            , message = "New document added: " ++ document.title
+            , counter = model.counter + 1
+          }
+        , Cmd.batch commands
+        )
 
 
 renderLatex : Model -> ( Model, Cmd Msg )

@@ -4,6 +4,7 @@ module Document.Task
         , getOneDocumentTask
         , selectMasterTask
         , saveDocumentTask
+        , attachChildToMasterDocumentTask
         )
 
 import Api.Request exposing (Tagger)
@@ -15,6 +16,8 @@ import Msg exposing (Msg(DocumentMsg))
 import Task exposing (Task)
 import Http
 import Configuration
+import Model exposing (Model, SubdocumentPosition(..))
+import Json.Encode as Encode
 
 
 getDocumentsTask : String -> String -> String -> Tagger DocumentListRecord -> Task Http.Error DocumentListRecord
@@ -52,6 +55,43 @@ saveDocumentTask token document =
 
         encodedValue =
             Data.encodeDocumentRecord document
+
+        tagger =
+            Msg.DocumentMsg << SaveDocument
+    in
+        Api.Request.makeTask <| Document.RequestParameters.updateDocumentParameters token route encodedValue tagger
+
+
+attachChildToMasterDocumentTask : Model -> String -> Int -> Task Http.Error DocumentRecord
+attachChildToMasterDocumentTask model token childId =
+    let
+        query =
+            case model.subdocumentPosition of
+                SubdocumentAtTop ->
+                    "?attach=at-top&child=" ++ (toString childId)
+
+                SubdocumentAtBottom ->
+                    "?attach=at-bottom&child=" ++ (toString childId)
+
+                SubdocumentAboveCurrent ->
+                    "?attach=above&child=" ++ (toString childId) ++ "current=" ++ (toString model.currentDocument.id)
+
+                SubdocumentBelowCurrent ->
+                    "?attach=below&child=" ++ (toString childId) ++ "current=" ++ (toString model.currentDocument.id)
+
+                DoNotAttachSubdocument ->
+                    ""
+
+        route =
+            "/documents/" ++ toString model.masterDocumentId ++ query
+
+        encodedValue =
+            case model.maybeMasterDocument of
+                Nothing ->
+                    Encode.null
+
+                Just masterDocument ->
+                    Data.encodeDocumentRecord masterDocument
 
         tagger =
             Msg.DocumentMsg << SaveDocument

@@ -30,6 +30,7 @@ type alias Model =
     , masterDocLoaded : Bool
     , masterDocumentId : Int
     , masterDocumentTitle : String
+    , maybeMasterDocument : Maybe Document
     , windowWidth : Int
     , windowHeight : Int
     , counter : Int
@@ -121,6 +122,7 @@ initialModel flags =
      , masterDocLoaded = False
      , masterDocumentId = 0
      , masterDocumentTitle = ""
+     , maybeMasterDocument = Nothing
      , windowWidth = flags.width
      , windowHeight = flags.height
      , counter = 0

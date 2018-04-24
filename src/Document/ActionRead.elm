@@ -88,17 +88,26 @@ loadContent model documentRecord =
         { model | documentList = newDocumentList }
 
 
+selectDocument : Model -> Document -> ( Model, Cmd Msg )
 selectDocument model document =
-    ( { model
-        | currentDocument = document
-        , masterDocLoaded = masterDocLoaded model document
-        , masterDocumentId = masterDocumentId model document
-        , masterDocumentTitle = masterDocumentTitle model document
-        , editRecord = MiniLatex.Driver.emptyEditRecord
-        , counter = model.counter + 1
-      }
-    , Document.Cmd.selectMasterOrRender model document
-    )
+    let
+        maybeMasterDocument =
+            if document.attributes.docType == Master then
+                Just document
+            else
+                Nothing
+    in
+        ( { model
+            | currentDocument = document
+            , masterDocLoaded = masterDocLoaded model document
+            , masterDocumentId = masterDocumentId model document
+            , masterDocumentTitle = masterDocumentTitle model document
+            , maybeMasterDocument = maybeMasterDocument
+            , editRecord = MiniLatex.Driver.emptyEditRecord
+            , counter = model.counter + 1
+          }
+        , Document.Cmd.selectMasterOrRender model document
+        )
 
 
 
