@@ -99,9 +99,6 @@ selectDocument model document =
     in
         ( { model
             | currentDocument = document
-            , masterDocLoaded = masterDocLoaded model document
-            , masterDocumentId = masterDocumentId model document
-            , masterDocumentTitle = masterDocumentTitle model document
             , maybeMasterDocument = maybeMasterDocument
             , editRecord = MiniLatex.Driver.emptyEditRecord
             , counter = model.counter + 1
@@ -122,12 +119,16 @@ loadParentDocument model document =
 
         route =
             "/documents/" ++ toString model.currentDocument.id
+
+        _ =
+            Debug.log "LOAD PARENT" "NOW"
     in
         ( { model
-            | masterDocLoaded = True
-            , masterDocumentId = model.currentDocument.parentId
-            , masterDocumentTitle = model.currentDocument.parentTitle
-            , currentDocument = document
+            -- XXYYZZ
+            -- | masterDocLoaded = True
+            -- , masterDocumentId = model.currentDocument.parentId
+            -- , masterDocumentTitle = model.currentDocument.parentTitle
+            | currentDocument = document
           }
         , -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
           Task.attempt (Msg.DocumentMsg << GetDocumentList)
@@ -169,33 +170,3 @@ replaceIf predicate replacement list =
                 item
         )
         list
-
-
-masterDocLoaded : Model -> Document -> Bool
-masterDocLoaded model document =
-    if document.attributes.docType == Master then
-        True
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        True
-    else
-        False
-
-
-masterDocumentId : Model -> Document -> Int
-masterDocumentId model document =
-    if document.attributes.docType == Master then
-        document.id
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        model.masterDocumentId
-    else
-        0
-
-
-masterDocumentTitle : Model -> Document -> String
-masterDocumentTitle model document =
-    if document.attributes.docType == Master then
-        document.title
-    else if model.masterDocumentId > 0 && document.parentId == model.masterDocumentId then
-        model.masterDocumentTitle
-    else
-        ""

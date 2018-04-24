@@ -34,7 +34,7 @@ documenTitle : Model -> List Document -> String
 documenTitle model documentList =
     let
         titleWord =
-            if model.masterDocumentTitle == "" then
+            if model.maybeMasterDocument == Nothing then
                 "Documents"
             else
                 "Contents"
@@ -64,7 +64,7 @@ documentIndentLevel : Model -> Document -> Float
 documentIndentLevel model document =
     let
         level =
-            if model.masterDocLoaded then
+            if model.maybeMasterDocument /= Nothing then
                 (Basics.max 1 document.attributes.level)
             else
                 0

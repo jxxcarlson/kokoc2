@@ -86,9 +86,7 @@ update submessage model =
                 if keyCode == 13 then
                     ( { model
                         | page = Utility.setPage model
-                        , masterDocLoaded = False
-                        , masterDocumentId = 0
-                        , masterDocumentTitle = ""
+                        , maybeMasterDocument = Nothing
                       }
                     , Document.Cmd.search model
                     )

@@ -151,10 +151,6 @@ update msg model =
             ( { model | subdocumentPosition = subdocumentPosition }, Cmd.none )
 
         Test ->
-            ( { model
-                | masterDocLoaded = True
-                , masterDocumentId = model.currentDocument.parentId
-                , masterDocumentTitle = model.currentDocument.parentTitle
-              }
+            ( model
             , Document.Cmd.selectMaster model.currentDocument model
             )

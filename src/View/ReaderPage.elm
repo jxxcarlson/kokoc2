@@ -80,7 +80,7 @@ contentsWidth model =
 
 
 parentButton model =
-    if model.currentDocument.parentId > 0 && model.masterDocLoaded == False then
+    if model.currentDocument.parentId > 0 && model.maybeMasterDocument == Nothing then
         Widget.bareButton Button
             ("Open: " ++ model.currentDocument.parentTitle)
             400

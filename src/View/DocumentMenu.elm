@@ -90,24 +90,26 @@ newDocumentPanel model =
 
 newDocumentMenuHeight : Model -> Length
 newDocumentMenuHeight model =
-    if model.masterDocLoaded == True then
-        615 |> px
-    else
+    if model.maybeMasterDocument == Nothing then
         480 |> px
+    else
+        615 |> px
 
 
 masterDocuParameters model =
-    if model.masterDocLoaded then
-        [ hairline Hairline
-        , el Menu [ paddingTop 12 ] (text "Insert new document")
-        , Widget.menuButton "At top" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtTop) ] (model.subdocumentPosition == SubdocumentAtTop)
-        , Widget.menuButton "Above current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAboveCurrent) ] (model.subdocumentPosition == SubdocumentAboveCurrent)
-        , Widget.menuButton "Below current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentBelowCurrent) ] (model.subdocumentPosition == SubdocumentBelowCurrent)
-        , Widget.menuButton "At bottom" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtBottom) ] (model.subdocumentPosition == SubdocumentAtBottom)
-        , Widget.menuButton "Don't insert" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition DoNotAttachSubdocument) ] (model.subdocumentPosition == DoNotAttachSubdocument)
-        ]
-    else
-        [ empty ]
+    case model.maybeMasterDocument of
+        Just masterDocument ->
+            [ hairline Hairline
+            , el Menu [ paddingTop 12 ] (text "Insert new document")
+            , Widget.menuButton "At top" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtTop) ] (model.subdocumentPosition == SubdocumentAtTop)
+            , Widget.menuButton "Above current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAboveCurrent) ] (model.subdocumentPosition == SubdocumentAboveCurrent)
+            , Widget.menuButton "Below current" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentBelowCurrent) ] (model.subdocumentPosition == SubdocumentBelowCurrent)
+            , Widget.menuButton "At bottom" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition SubdocumentAtBottom) ] (model.subdocumentPosition == SubdocumentAtBottom)
+            , Widget.menuButton "Don't insert" 90 [ paddingLeft 20, onClick (SetSubdocumentPosition DoNotAttachSubdocument) ] (model.subdocumentPosition == DoNotAttachSubdocument)
+            ]
+
+        Nothing ->
+            [ empty ]
 
 
 documentAttributesPanel model =

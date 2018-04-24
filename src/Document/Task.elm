@@ -83,7 +83,12 @@ attachChildToMasterDocumentTask model token childId =
                     ""
 
         route =
-            "/documents/" ++ toString model.masterDocumentId ++ query
+            case model.maybeMasterDocument of
+                Nothing ->
+                    "/documents/"
+
+                Just masterDocument ->
+                    "/documents/" ++ toString masterDocument.id ++ query
 
         encodedValue =
             case model.maybeMasterDocument of

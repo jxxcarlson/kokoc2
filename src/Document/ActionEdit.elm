@@ -180,10 +180,15 @@ putAuthorInfo model document =
 
 
 putParent model document =
-    if model.masterDocLoaded && model.subdocumentPosition /= DoNotAttachSubdocument then
-        { document | parentId = model.masterDocumentId, parentTitle = model.masterDocumentTitle }
-    else
-        document
+    case model.maybeMasterDocument of
+        Just masterDocument ->
+            if model.subdocumentPosition /= DoNotAttachSubdocument then
+                { document | parentId = masterDocument.id, parentTitle = masterDocument.title }
+            else
+                document
+
+        Nothing ->
+            document
 
 
 putTextAndDocumentType model documentAttributes =

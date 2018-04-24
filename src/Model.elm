@@ -27,9 +27,6 @@ type alias Model =
     , documentList : List Document
     , currentDocument : Document
     , editRecord : EditRecord
-    , masterDocLoaded : Bool
-    , masterDocumentId : Int
-    , masterDocumentTitle : String
     , maybeMasterDocument : Maybe Document
     , windowWidth : Int
     , windowHeight : Int
@@ -119,9 +116,6 @@ initialModel flags =
      , documentList = []
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
      , editRecord = MiniLatex.Driver.setup 0 ""
-     , masterDocLoaded = False
-     , masterDocumentId = 0
-     , masterDocumentTitle = ""
      , maybeMasterDocument = Nothing
      , windowWidth = flags.width
      , windowHeight = flags.height
