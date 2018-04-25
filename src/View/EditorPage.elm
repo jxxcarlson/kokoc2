@@ -51,7 +51,7 @@ contentPanel model =
     column Main
         [ alignLeft ]
         [ row Menubar2 [ width (contentsWidth model), height (px 35) ] [ parentButton model ]
-        , Render.renderedContent model (contentsWidth model) model.currentDocument
+        , Render.renderedContent model (contentsWidth model) 105 model.currentDocument
         ]
 
 

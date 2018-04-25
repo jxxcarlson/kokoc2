@@ -83,7 +83,7 @@ leftColumn model =
                 Nothing ->
                     Document.Default.make "Oops" "Startup document not found"
     in
-        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) document ]
+        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 document ]
         ]
 
 
@@ -124,10 +124,14 @@ signedInContent model =
 
 
 signedInMainImage =
-    image Main [ width (percent 80) ] { src = "https://dg19s6hp6ufoh.cloudfront.net/pictures/613145863/large/Paul-Klee-Flora-on-sand.jpeg?1481352336", caption = "Kandinsky" }
+    image Main [ width (percent 80) ] { src = "https://www.physicsforums.com/attachments/collider-jpg.148712/", caption = "Bubble chamber" }
 
 
 
+--
+-- https://www.physicsforums.com/attachments/collider-jpg.148712/
+-- https://dg19s6hp6ufoh.cloudfront.net/pictures/613145863/large/Paul-Klee-Flora-on-sand.jpeg?1481352336
+--
 {- SIGN IN -}
 
 

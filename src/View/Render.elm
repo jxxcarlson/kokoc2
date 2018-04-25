@@ -9,14 +9,14 @@ import Model exposing (Model)
 import Document.Model exposing (Document)
 
 
-renderedContent : Model -> Length -> Document -> Element MyStyles variation msg
-renderedContent model width_ document =
-    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ document ) ]
+renderedContent : Model -> Length -> Float -> Document -> Element MyStyles variation msg
+renderedContent model width_ verticalInset document =
+    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ verticalInset document ) ]
 
 
-mainContentHeight : Model -> Length
-mainContentHeight model =
-    toFloat model.windowHeight - 105 |> px
+mainContentHeight : Model -> Float -> Length
+mainContentHeight model verticalInset =
+    toFloat model.windowHeight - verticalInset |> px
 
 
 mainContentWidth : Model -> Length
@@ -27,14 +27,14 @@ mainContentWidth model =
         |> px
 
 
-innerRenderedContent : Model -> Length -> Document -> Element MyStyles variation msg
-innerRenderedContent model width_ document =
+innerRenderedContent : Model -> Length -> Float -> Document -> Element MyStyles variation msg
+innerRenderedContent model width_ verticalInset document =
     el (MainContent)
         [ yScrollbar
         , id "renderedText"
         , paddingXY 50 50
         , width width_
-        , height (mainContentHeight model)
+        , height (mainContentHeight model verticalInset)
         , property "innerHTML"
             (Json.Encode.string document.renderedContent)
         ]
