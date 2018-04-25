@@ -67,7 +67,7 @@ documentIndentLevel model document =
             if model.maybeMasterDocument /= Nothing then
                 (Basics.max 1 document.attributes.level)
             else
-                0
+                1
     in
         16.0 * toFloat (level - 1)
 

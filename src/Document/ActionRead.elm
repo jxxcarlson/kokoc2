@@ -54,6 +54,12 @@ getDocumentsAux documentListRecord model =
                 |> List.head
                 |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
 
+        maybeMasterDocument =
+            if headDocument.attributes.docType == Master then
+                Just headDocument
+            else
+                Nothing
+
         currentDocument =
             if List.member model.currentDocument.id documentIdList then
                 model.currentDocument
@@ -62,7 +68,12 @@ getDocumentsAux documentListRecord model =
                     |> List.head
                     |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
     in
-        ( { model | currentDocument = currentDocument, documentList = documentList, maybePreviousDocument = Nothing }
+        ( { model
+            | currentDocument = currentDocument
+            , documentList = documentList
+            , maybePreviousDocument = Nothing
+            , maybeMasterDocument = maybeMasterDocument
+          }
         , loadContentsIfNecessary token headDocument documentList
         )
 

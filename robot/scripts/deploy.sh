@@ -19,21 +19,21 @@ color=`tput setaf 48`
 red=`tput setaf 1`
 reset=`tput setaf 7`
 
-echo "${color}Commit changes to git${reset}"
-
-git ci -a
-
-echo "${color}push to GitHub${reset}"
-git push origin master
-
-echo
-echo "${color}use src/deployment configuration${reset}"
-cp ./robot/src/deploy/Configuration.elm ./src/
-cp ./robot/src/deploy/webpack.config.js ./src/
-
-echo
-echo "${color}build app ...${reset}";
-tput setaf 6;time npm run build; tput setaf 7;
+# echo "${color}Commit changes to git${reset}"
+#
+# git ci -a
+#
+# echo "${color}push to GitHub${reset}"
+# git push origin master
+#
+# echo
+# echo "${color}use src/deployment configuration${reset}"
+# cp ./robot/src/deploy/Configuration.elm ./src/
+# cp ./robot/src/deploy/webpack.config.js ./src/
+#
+# echo
+# echo "${color}build app ...${reset}";
+# tput setaf 6;time npm run build; tput setaf 7;
 
 echo
 echo "${color}upload to cloud ...${reset}"
@@ -41,12 +41,12 @@ scp -r ./dist/* root@138.197.81.6:/var/www/html/
 
 echo
 tput setaf 2; echo "${color}Done${reset}"
-
-echo
-echo "${color}... Now use dev configuration.${reset}"
-cp ./robot/src/dev/Configuration.elm ./src/
-cp ./robot/src/dev/webpack.config.js ./src/
-
-echo
-echo "${color}Start webpack${reset}"
-yarn start
+#
+# echo
+# echo "${color}... Now use dev configuration.${reset}"
+# cp ./robot/src/dev/Configuration.elm ./src/
+# cp ./robot/src/dev/webpack.config.js ./src/
+#
+# echo
+# echo "${color}Start webpack${reset}"
+# yarn start
