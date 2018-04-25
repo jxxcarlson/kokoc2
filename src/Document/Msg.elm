@@ -21,6 +21,7 @@ type DocumentMsg
     | PrepareToDeleteDocument
     | DoDeleteDocument
     | UpdateDocumentAttributes
+    | GetRandomDocuments
 
 
 

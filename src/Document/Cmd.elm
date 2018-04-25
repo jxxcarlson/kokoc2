@@ -11,6 +11,7 @@ module Document.Cmd
         , createDocumentCmd
         , deleteDocument
         , saveDocumentCmd
+        , randomDocuments
         )
 
 import Model exposing (Model)
@@ -206,6 +207,35 @@ searchWithAuthorizationCmd model =
             Utility.getToken model
     in
         getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
+
+
+randomDocuments : Model -> Cmd Msg
+randomDocuments model =
+    let
+        token =
+            Utility.getToken model
+
+        query =
+            case model.searchDomain of
+                SearchPublic ->
+                    "?random=public"
+
+                SearchPrivate ->
+                    "?random_user"
+
+                SearchAll ->
+                    "?random=all"
+
+                SearchShared ->
+                    "?random_user"
+
+        cmd =
+            if model.searchDomain == SearchPublic then
+                getDocuments token "/public/documents" query (Msg.DocumentMsg << GetDocumentList)
+            else
+                getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
+    in
+        cmd
 
 
 renderNonLatexCmd : Model -> Cmd Msg

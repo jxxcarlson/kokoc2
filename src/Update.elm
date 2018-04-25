@@ -152,5 +152,5 @@ update msg model =
 
         Test ->
             ( model
-            , Document.Cmd.selectMaster model.currentDocument model
+            , Document.Cmd.randomDocuments model
             )

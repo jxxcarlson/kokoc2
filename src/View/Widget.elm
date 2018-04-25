@@ -23,6 +23,11 @@ import Element.Keyed
 import Html.Attributes
 import View.Stylesheet exposing (..)
 import Json.Decode as Decode
+import Msg exposing (Msg(CloseMenus))
+
+
+hairline =
+    el Menu [ paddingTop 12, paddingBottom 12 ] (Element.hairline Hairline)
 
 
 xcolumn columnStyle widthExpression attributes content =
@@ -78,6 +83,11 @@ formButton title width_ attrs selected =
         el FormButtonSelected ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_), center ] ++ attrs) (el None [ center ] (text title))
     else
         el FormButton ([ paddingLeft 8, paddingTop 8, height (px 34), width (px width_) ] ++ attrs) (el None [ center ] (text title))
+
+
+linkButton url label =
+    newTab url <|
+        el MenuButton [ paddingTop 8, verticalCenter, onClick CloseMenus ] (text label)
 
 
 inputField label_ value_ width_ action =

@@ -6,6 +6,7 @@ import Model
         , Page(..)
         , DeleteDocumentState(..)
         , DocumentMenuState(..)
+        , SearchMenuState(..)
         , MenuStatus(..)
         )
 import Msg exposing (Msg)
@@ -112,6 +113,9 @@ update submessage model =
 
             UpdateDocumentAttributes ->
                 ActionEdit.updateAttributesOfCurrentDocument model
+
+            GetRandomDocuments ->
+                ( { model | page = ReaderPage, searchMenuState = SearchMenu MenuInactive }, Document.Cmd.randomDocuments model )
 
 
 

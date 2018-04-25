@@ -55,10 +55,12 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 100), height (px 360), paddingTop 8, paddingLeft 15, paddingBottom 15, spacing 5 ]
-                    ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive)) ]
+                    [ moveRight 330, width (px 125), height (px 360), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
+                     , printDocument model
+                     ]
                         ++ editingCommmands model
-                        ++ [ printDocument model, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
+                        ++ [ Widget.hairline, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
                     )
 
 
@@ -143,8 +145,12 @@ editingCommmands model =
     if model.page == EditorPage then
         [ newDocument model
         , deleteDocument model
+        , Widget.hairline
         , documentAttributes model
         , togglePublic model
+        , Widget.hairline
+        , showVersionsButton model.currentDocument
+        , newVersionButton model.currentDocument
         ]
     else
         []
@@ -155,13 +161,35 @@ printDocument model =
 
 
 printButton document =
-    newTab (printUrl document) <|
-        el MenuButton [ paddingTop 6, paddingBottom 8, verticalCenter, onClick CloseMenus ] (text "Print")
+    Widget.linkButton (printUrl document) "Print"
 
 
 printUrl : Document -> String
 printUrl document =
     Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
+
+
+newVersionButton1 document =
+    newTab (newVersionUrl document) <|
+        el MenuButton [ verticalCenter, onClick CloseMenus ] (text "New version")
+
+
+newVersionButton document =
+    Widget.linkButton (newVersionUrl document) "New version"
+
+
+newVersionUrl : Document -> String
+newVersionUrl document =
+    Configuration.host ++ "/archive/new_version" ++ "/" ++ toString document.id
+
+
+showVersionsButton document =
+    Widget.linkButton (showVersionsUrl document) "Show versions"
+
+
+showVersionsUrl : Document -> String
+showVersionsUrl document =
+    Configuration.host ++ "/archive/versions" ++ "/" ++ toString document.id
 
 
 newDocument model =
