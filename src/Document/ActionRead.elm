@@ -22,6 +22,8 @@ import Utility
 import Task exposing (Task)
 import Document.Task
 import MiniLatex.Driver
+import Document.Dictionary as Dictionary
+import Utility.KeyValue as KeyValue
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -108,6 +110,9 @@ selectDocument model document =
                 model.maybeMasterDocument
             else
                 Nothing
+
+        token =
+            Utility.getToken model
     in
         ( { model
             | currentDocument = document
@@ -115,8 +120,24 @@ selectDocument model document =
             , editRecord = MiniLatex.Driver.emptyEditRecord
             , counter = model.counter + 1
           }
-        , Document.Cmd.selectMasterOrRender model document
+        , Cmd.batch
+            [ Document.Cmd.selectMasterOrRender model document
+            , setTexMacroFileCmd document token
+            ]
         )
+
+
+setTexMacroFileCmd document token =
+    let
+        maybeMacroFileId =
+            KeyValue.getIntValueForKeyFromTagList "texmacros" document.tags
+    in
+        case (maybeMacroFileId) of
+            Just id ->
+                Dictionary.setItemInDict ("id=" ++ toString id) "texmacros" token
+
+            Nothing ->
+                Cmd.none
 
 
 

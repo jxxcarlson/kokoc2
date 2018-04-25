@@ -26,7 +26,7 @@ type alias Model =
     , maybeCurrentUser : Maybe User
     , message : String
     , documentList : List Document
-    , documentDict : Dict.Dict String Document
+    , documentDict : Dict String Document
     , currentDocument : Document
     , maybePreviousDocument : Maybe Document
     , editRecord : EditRecord
