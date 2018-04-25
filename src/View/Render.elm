@@ -5,12 +5,13 @@ import Element.Attributes exposing (..)
 import Json.Encode
 import Element.Keyed as Keyed
 import View.Stylesheet exposing (..)
-import Model exposing(Model)
+import Model exposing (Model)
+import Document.Model exposing (Document)
 
 
-renderedContent : Model -> Length -> Element MyStyles variation msg
-renderedContent model width_ =
-    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ ) ]
+renderedContent : Model -> Length -> Document -> Element MyStyles variation msg
+renderedContent model width_ document =
+    Keyed.row None [] [ ( toString model.counter, innerRenderedContent model width_ document ) ]
 
 
 mainContentHeight : Model -> Length
@@ -26,8 +27,8 @@ mainContentWidth model =
         |> px
 
 
-innerRenderedContent : Model -> Length -> Element MyStyles variation msg
-innerRenderedContent model width_ =
+innerRenderedContent : Model -> Length -> Document -> Element MyStyles variation msg
+innerRenderedContent model width_ document =
     el (MainContent)
         [ yScrollbar
         , id "renderedText"
@@ -35,6 +36,6 @@ innerRenderedContent model width_ =
         , width width_
         , height (mainContentHeight model)
         , property "innerHTML"
-            (Json.Encode.string model.currentDocument.renderedContent)
+            (Json.Encode.string document.renderedContent)
         ]
         (text "")

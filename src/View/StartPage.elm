@@ -29,6 +29,7 @@ import View.Widget as Widget
 import View.Text as Text
 import View.Menubar as Menubar
 import View.Footer as Footer
+import View.Render as Render
 
 
 view model =
@@ -73,8 +74,17 @@ mainContent model =
 
 leftColumn model =
     [ row LeftHeading [ paddingLeft 40 ] [ text ("About kNode") ]
-    , row Alternate [ paddingLeft 40 ] (textColumn model)
+
+    -- , row Alternate [ paddingLeft 40 ] (textColumn model)
+    , row Alternate [] [ Render.renderedContent model (contentsWidth model) model.currentDocument ]
     ]
+
+
+contentsWidth model =
+    model.windowWidth
+        |> toFloat
+        |> (\x -> Basics.max 300 (0.3 * x))
+        |> px
 
 
 textColumn model =
