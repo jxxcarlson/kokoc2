@@ -111,8 +111,11 @@ renderLatex model =
         newEditRecord =
             MiniLatex.Driver.update 666 model.editRecord document.content
 
+        macroDefinitions =
+            getMacroDefinitions model
+
         renderedContent =
-            (MiniLatex.Driver.getRenderedText "" newEditRecord)
+            (MiniLatex.Driver.getRenderedText macroDefinitions newEditRecord)
 
         updatedDocument =
             { document | renderedContent = renderedContent }
@@ -124,6 +127,15 @@ renderLatex model =
                 (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
             ]
         )
+
+
+getMacroDefinitions : Model -> String
+getMacroDefinitions model =
+    let
+        macrosString =
+            macros model.documentDict |> (\x -> "\n$$\n" ++ String.trim x ++ "\n$$\n")
+    in
+        macrosString ++ "\n\n$$\n\\newcommand{\\label}[1]{}" ++ "\n$$\n\n"
 
 
 macros : Dict String Document -> String
