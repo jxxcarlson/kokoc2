@@ -23,6 +23,7 @@ type DocumentMsg
     | UpdateDocumentAttributes
     | GetRandomDocuments
     | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
+    | RenumberMasterDocument
 
 
 

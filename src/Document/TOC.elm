@@ -1,0 +1,172 @@
+module Document.TOC exposing (renumberMasterDocument)
+
+-- import Action.Document
+-- import Types exposing (Document, DocumentAttributes, Model, Msg)
+
+import Utility.KeyValue as KeyValue
+import Document.Model exposing (Document, DocType(..))
+import Model exposing (Model, DocumentMenuState(..), MenuStatus(..))
+import Msg exposing (Msg)
+import Document.Cmd
+
+
+renumberMasterDocument : Model -> ( Model, Cmd Msg )
+renumberMasterDocument model =
+    if model.currentDocument.attributes.docType == Master then
+        renumberDocuments model
+    else
+        ( { model | message = "Can only renumber master documents" }, Cmd.none )
+
+
+renumberDocuments : Model -> ( Model, Cmd Msg )
+renumberDocuments model =
+    let
+        tocLabelList =
+            tocLabelsForDocumentList model.documentList
+                |> List.map tocLabelText
+
+        documentList =
+            setDocumentLevels model.documentList
+    in
+        ( { model
+            | message = "Renumber"
+            , documentList = documentList
+            , documentMenuState = DocumentMenu MenuInactive
+          }
+        , Document.Cmd.saveDocumentListCmd documentList model
+        )
+
+
+
+{- TOC labels -}
+
+
+type alias TOCLabel =
+    { section : Int, subsection : Int }
+
+
+tocLabel : Document -> String
+tocLabel document =
+    let
+        maybeSectionNumber =
+            KeyValue.getIntValueForKeyFromTagList "sectionNumber" document.tags
+
+        maybeSubSectionNumber =
+            KeyValue.getIntValueForKeyFromTagList "subsectionNumber" document.tags
+
+        sectionNumber =
+            case maybeSectionNumber of
+                Just k ->
+                    k
+
+                Nothing ->
+                    0
+
+        subsectionNumber =
+            case maybeSubSectionNumber of
+                Just k ->
+                    k
+
+                Nothing ->
+                    0
+    in
+        TOCLabel sectionNumber subsectionNumber |> tocLabelText
+
+
+{-| currentLabel level previousLabel computes the next TOC label as
+a function of the current level and previous label
+-}
+currentLabel : Int -> TOCLabel -> TOCLabel
+currentLabel level previousLabel =
+    let
+        realLevel =
+            level - 1
+
+        section =
+            if realLevel == 1 then
+                previousLabel.section + 1
+            else
+                previousLabel.section
+
+        subsection =
+            if realLevel == 2 then
+                previousLabel.subsection + 1
+            else
+                0
+    in
+        { section = section, subsection = subsection }
+
+
+makeLabel : Document -> List TOCLabel -> TOCLabel
+makeLabel document labelList =
+    case List.head labelList of
+        Just previousLabel ->
+            currentLabel document.attributes.level previousLabel
+
+        Nothing ->
+            TOCLabel 0 0
+
+
+tocLabelsForDocumentList : List Document -> List TOCLabel
+tocLabelsForDocumentList documentList =
+    documentList
+        |> List.foldr (\doc labels -> [ makeLabel doc labels ] ++ labels) [ TOCLabel 0 0 ]
+        |> List.drop 1
+        |> List.reverse
+
+
+updateSectionNumberTags : TOCLabel -> Document -> Document
+updateSectionNumberTags tocLabel document =
+    let
+        tags =
+            document.tags
+                |> KeyValue.removeKeyInTagList "subsadsectionNumber"
+                |> KeyValue.setIntValueForKeyInTagList "sectionNumber" tocLabel.section
+                |> KeyValue.setIntValueForKeyInTagList "subsectionNumber" tocLabel.subsection
+    in
+        { document | tags = tags }
+
+
+setDocumentLevels : List Document -> List Document
+setDocumentLevels documentList =
+    let
+        labelList =
+            tocLabelsForDocumentList documentList
+    in
+        List.map2 updateSectionNumberTags labelList documentList
+
+
+tocLabelText : TOCLabel -> String
+tocLabelText label =
+    let
+        sectionLabel =
+            if label.section > 0 then
+                toString label.section
+            else
+                ""
+
+        fullLabel =
+            if label.subsection > 0 then
+                sectionLabel ++ "." ++ toString label.subsection
+            else
+                sectionLabel
+    in
+        fullLabel
+
+
+setCounterTextForLabel : TOCLabel -> String
+setCounterTextForLabel label =
+    let
+        sectionText =
+            if label.section > 0 then
+                "\\setcounter{section}{" ++ toString label.section ++ "}"
+            else
+                ""
+
+        subsectionText =
+            if label.subsection > 0 then
+                "\\setcounter{subsection}{" ++ toString label.subsection ++ "}"
+            else
+                ""
+    in
+        String.join "\n" [ sectionText, subsectionText ]

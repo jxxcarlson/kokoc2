@@ -39,6 +39,7 @@ import MiniLatex.Driver
 import Regex
 import Dict exposing (Dict)
 import Document.Dictionary as Dictionary
+import Utility.KeyValue as KeyValue
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -108,8 +109,11 @@ renderLatex model =
         document =
             model.currentDocument
 
+        contentToRender =
+            getEnrichedContent document
+
         newEditRecord =
-            MiniLatex.Driver.update 666 model.editRecord document.content
+            MiniLatex.Driver.update 666 model.editRecord contentToRender
 
         macroDefinitions =
             getMacroDefinitions model
@@ -127,6 +131,52 @@ renderLatex model =
                 (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
             ]
         )
+
+
+getEnrichedContent : Document -> String
+getEnrichedContent document =
+    let
+        maybeSectionNumber =
+            KeyValue.getIntValueForKeyFromTagList "sectionNumber" document.tags
+
+        sectionNumberCommand_ =
+            sectionNumberCommand 0 document
+
+        tableOfContentsMacro_ =
+            (tableOfContentsMacro document)
+    in
+        sectionNumberCommand_ ++ tableOfContentsMacro_ ++ document.content
+
+
+sectionNumberCommand : Int -> Document -> String
+sectionNumberCommand shift document =
+    let
+        maybeSectionNumber =
+            KeyValue.getIntValueForKeyFromTagList "sectionNumber" document.tags
+    in
+        case maybeSectionNumber of
+            Just id ->
+                "\\setcounter{section}{" ++ toString (id + shift) ++ "}"
+
+            Nothing ->
+                ""
+
+
+tableOfContentsMacro : Document -> String
+tableOfContentsMacro document =
+    let
+        maybeTOCSwitch =
+            KeyValue.getStringValueForKeyFromTagList "toc" document.tags
+    in
+        case maybeTOCSwitch of
+            Just "yes" ->
+                "\n\n\\tableofcontents\n\n"
+
+            Just _ ->
+                "\n\n"
+
+            Nothing ->
+                "\n\n"
 
 
 getMacroDefinitions : Model -> String

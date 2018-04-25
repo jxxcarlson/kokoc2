@@ -20,6 +20,7 @@ import Document.ActionEdit as ActionEdit
 import Task
 import Document.Default
 import Document.Dictionary
+import Document.TOC
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -144,6 +145,9 @@ update submessage model =
 
             SetDocumentInDict (Err err) ->
                 ( { model | message = "Error setting key in documentDict" }, Cmd.none )
+
+            RenumberMasterDocument ->
+                Document.TOC.renumberMasterDocument model
 
 
 

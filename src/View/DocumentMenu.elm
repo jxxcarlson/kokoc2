@@ -32,6 +32,7 @@ import Document.Msg
             , PrepareToDeleteDocument
             , DoDeleteDocument
             , UpdateDocumentAttributes
+            , RenumberMasterDocument
             )
         )
 import Document.Model
@@ -55,7 +56,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 125), height (px 360), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 140), height (px 360), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , printDocument model
                      ]
@@ -148,12 +149,17 @@ editingCommmands model =
         , Widget.hairline
         , documentAttributes model
         , togglePublic model
+        , renumberMaster model
         , Widget.hairline
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
         ]
     else
         []
+
+
+renumberMaster model =
+    Widget.menuButton "Renumber Master" 90 [ onClick (DocumentMsg RenumberMasterDocument) ] False
 
 
 printDocument model =

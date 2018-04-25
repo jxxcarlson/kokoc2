@@ -11,6 +11,7 @@ module Document.Cmd
         , createDocumentCmd
         , deleteDocument
         , saveDocumentCmd
+        , saveDocumentListCmd
         , randomDocuments
         )
 
@@ -262,64 +263,11 @@ saveDocumentCmd document token =
     Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token document)
 
 
-
--- addSubdocumentCommand : Model ->  Cmd Msg
--- addSubdocumentCommand model =
---     let
---
---         route =
---             "documents"
---
---         query =
---             "master=" ++ toString model.master_document.id
---
---         saveTask =
---             Request.Document.saveDocumentTask model.appState.command model.master_document model
---
---         refreshMasterDocumentTask =
---             Request.Document.getDocumentsTask route query model.current_user.token
---     in
---     ( { model | appState = newAppState, message = model.appState.command }
---       -- , Cmd.batch [ cmd1 ]
---     , Task.attempt (DocMsg << GetUserDocuments) (saveTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
---     )
---
--- getDocuments2 : String -> String -> Int -> String -> Cmd Msg
--- getDocuments2 route query userId token =
---     let
---         query2 =
---             query ++ "&loading"
---
---         searchTask =
---             Request.Document.getDocumentsTask route query2 token
---     in
---         Task.attempt (DocumentMsg << GetUserDocuments) (searchTask |> Task.andThen (\documentsRecord -> refreshMasterDocumentTask route token documentsRecord))
---
---
---
---
--- {-| Called by getDocuments
--- -}
--- refreshMasterDocumentTask route token documentsRecord =
---     let
---         documents =
---             documentsRecord.documents
---
---         maybeFirstDocument =
---             List.head documents
---
---         ( isMasterDocument, masterDocumentId ) =
---             case maybeFirstDocument of
---                 Just document ->
---                     ( document.attributes.docType == "master", document.id )
---
---                 Nothing ->
---                     ( False, 0 )
---
---         task =
---             if (List.length documents == 1) && (isMasterDocument == True) then
---                 Request.Document.getDocumentsTask route ("master=" ++ toString masterDocumentId) token
---             else
---                 Task.succeed documentsRecord
---     in
---         task
+saveDocumentListCmd : List Document -> Model -> Cmd Msg
+saveDocumentListCmd documentList model =
+    let
+        cmds =
+            documentList
+                |> List.map (\doc -> saveDocumentCmd doc (Utility.getToken model))
+    in
+        Cmd.batch cmds

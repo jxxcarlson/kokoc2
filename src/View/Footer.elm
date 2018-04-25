@@ -13,11 +13,12 @@ import Msg exposing (Msg(Test))
 
 
 view model =
-    Widget.footer model footerContent
+    Widget.footer model (footerContent model)
 
 
-footerContent =
+footerContent model =
     [ testButton
+    , el Menu [ verticalCenter ] (text model.message)
     ]
 
 
