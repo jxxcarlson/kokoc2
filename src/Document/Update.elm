@@ -117,7 +117,13 @@ update submessage model =
                 ActionEdit.updateAttributesOfCurrentDocument model
 
             GetRandomDocuments ->
-                ( { model | page = ReaderPage, searchMenuState = SearchMenu MenuInactive }, Document.Cmd.randomDocuments model )
+                ( { model
+                    | page = ReaderPage
+                    , searchMenuState = SearchMenu MenuInactive
+                    , maybeMasterDocument = Nothing
+                  }
+                , Document.Cmd.randomDocuments model
+                )
 
             SetDocumentInDict (Ok ( documentsRecord, key )) ->
                 let
