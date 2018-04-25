@@ -11,10 +11,11 @@ module Document.Model
         , SearchDomain(..)
         , TextType(..)
         , DocType(..)
+        , DocumentDict
         )
 
 import Time exposing (Time)
-import Dict
+import Dict exposing (Dict)
 
 
 type alias Document =
@@ -56,6 +57,10 @@ type alias DocumentAttributes =
     , version : Int
     , lastViewed : Maybe Time
     }
+
+
+type alias DocumentDict =
+    Dict String Document
 
 
 type DocType

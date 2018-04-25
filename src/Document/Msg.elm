@@ -22,6 +22,7 @@ type DocumentMsg
     | DoDeleteDocument
     | UpdateDocumentAttributes
     | GetRandomDocuments
+    | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
 
 
 

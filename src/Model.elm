@@ -13,6 +13,7 @@ import User.Model exposing (User)
 import Document.Default
 import MiniLatex.Differ exposing (EditRecord)
 import MiniLatex.Driver
+import Dict exposing (Dict)
 
 
 type alias Model =
@@ -25,6 +26,7 @@ type alias Model =
     , maybeCurrentUser : Maybe User
     , message : String
     , documentList : List Document
+    , documentDict : Dict.Dict String Document
     , currentDocument : Document
     , maybePreviousDocument : Maybe Document
     , editRecord : EditRecord
@@ -115,6 +117,7 @@ initialModel flags =
      , maybeCurrentUser = Nothing
      , message = "App started"
      , documentList = []
+     , documentDict = Dict.empty
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
      , maybePreviousDocument = Nothing
      , editRecord = MiniLatex.Driver.setup 0 ""

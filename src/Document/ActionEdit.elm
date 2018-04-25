@@ -36,6 +36,9 @@ import Utility
 import Task exposing (Task)
 import Document.Task
 import MiniLatex.Driver
+import Regex
+import Dict exposing (Dict)
+import Document.Dictionary as Dictionary
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -121,6 +124,15 @@ renderLatex model =
                 (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
             ]
         )
+
+
+macros : Dict String Document -> String
+macros documentDict =
+    if Dictionary.member "texmacros" documentDict then
+        Dictionary.getContent "texmacros" documentDict
+            |> Regex.replace Regex.All (Regex.regex "\n+") (\_ -> "\n")
+    else
+        ""
 
 
 deleteDocumentFromList : Document -> Model -> Model

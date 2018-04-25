@@ -19,6 +19,7 @@ import Utility
 import Document.ActionEdit as ActionEdit
 import Task
 import Document.Default
+import Document.Dictionary
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -116,6 +117,33 @@ update submessage model =
 
             GetRandomDocuments ->
                 ( { model | page = ReaderPage, searchMenuState = SearchMenu MenuInactive }, Document.Cmd.randomDocuments model )
+
+            SetDocumentInDict (Ok ( documentsRecord, key )) ->
+                let
+                    emptyDocument =
+                        Document.Default.make "Empty document" "No content"
+
+                    document =
+                        case List.head documentsRecord.documents of
+                            Just document ->
+                                document
+
+                            Nothing ->
+                                emptyDocument
+
+                    documentDict =
+                        model.documentDict
+
+                    newDocumentDict =
+                        if document /= emptyDocument then
+                            Document.Dictionary.set key document documentDict
+                        else
+                            documentDict
+                in
+                    ( { model | documentDict = newDocumentDict }, Cmd.none )
+
+            SetDocumentInDict (Err err) ->
+                ( { model | message = "Error setting key in documentDict" }, Cmd.none )
 
 
 
