@@ -62,9 +62,15 @@ saveDocumentTask token document =
         Api.Request.makeTask <| Document.RequestParameters.updateDocumentParameters token route encodedValue tagger
 
 
-attachChildToMasterDocumentTask : Model -> String -> Int -> Task Http.Error DocumentRecord
-attachChildToMasterDocumentTask model token childId =
+attachChildToMasterDocumentTask : Model -> String -> Int -> Int -> Task Http.Error DocumentRecord
+attachChildToMasterDocumentTask model token childId currentlySelectedDocumentId =
     let
+        _ =
+            Debug.log "CID" model.currentDocument.id
+
+        _ =
+            Debug.log "CTITLE" model.currentDocument.title
+
         query =
             case model.subdocumentPosition of
                 SubdocumentAtTop ->
@@ -74,10 +80,10 @@ attachChildToMasterDocumentTask model token childId =
                     "?attach=at-bottom&child=" ++ (toString childId)
 
                 SubdocumentAboveCurrent ->
-                    "?attach=above&child=" ++ (toString childId) ++ "current=" ++ (toString model.currentDocument.id)
+                    "?attach=above&child=" ++ (toString childId) ++ "&current=" ++ (toString currentlySelectedDocumentId)
 
                 SubdocumentBelowCurrent ->
-                    "?attach=below&child=" ++ (toString childId) ++ "current=" ++ (toString model.currentDocument.id)
+                    "?attach=below&child=" ++ (toString childId) ++ "&current=" ++ (toString currentlySelectedDocumentId)
 
                 DoNotAttachSubdocument ->
                     ""

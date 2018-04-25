@@ -45,6 +45,7 @@ createDocument model document =
         , documentMenuState = DocumentMenu MenuInactive
         , newDocumentPanelState = NewDocumentPanelInactive
         , currentDocument = document
+        , maybePreviousDocument = Just model.currentDocument
       }
     , Document.Cmd.createDocumentCmd document (Utility.getToken model)
     )
@@ -53,13 +54,33 @@ createDocument model document =
 selectNewDocument : Model -> Document -> ( Model, Cmd Msg )
 selectNewDocument model document =
     let
+        _ =
+            Debug.log "selectNewDocument, parentId" document.parentId
+
+        previousDocumentId =
+            case model.maybePreviousDocument of
+                Nothing ->
+                    0
+
+                Just document ->
+                    document.id
+
         token =
             Utility.getToken model
+
+        attachChildTask =
+            Document.Task.attachChildToMasterDocumentTask model token document.id previousDocumentId
+
+        selectMasterTask =
+            Document.Task.selectMasterTask document.parentId (Utility.getToken model)
+
+        attachAndSelectMasterTask =
+            attachChildTask |> Task.andThen (\_ -> selectMasterTask)
 
         commands =
             if document.parentId > 0 then
                 [ Document.Cmd.putTextToRender document
-                , Task.attempt (Msg.DocumentMsg << SaveDocument) <| Document.Task.attachChildToMasterDocumentTask model token document.id
+                , Task.attempt (Msg.DocumentMsg << GetDocumentList) attachAndSelectMasterTask
                 ]
             else
                 [ Document.Cmd.putTextToRender document ]
@@ -72,6 +93,10 @@ selectNewDocument model document =
           }
         , Cmd.batch commands
         )
+
+
+
+-- |> Task.andThen (Msg.DocumentMsg << GetDocumentList) (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
 
 
 renderLatex : Model -> ( Model, Cmd Msg )

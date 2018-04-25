@@ -60,7 +60,7 @@ getDocumentsAux documentListRecord model =
                     |> List.head
                     |> Maybe.withDefault (Document.Default.make "Empty document list" "Empty document list")
     in
-        ( { model | currentDocument = currentDocument, documentList = documentList }
+        ( { model | currentDocument = currentDocument, documentList = documentList, maybePreviousDocument = Nothing }
         , loadContentsIfNecessary token headDocument documentList
         )
 
@@ -91,15 +91,27 @@ loadContent model documentRecord =
 selectDocument : Model -> Document -> ( Model, Cmd Msg )
 selectDocument model document =
     let
-        maybeMasterDocument =
+        currentMasterDocumentId =
+            Debug.log "selectDocument, currentMasterDocumentId"
+                (case model.maybeMasterDocument of
+                    Nothing ->
+                        0
+
+                    Just masterDocument ->
+                        masterDocument.id
+                )
+
+        updatedMaybeMasterDocument =
             if document.attributes.docType == Master then
                 Just document
+            else if document.parentId == currentMasterDocumentId then
+                model.maybeMasterDocument
             else
                 Nothing
     in
         ( { model
             | currentDocument = document
-            , maybeMasterDocument = maybeMasterDocument
+            , maybeMasterDocument = updatedMaybeMasterDocument
             , editRecord = MiniLatex.Driver.emptyEditRecord
             , counter = model.counter + 1
           }
@@ -119,24 +131,11 @@ loadParentDocument model document =
 
         route =
             "/documents/" ++ toString model.currentDocument.id
-
-        _ =
-            Debug.log "LOAD PARENT" "NOW"
     in
         ( { model
-            -- XXYYZZ
-            -- | masterDocLoaded = True
-            -- , masterDocumentId = model.currentDocument.parentId
-            -- , masterDocumentTitle = model.currentDocument.parentTitle
             | currentDocument = document
           }
-        , -- Task.attempt (DocumentMsg << GetDocumentList) (selectMasterTask |> Task.andThen (\_ -> refreshMasterDocumentTask))
-          Task.attempt (Msg.DocumentMsg << GetDocumentList)
-            (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
-          -- Task.attempt (Msg.DocumentMsg << LoadContentAndRender)
-          --   ((Document.Task.selectMasterTask document.parentId (Utility.getToken model))
-          --       |> Task.andThen (\_ -> Document.Task.getOneDocumentTask token route "" (Msg.DocumentMsg << LoadContentAndRender))
-          --   )
+        , Task.attempt (Msg.DocumentMsg << GetDocumentList) (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
         )
 
 

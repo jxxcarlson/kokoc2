@@ -26,6 +26,7 @@ type alias Model =
     , message : String
     , documentList : List Document
     , currentDocument : Document
+    , maybePreviousDocument : Maybe Document
     , editRecord : EditRecord
     , maybeMasterDocument : Maybe Document
     , windowWidth : Int
@@ -115,6 +116,7 @@ initialModel flags =
      , message = "App started"
      , documentList = []
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
+     , maybePreviousDocument = Nothing
      , editRecord = MiniLatex.Driver.setup 0 ""
      , maybeMasterDocument = Nothing
      , windowWidth = flags.width
