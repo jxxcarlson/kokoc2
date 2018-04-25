@@ -44,6 +44,8 @@ import Document.Model
         , DocType(..)
         )
 import User.Msg exposing (UserMsg(SignIn))
+import Utility
+import Http
 
 
 view model =
@@ -57,7 +59,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 140), height (px 360), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 140), height (px 400), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , printDocument model
                      ]
@@ -151,12 +153,30 @@ editingCommmands model =
         , documentAttributes model
         , togglePublic model
         , renumberMaster model
+        , exportButton model
         , Widget.hairline
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
         ]
     else
         []
+
+
+exportButton model =
+    let
+        prefix =
+            Utility.compress "-" model.currentDocument.title
+
+        fileName =
+            prefix ++ ".tex"
+    in
+        Element.downloadAs { src = dataUrl model.textToExport, filename = fileName } <|
+            el MenuButton [ paddingTop 8, paddingBottom 8 ] (text "Export LaTeX")
+
+
+dataUrl : String -> String
+dataUrl data =
+    "data:text/plain;charset=utf-8," ++ Http.encodeUri data
 
 
 renumberMaster model =

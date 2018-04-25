@@ -41,6 +41,8 @@ import Regex
 import Dict exposing (Dict)
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
+import MiniLatex.Source
+import MiniLatex.RenderLatexForExport
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -119,13 +121,27 @@ renderLatex model =
         macroDefinitions =
             getMacroDefinitions model
 
+        textToExport =
+            [ MiniLatex.Source.texPrefix
+            , macroDefinitions
+            , sectionNumberCommand -1 document
+            , tableOfContentsMacro document
+            , MiniLatex.RenderLatexForExport.renderLatexForExport document.content
+            , MiniLatex.Source.texSuffix
+            ]
+                |> String.join ""
+
         renderedContent =
             (MiniLatex.Driver.getRenderedText macroDefinitions newEditRecord)
 
         updatedDocument =
             { document | renderedContent = renderedContent }
     in
-        ( { model | currentDocument = updatedDocument, editRecord = newEditRecord }
+        ( { model
+            | currentDocument = updatedDocument
+            , editRecord = newEditRecord
+            , textToExport = Debug.log "textToExport" textToExport
+          }
         , Cmd.batch
             [ Document.Cmd.putTextToRender updatedDocument
             , Task.attempt (Msg.DocumentMsg << SaveDocument)

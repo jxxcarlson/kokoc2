@@ -31,6 +31,7 @@ type alias Model =
     , maybePreviousDocument : Maybe Document
     , editRecord : EditRecord
     , maybeMasterDocument : Maybe Document
+    , textToExport : String
     , windowWidth : Int
     , windowHeight : Int
     , counter : Int
@@ -122,6 +123,7 @@ initialModel flags =
      , maybePreviousDocument = Nothing
      , editRecord = MiniLatex.Driver.setup 0 ""
      , maybeMasterDocument = Nothing
+     , textToExport = ""
      , windowWidth = flags.width
      , windowHeight = flags.height
      , counter = 0
