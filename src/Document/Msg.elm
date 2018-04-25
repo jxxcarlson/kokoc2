@@ -10,6 +10,7 @@ type DocumentMsg
     | CreateDocument (Result Http.Error DocumentRecord)
     | LoadContent (Result Http.Error DocumentRecord)
     | LoadContentAndRender (Result Http.Error DocumentRecord)
+    | LoadIntoDictionary (Result Http.Error DocumentRecord)
     | SaveDocument (Result Http.Error DocumentRecord)
     | DeleteDocument (Result Http.Error String)
     | NewDocument

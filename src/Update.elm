@@ -20,6 +20,7 @@ import Model
         , DocumentAttributePanelState(..)
         )
 import Utility
+import Configuration
 
 
 --- TEST:
@@ -152,5 +153,5 @@ update msg model =
 
         Test ->
             ( model
-            , Document.Cmd.randomDocuments model
+            , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181
             )

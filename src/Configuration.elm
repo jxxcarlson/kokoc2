@@ -1,4 +1,11 @@
-module Configuration exposing (host, api, client, maxDocs)
+module Configuration
+    exposing
+        ( host
+        , api
+        , client
+        , maxDocs
+        , startupDocumentId
+        )
 
 
 host : String
@@ -22,3 +29,7 @@ client =
 
 maxDocs =
     40
+
+
+startupDocumentId =
+    181

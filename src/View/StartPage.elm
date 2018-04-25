@@ -26,10 +26,11 @@ import User.Msg
             )
         )
 import View.Widget as Widget
-import View.Text as Text
 import View.Menubar as Menubar
 import View.Footer as Footer
 import View.Render as Render
+import Document.Dictionary as Dictionary
+import Document.Default
 
 
 view model =
@@ -48,7 +49,7 @@ view model =
 mainRow model =
     row Main
         [ height fill ]
-        [ column Alternate [ width (fillPortion 30), height fill, paddingTop 30, spacing 15 ] (leftColumn model)
+        [ column Alternate [ width (fillPortion 30), height fill ] (leftColumn model)
         , column Main [ width (fillPortion 70), height fill, center, verticalCenter, spacing 40 ] (mainContent model)
         ]
 
@@ -73,11 +74,17 @@ mainContent model =
 
 
 leftColumn model =
-    [ row LeftHeading [ paddingLeft 40 ] [ text ("About kNode") ]
+    let
+        document =
+            case Dictionary.get "startDocument" model.documentDict of
+                Just document ->
+                    document
 
-    -- , row Alternate [ paddingLeft 40 ] (textColumn model)
-    , row Alternate [] [ Render.renderedContent model (contentsWidth model) model.currentDocument ]
-    ]
+                Nothing ->
+                    Document.Default.make "Oops" "Startup document not found"
+    in
+        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) document ]
+        ]
 
 
 contentsWidth model =
@@ -85,14 +92,6 @@ contentsWidth model =
         |> toFloat
         |> (\x -> Basics.max 300 (0.3 * x))
         |> px
-
-
-textColumn model =
-    [ textLayout Alternate [ yScrollbar, height (px <| toFloat <| model.windowHeight - 160), spacing 10 ] (textContent model) ]
-
-
-textContent model =
-    Text.loremIpsum |> Text.paragraphify (\x -> paragraph Alternate [ width (px ((Helper.leftColumnWidth model) - 120)) ] [ text x ])
 
 
 

@@ -2,6 +2,7 @@ module Document.Cmd
     exposing
         ( getDocuments
         , getOneDocument
+        , loadDocumentIntoDictionary
         , putTextToRender
         , getDocumentsAndContent
         , search
@@ -53,6 +54,11 @@ getOneDocument token route query tagger =
                 route ++ "?" ++ query
     in
         Api.Request.doRequest <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
+
+
+loadDocumentIntoDictionary : String -> Int -> Cmd Msg
+loadDocumentIntoDictionary token id =
+    getOneDocument token ("/public/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadIntoDictionary)
 
 
 deleteDocument : String -> Int -> Cmd Msg
