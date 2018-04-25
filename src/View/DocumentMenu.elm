@@ -217,11 +217,11 @@ deleteDocument model =
 
 
 togglePublic model =
-    Widget.menuButton (publicStatus model) 60 [ onClick (DocumentMsg TogglePublic) ] False
+    Widget.menuButton (publicStatus model) 60 [ onClick (DocumentMsg TogglePublic) ] True
 
 
 toggleDocumentMenuButton model labelText width msg =
-    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu) ] False
+    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
 
 
 publicStatus model =
