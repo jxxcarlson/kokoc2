@@ -24,6 +24,7 @@ type DocumentMsg
     | GetRandomDocuments
     | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
     | RenumberMasterDocument
+    | TogglePublic
 
 
 

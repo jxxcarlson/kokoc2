@@ -8,6 +8,7 @@ module Document.ActionEdit
         , newDocument
         , updateDocument
         , updateAttributesOfCurrentDocument
+        , togglePublic
         )
 
 import Document.Default
@@ -301,6 +302,23 @@ putTextAndDocumentType model documentAttributes =
 
 
 {- End new document helpers -}
+
+
+togglePublic model =
+    let
+        currentDocument =
+            model.currentDocument
+
+        currentAttributes =
+            currentDocument.attributes
+
+        updatedAttributes =
+            { currentAttributes | public = not currentAttributes.public }
+
+        updatedDocument =
+            { currentDocument | attributes = updatedAttributes }
+    in
+        ( { model | currentDocument = updatedDocument }, Cmd.none )
 
 
 updateDocument : Model -> Document -> Cmd Msg

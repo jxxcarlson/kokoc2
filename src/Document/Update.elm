@@ -149,6 +149,9 @@ update submessage model =
             RenumberMasterDocument ->
                 Document.TOC.renumberMasterDocument model
 
+            TogglePublic ->
+                ActionEdit.togglePublic model
+
 
 
 {- 12 ACTIONS -}

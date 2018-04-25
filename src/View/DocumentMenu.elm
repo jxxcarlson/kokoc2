@@ -33,6 +33,7 @@ import Document.Msg
             , DoDeleteDocument
             , UpdateDocumentAttributes
             , RenumberMasterDocument
+            , TogglePublic
             )
         )
 import Document.Model
@@ -216,11 +217,18 @@ deleteDocument model =
 
 
 togglePublic model =
-    Widget.menuButton "Public" 60 [ onClick (NoOpz) ] False
+    Widget.menuButton (publicStatus model) 60 [ onClick (DocumentMsg TogglePublic) ] False
 
 
 toggleDocumentMenuButton model labelText width msg =
-    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
+    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu) ] False
+
+
+publicStatus model =
+    if model.currentDocument.attributes.public then
+        "Public"
+    else
+        "Private"
 
 
 
