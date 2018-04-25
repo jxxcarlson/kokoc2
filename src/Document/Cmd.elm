@@ -218,16 +218,16 @@ randomDocuments model =
         query =
             case model.searchDomain of
                 SearchPublic ->
-                    "?random=public"
+                    "random=public"
 
                 SearchPrivate ->
-                    "?random_user"
+                    "random_user=" ++ (toString <| Utility.getUserId model)
 
                 SearchAll ->
-                    "?random=all"
+                    "random=all"
 
                 SearchShared ->
-                    "?random_user"
+                    "random_user=" ++ (toString <| Utility.getUserId model)
 
         cmd =
             if model.searchDomain == SearchPublic then
