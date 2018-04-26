@@ -60,7 +60,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 140), height (px 470), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 150), height (px 495), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , printDocument model
                      ]
@@ -158,6 +158,7 @@ editingCommmands model =
         , compileMaster model
         , exportButton model
         , Widget.hairline
+        , repositoryDisplay model
         , versionDisplay model
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
@@ -168,6 +169,41 @@ editingCommmands model =
 
 versionDisplay model =
     el MenuButton [ paddingTop 2, paddingBottom 2 ] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
+
+
+archiveName : Model -> Document -> String
+archiveName model document =
+    let
+        maybeParent =
+            if model.maybeMasterDocument == Nothing then
+                Nothing
+            else
+                List.head model.documentList
+
+        parentArchiveName =
+            case maybeParent of
+                Just parent ->
+                    parent.attributes.archive
+
+                Nothing ->
+                    "default"
+
+        documentArchiveName =
+            document.attributes.archive
+
+        archiveName =
+            if documentArchiveName /= "default" then
+                documentArchiveName
+            else if parentArchiveName /= "default" then
+                parentArchiveName
+            else
+                "default"
+    in
+        archiveName
+
+
+repositoryDisplay model =
+    el MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: " ++ archiveName model model.currentDocument)
 
 
 exportButton model =
