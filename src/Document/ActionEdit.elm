@@ -43,6 +43,7 @@ import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
 import MiniLatex.Source
 import MiniLatex.RenderLatexForExport
+import Document.MiniLatex
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -119,7 +120,7 @@ renderLatex model =
             MiniLatex.Driver.update 666 model.editRecord contentToRender
 
         macroDefinitions =
-            getMacroDefinitions model
+            Document.MiniLatex.getMacroDefinitions model
 
         textToExport =
             [ MiniLatex.Source.texPrefix
@@ -194,24 +195,6 @@ tableOfContentsMacro document =
 
             Nothing ->
                 "\n\n"
-
-
-getMacroDefinitions : Model -> String
-getMacroDefinitions model =
-    let
-        macrosString =
-            macros model.documentDict |> (\x -> "\n$$\n" ++ String.trim x ++ "\n$$\n")
-    in
-        macrosString ++ "\n\n$$\n\\newcommand{\\label}[1]{}" ++ "\n$$\n\n"
-
-
-macros : Dict String Document -> String
-macros documentDict =
-    if Dictionary.member "texmacros" documentDict then
-        Dictionary.getContent "texmacros" documentDict
-            |> Regex.replace Regex.All (Regex.regex "\n+") (\_ -> "\n")
-    else
-        ""
 
 
 deleteDocumentFromList : Document -> Model -> Model

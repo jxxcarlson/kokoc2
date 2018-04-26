@@ -26,6 +26,7 @@ type DocumentMsg
     | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
     | RenumberMasterDocument
     | TogglePublic
+    | CompileMaster
 
 
 

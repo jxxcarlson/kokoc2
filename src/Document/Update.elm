@@ -21,6 +21,7 @@ import Task
 import Document.Default
 import Document.Dictionary as Dictionary
 import Document.TOC
+import Document.MasterDocument
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -181,6 +182,9 @@ update submessage model =
 
             RenumberMasterDocument ->
                 Document.TOC.renumberMasterDocument model
+
+            CompileMaster ->
+                Document.MasterDocument.prepareExportLatexFromMaster model
 
             TogglePublic ->
                 ActionEdit.togglePublic model
