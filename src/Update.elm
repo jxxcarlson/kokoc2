@@ -151,6 +151,9 @@ update msg model =
         SetSubdocumentPosition subdocumentPosition ->
             ( { model | subdocumentPosition = subdocumentPosition }, Cmd.none )
 
+        InputRepositoryName str ->
+            ( { model | repositoryName = str }, Cmd.none )
+
         Test ->
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181

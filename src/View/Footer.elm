@@ -10,6 +10,7 @@ import Model exposing (Model, Mode(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (Msg(Test))
+import Configuration
 
 
 view model =
@@ -19,6 +20,7 @@ view model =
 footerContent model =
     [ testButton
     , el Menu [ verticalCenter ] (text model.message)
+    , el Menu [ paddingLeft 12, verticalCenter ] (text <| "Host: " ++ Configuration.host)
     ]
 
 

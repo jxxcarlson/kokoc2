@@ -27,6 +27,7 @@ type DocumentMsg
     | RenumberMasterDocument
     | TogglePublic
     | CompileMaster
+    | SetRepositoryName
 
 
 

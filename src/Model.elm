@@ -49,6 +49,7 @@ type alias Model =
     , documentTextType : TextType
     , documentType : DocType
     , subdocumentPosition : SubdocumentPosition
+    , repositoryName : String
     }
 
 
@@ -141,5 +142,6 @@ initialModel flags =
      , documentTextType = MiniLatex
      , documentType = Standard
      , subdocumentPosition = DoNotAttachSubdocument
+     , repositoryName = "default"
      }
     )

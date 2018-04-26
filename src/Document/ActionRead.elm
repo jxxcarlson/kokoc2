@@ -24,6 +24,7 @@ import Document.Task
 import MiniLatex.Driver
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
+import Document.Utility
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -130,6 +131,7 @@ selectDocument model document =
             , maybeMasterDocument = updatedMaybeMasterDocument
             , editRecord = MiniLatex.Driver.emptyEditRecord
             , counter = model.counter + 1
+            , repositoryName = Document.Utility.archiveName model document
           }
         , Cmd.batch
             [ Document.Cmd.selectMasterOrRender model document

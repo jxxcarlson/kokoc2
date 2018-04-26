@@ -25,10 +25,13 @@ type MyStyles
     | Title
     | Link
     | InputField
+    | MenuInputField
     | Button
     | ButtonSelected
     | MenuButton
     | MenuButtonSelected
+    | InnerMenuButton
+    | InnerMenuButtonSelected
     | MenuButtonStrong
     | MenuButtonStrongSelected
     | FormButton
@@ -128,6 +131,12 @@ stylesheet =
             , Font.size 18 -- all units given as px
             , Font.typeface fontList
             ]
+        , style MenuInputField
+            [ Color.text Color.white
+            , Color.background Color.lightCharcoal
+            , Font.size 14 -- all units given as px
+            , Font.typeface fontList
+            ]
         , style Button
             [ Color.text Color.white
             , Color.background (Color.rgb 100 100 100)
@@ -155,6 +164,20 @@ stylesheet =
             [ Color.text (Color.rgb 230 57 57)
             , Color.background menuColor
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 14 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style InnerMenuButton
+            [ Color.text Color.white
+            , Color.background Color.blue
+            , pseudo "active" [ Transition.all, Color.background Color.darkRed ]
+            , Font.size 14 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style InnerMenuButtonSelected
+            [ Color.text (Color.rgb 230 57 57)
+            , Color.background Color.lightBlue
+            , pseudo "active" [ Transition.all, Color.background Color.red ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
             ]

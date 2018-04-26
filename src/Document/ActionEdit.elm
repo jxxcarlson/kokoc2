@@ -9,6 +9,7 @@ module Document.ActionEdit
         , updateDocument
         , updateAttributesOfCurrentDocument
         , togglePublic
+        , updateRepositoryName
         )
 
 import Document.Default
@@ -347,3 +348,24 @@ updateAttributesOfCurrentDocument model =
           }
         , updateDocument model updatedDocument
         )
+
+
+updateRepositoryName : Model -> ( Model, Cmd Msg )
+updateRepositoryName model =
+    let
+        document =
+            model.currentDocument
+
+        attributes =
+            document.attributes
+
+        newAttributes =
+            { attributes | archive = model.repositoryName }
+
+        newDocument =
+            { document | attributes = newAttributes }
+
+        token =
+            Utility.getToken model
+    in
+        ( { model | currentDocument = newDocument }, Document.Cmd.saveDocumentCmd newDocument token )

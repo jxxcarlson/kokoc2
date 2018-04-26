@@ -71,6 +71,13 @@ menuButton title width_ attrs selected =
         el MenuButton ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
 
 
+innerMenuButton title width_ attrs selected =
+    if selected then
+        el InnerMenuButtonSelected ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+    else
+        el InnerMenuButton ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+
+
 strongMenuButton title width_ attrs selected =
     if selected then
         el MenuButtonStrongSelected ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
@@ -95,6 +102,22 @@ inputField label_ value_ width_ action =
         [ width (px width_)
         , height (px 30)
         , paddingLeft 5
+        , Element.Attributes.toAttr (Html.Attributes.attribute "autocorrect" "off")
+        ]
+        { onChange = action
+        , value = value_
+        , label = Element.Input.placeholder { text = label_, label = Element.Input.labelLeft Element.empty }
+        , options = []
+        }
+
+
+menuInputField label_ value_ width_ action =
+    Element.Input.text MenuInputField
+        [ width (px width_)
+        , height (px 25)
+        , paddingLeft 5
+        , paddingTop 12
+        , paddingBottom 12
         , Element.Attributes.toAttr (Html.Attributes.attribute "autocorrect" "off")
         ]
         { onChange = action

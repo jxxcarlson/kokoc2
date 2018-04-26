@@ -189,6 +189,9 @@ update submessage model =
             TogglePublic ->
                 ActionEdit.togglePublic model
 
+            SetRepositoryName ->
+                ActionEdit.updateRepositoryName model
+
 
 
 {- 12 ACTIONS -}

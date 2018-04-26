@@ -26,6 +26,7 @@ type Msg
     | DisplayDocumentAttributesPanel
     | CancelNewDocument
     | InputNewDocumentTitle String
+    | InputRepositoryName String
     | SetDocumentTextType TextType
     | SetDocumentType DocType
     | SetSubdocumentPosition SubdocumentPosition

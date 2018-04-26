@@ -35,6 +35,7 @@ import Document.Msg
             , RenumberMasterDocument
             , TogglePublic
             , CompileMaster
+            , SetRepositoryName
             )
         )
 import Document.Model
@@ -47,6 +48,7 @@ import Document.Model
 import User.Msg exposing (UserMsg(SignIn))
 import Utility
 import Http
+import Document.Utility
 
 
 view model =
@@ -72,7 +74,7 @@ view model =
 
 menuHeight model =
     if model.page == EditorPage then
-        (px 495)
+        (px 540)
     else
         (px 130)
 
@@ -166,7 +168,9 @@ editingCommmands model =
         , compileMaster model
         , exportButton model
         , Widget.hairline
-        , repositoryDisplay model
+        , setRepository model
+        , repositoryNameInputPane model
+        , Widget.hairline
         , versionDisplay model
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
@@ -179,39 +183,13 @@ versionDisplay model =
     el MenuButton [ paddingTop 2, paddingBottom 2 ] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
 
 
-archiveName : Model -> Document -> String
-archiveName model document =
-    let
-        maybeParent =
-            if model.maybeMasterDocument == Nothing then
-                Nothing
-            else
-                List.head model.documentList
-
-        parentArchiveName =
-            case maybeParent of
-                Just parent ->
-                    parent.attributes.archive
-
-                Nothing ->
-                    "default"
-
-        documentArchiveName =
-            document.attributes.archive
-
-        archiveName =
-            if documentArchiveName /= "default" then
-                documentArchiveName
-            else if parentArchiveName /= "default" then
-                parentArchiveName
-            else
-                "default"
-    in
-        archiveName
-
-
 repositoryDisplay model =
-    el MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: " ++ archiveName model model.currentDocument)
+    --nel MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: " ++ archiveName model model.currentDocument)
+    el MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: ")
+
+
+repositoryNameInputPane model =
+    Widget.menuInputField "repository" (Document.Utility.archiveName model model.currentDocument) 100 (InputRepositoryName)
 
 
 exportButton model =
@@ -252,13 +230,12 @@ printUrl document =
     Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
 
 
-newVersionButton1 document =
-    newTab (newVersionUrl document) <|
-        el MenuButton [ verticalCenter, onClick CloseMenus ] (text "New version")
-
-
 newVersionButton document =
     Widget.linkButton (newVersionUrl document) "New version"
+
+
+setRepository model =
+    Widget.innerMenuButton "Set repository:" 100 [ onClick (DocumentMsg SetRepositoryName) ] False
 
 
 newVersionUrl : Document -> String
