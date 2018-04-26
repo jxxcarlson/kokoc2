@@ -8,7 +8,11 @@ import Document.MiniLatex
 import MiniLatex.FastExportToLatex as FastExportToLatex
 import MiniLatex.RenderLatexForExport
 import MiniLatex.Source as Source
-import Request.Document
+import Model exposing (Model)
+import Document.Dictionary as Dictionary
+import Regex
+import Document.Model exposing (Document)
+import Msg exposing (Msg)
 import Task
 import Utility.KeyValue as KeyValue
 
@@ -20,7 +24,7 @@ concatenateText documentList =
 
 wordCount : Model -> Int
 wordCount model =
-    List.drop 1 model.documents
+    List.drop 1 model.documentList
         |> concatenateText
         |> String.words
         |> List.length
@@ -33,19 +37,18 @@ prepareExportLatexFromMaster model =
             Document.MiniLatex.macros model.documentDict
 
         sourceText =
-            List.drop 1 model.documents
+            List.drop 1 model.documentList
                 |> concatenateText
                 |> FastExportToLatex.export
 
-        -- |> FastExportToLatex.renderLatexForExport
         maybeAuthor =
-            KeyValue.getStringValueForKeyFromTagList "author" model.current_document.tags
+            KeyValue.getStringValueForKeyFromTagList "author" model.currentDocument.tags
 
         maybeDate =
-            KeyValue.getStringValueForKeyFromTagList "date" model.current_document.tags
+            KeyValue.getStringValueForKeyFromTagList "date" model.currentDocument.tags
 
         titleCommand =
-            "\\title{" ++ model.current_document.title ++ "}"
+            "\\title{" ++ model.currentDocument.title ++ "}"
 
         authorCommand =
             case maybeAuthor of

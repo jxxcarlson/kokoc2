@@ -1,5 +1,11 @@
 module Document.MiniLatex exposing (getMacroDefinitions, macros)
 
+import Model exposing (Model)
+import Document.Dictionary as Dictionary
+import Regex
+import Dict exposing (Dict)
+import Document.Model exposing (Document)
+
 
 getMacroDefinitions : Model -> String
 getMacroDefinitions model =

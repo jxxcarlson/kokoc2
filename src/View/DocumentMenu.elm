@@ -34,6 +34,7 @@ import Document.Msg
             , UpdateDocumentAttributes
             , RenumberMasterDocument
             , TogglePublic
+            , CompileMaster
             )
         )
 import Document.Model
@@ -59,7 +60,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 140), height (px 400), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 140), height (px 470), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , printDocument model
                      ]
@@ -152,14 +153,21 @@ editingCommmands model =
         , Widget.hairline
         , documentAttributes model
         , togglePublic model
+        , Widget.hairline
         , renumberMaster model
+        , compileMaster model
         , exportButton model
         , Widget.hairline
+        , versionDisplay model
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
         ]
     else
         []
+
+
+versionDisplay model =
+    el MenuButton [ paddingTop 2, paddingBottom 2 ] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
 
 
 exportButton model =
@@ -177,6 +185,10 @@ exportButton model =
 dataUrl : String -> String
 dataUrl data =
     "data:text/plain;charset=utf-8," ++ Http.encodeUri data
+
+
+compileMaster model =
+    Widget.menuButton "Compile Master" 90 [ onClick (DocumentMsg CompileMaster) ] False
 
 
 renumberMaster model =
