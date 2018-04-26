@@ -1,4 +1,4 @@
-module Utility exposing (getUserId, getToken, setPage, removeWhen, compress)
+module Utility exposing (getUserId, getToken, setPage, removeWhen, compress, getUsername)
 
 import Model exposing (Model, Page(..))
 import String.Extra
@@ -13,6 +13,16 @@ getUserId model =
 
         Just user ->
             user.id
+
+
+getUsername : Model -> String
+getUsername model =
+    case model.maybeCurrentUser of
+        Nothing ->
+            ""
+
+        Just user ->
+            user.username
 
 
 getToken : Model -> String

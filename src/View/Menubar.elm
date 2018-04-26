@@ -32,11 +32,16 @@ centerMenu model =
     row Menubar
         [ center, width (fillPortion 35), spacing 8 ]
         [ startPageButton model
+        , homePageButton model
         , readerPageButton model
         , editorPageButton model
         , DocumentMenu.newDocumentPanel model
         , DocumentMenu.documentAttributesPanel model
         ]
+
+
+homePageButton model =
+    Widget.button "Home" 75 [ onClick (GotoHomePage) ] False
 
 
 rightMenu model =

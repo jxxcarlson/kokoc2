@@ -157,6 +157,9 @@ update msg model =
         InputShareDocumentCommand str ->
             ( { model | shareDocumentCommand = str }, Cmd.none )
 
+        GotoHomePage ->
+            ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model <| "key=home&authorname=" ++ (Utility.getUsername model) )
+
         Test ->
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181

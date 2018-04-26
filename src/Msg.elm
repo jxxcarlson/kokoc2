@@ -17,6 +17,7 @@ type Msg
     | GotoStartPage
     | GotoReaderPage
     | GotoEditorPage
+    | GotoHomePage
     | Test
     | ToggleDocumentMenu DocumentMenuState
     | ToggleSearchMenu SearchMenuState

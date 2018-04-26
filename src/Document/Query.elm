@@ -1,4 +1,4 @@
-module Document.Query exposing (makeQuery)
+module Document.Query exposing (makeQuery, makeImmediateQuery)
 
 import Document.QueryParser exposing (parseQuery)
 import Http
@@ -11,6 +11,18 @@ import Document.Model
 
 makeQuery : SearchDomain -> SortOrder -> Int -> String -> String
 makeQuery searchDomain searchOrder userId rawQuery =
+    let
+        cmd =
+            rawQuery |> String.split "=" |> List.head |> Maybe.withDefault "NoCommand"
+    in
+        if List.member cmd [ "idlist" ] then
+            rawQuery
+        else
+            (makeQueryHelper searchDomain searchOrder userId rawQuery) ++ "&loading"
+
+
+makeImmediateQuery : SearchDomain -> SortOrder -> Int -> String -> String
+makeImmediateQuery searchDomain searchOrder userId rawQuery =
     let
         cmd =
             rawQuery |> String.split "=" |> List.head |> Maybe.withDefault "NoCommand"
@@ -57,7 +69,7 @@ makeQueryHelper searchDomain searchOrder userId queryString =
             , querySuffix searchDomain
             ]
     in
-        (buildQuery queryList) ++ "&loading"
+        (buildQuery queryList)
 
 
 queryPrefix : Int -> SearchDomain -> String -> String

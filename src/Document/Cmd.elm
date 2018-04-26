@@ -8,6 +8,7 @@ module Document.Cmd
         , search
         , selectMaster
         , selectMasterOrRender
+        , searchWithQueryCmd
         , renderNonLatexCmd
         , createDocumentCmd
         , deleteDocument
@@ -80,23 +81,6 @@ putTextToRender document =
         OutsideInfo.sendInfoOutside (OutsideInfo.PutTextToRender value)
 
 
-getDocumentsAndContentX : String -> List Document -> Cmd Msg
-getDocumentsAndContentX token documents =
-    let
-        cmd index doc =
-            if index == 0 then
-                getOneDocument token ("/documents/" ++ (toString doc.id)) "" (Msg.DocumentMsg << LoadContentAndRender)
-            else if (String.left 7 doc.content) == "Loading" then
-                getOneDocument token ("/documents/" ++ (toString doc.id)) "" (Msg.DocumentMsg << LoadContent)
-            else
-                getOneDocument token ("/documents/" ++ (toString doc.id)) "" (Msg.DocumentMsg << LoadContentAndRender)
-
-        commands =
-            List.indexedMap cmd <| documents
-    in
-        Cmd.batch commands
-
-
 getDocumentsAndContent : String -> List Document -> Cmd Msg
 getDocumentsAndContent token documents =
     let
@@ -126,18 +110,6 @@ getDocumentsAndContent token documents =
                     [ Cmd.none ]
     in
         Cmd.batch (tailCommands ++ [ headCommand ])
-
-
-getDocumentsAndContent2 : String -> List Document -> Cmd Msg
-getDocumentsAndContent2 token documents =
-    let
-        idList =
-            (List.map (\doc -> doc.id) documents)
-
-        cmd =
-            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
-    in
-        Cmd.batch <| List.map cmd <| List.reverse idList
 
 
 
@@ -210,6 +182,18 @@ searchWithAuthorizationCmd model =
     let
         query =
             Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) model.searchQuery
+
+        token =
+            Utility.getToken model
+    in
+        getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
+
+
+searchWithQueryCmd : Model -> String -> Cmd Msg
+searchWithQueryCmd model queryString =
+    let
+        query =
+            Query.makeImmediateQuery model.searchDomain model.sortOrder (Utility.getUserId model) queryString
 
         token =
             Utility.getToken model
