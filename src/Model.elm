@@ -50,6 +50,7 @@ type alias Model =
     , documentType : DocType
     , subdocumentPosition : SubdocumentPosition
     , repositoryName : String
+    , shareDocumentCommand : String
     }
 
 
@@ -143,5 +144,6 @@ initialModel flags =
      , documentType = Standard
      , subdocumentPosition = DoNotAttachSubdocument
      , repositoryName = "default"
+     , shareDocumentCommand = "username: rw"
      }
     )

@@ -28,6 +28,7 @@ type DocumentMsg
     | TogglePublic
     | CompileMaster
     | SetRepositoryName
+    | UpdateShareData
 
 
 

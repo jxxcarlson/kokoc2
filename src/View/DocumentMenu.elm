@@ -36,6 +36,7 @@ import Document.Msg
             , TogglePublic
             , CompileMaster
             , SetRepositoryName
+            , UpdateShareData
             )
         )
 import Document.Model
@@ -62,7 +63,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 150), height (menuHeight model), spacing 4, paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 210), height (menuHeight model), spacing 4, paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , hairline Hairline
                      , printDocument model
@@ -74,9 +75,9 @@ view model =
 
 menuHeight model =
     if model.page == EditorPage then
-        (px 620)
+        (px 700)
     else
-        (px 130)
+        (px 145)
 
 
 newDocumentPanel model =
@@ -168,29 +169,34 @@ editingCommmands model =
         , compileMaster model
         , exportButton model
         , Widget.hairline
-        , setRepository model
         , repositoryNameInputPane model
+        , setRepository model
         , Widget.hairline
         , versionDisplay model
         , showVersionsButton model.currentDocument
         , newVersionButton model.currentDocument
+        , Widget.hairline
+        , shareDocumentInputPane model
+        , shareDocumentButton model
         ]
     else
         []
+
+
+shareDocumentInputPane model =
+    Widget.menuInputField "share" (model.shareDocumentCommand) 180 (InputShareDocumentCommand)
+
+
+shareDocumentButton model =
+    Widget.innerMenuButton "Share" 60 [ onClick (DocumentMsg UpdateShareData) ] False
 
 
 versionDisplay model =
     el MenuButton [] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
 
 
-
---
--- repositoryDisplay model =
---     el MenuButton [ ] (text <| "Repository: ")
-
-
 repositoryNameInputPane model =
-    Widget.menuInputField "repository" (Document.Utility.archiveName model model.currentDocument) 100 (InputRepositoryName)
+    Widget.menuInputField "repository" (Document.Utility.archiveName model model.currentDocument) 180 (InputRepositoryName)
 
 
 exportButton model =

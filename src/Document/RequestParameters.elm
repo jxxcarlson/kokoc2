@@ -2,9 +2,10 @@ module Document.RequestParameters
     exposing
         ( getDocumentListParameters
         , getOneDocumentParameters
-        , updateDocumentParameters
+        , putDocumentParameters
         , postDocumentRecordParameters
         , deleteDocumentParameters
+        , shareDocumentParameters
         )
 
 import Configuration
@@ -43,8 +44,8 @@ getOneDocumentParameters token route tagger =
     }
 
 
-updateDocumentParameters : Api.Request.SetupRequestDataWithPayload DocumentRecord
-updateDocumentParameters token route encodedValue tagger =
+putDocumentParameters : Api.Request.SetupRequestDataWithPayload DocumentRecord
+putDocumentParameters token route encodedValue tagger =
     { api = Configuration.api
     , route = route
     , payload = encodedValue
@@ -79,12 +80,13 @@ deleteDocumentParameters token route tagger =
     }
 
 
-
--- deleteCurrentDocument : Model -> Cmd Msg
--- deleteCurrentDocument model =
---     let
---         request =
---             deleteCurrentDocumentRB model
---                 |> HB.toRequest
---     in
---         Http.send (DocMsg << DoDeleteDocument) request
+shareDocumentParameters : Api.Request.SetupRequestDataWithPayload DocumentRecord
+shareDocumentParameters token route encodedValue tagger =
+    { api = Configuration.api
+    , route = route
+    , payload = encodedValue
+    , tagger = tagger
+    , token = token
+    , decoder = Data.documentRecordDecoder
+    , method = HB.put
+    }

@@ -154,6 +154,9 @@ update msg model =
         InputRepositoryName str ->
             ( { model | repositoryName = str }, Cmd.none )
 
+        InputShareDocumentCommand str ->
+            ( { model | shareDocumentCommand = str }, Cmd.none )
+
         Test ->
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181

@@ -11,6 +11,8 @@ import Helper
 import View.Widget as Widget
 import Msg exposing (Msg(Test))
 import Configuration
+import Document.Utility
+import Document.Model exposing (DocType(..))
 
 
 view model =
@@ -20,8 +22,23 @@ view model =
 footerContent model =
     [ testButton
     , el Menu [ verticalCenter ] (text model.message)
-    , el Menu [ paddingLeft 12, verticalCenter ] (text <| "Host: " ++ Configuration.host)
+    , textLabel <| "Host: " ++ Configuration.host
+    , wordCount model
+    , textLabel <| "Identifier: " ++ Document.Utility.identifier model.currentDocument
     ]
+
+
+wordCount model =
+    case model.currentDocument.attributes.docType of
+        Standard ->
+            textLabel <| "Word count: " ++ (toString <| Document.Utility.wordCount model.currentDocument)
+
+        Master ->
+            textLabel <| "Word count: " ++ (toString <| Document.Utility.masterDocumenWordCount model)
+
+
+textLabel content =
+    el Menulabel [ paddingLeft 24, verticalCenter ] (text <| content)
 
 
 testButton =

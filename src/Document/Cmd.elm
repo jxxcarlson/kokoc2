@@ -14,6 +14,7 @@ module Document.Cmd
         , saveDocumentCmd
         , saveDocumentListCmd
         , randomDocuments
+        , updateSharingData
         )
 
 import Model exposing (Model)
@@ -277,3 +278,41 @@ saveDocumentListCmd documentList model =
                 |> List.map (\doc -> saveDocumentCmd doc (Utility.getToken model))
     in
         Cmd.batch cmds
+
+
+updateSharingData : Model -> Cmd Msg
+updateSharingData model =
+    let
+        parts =
+            String.split ":" model.shareDocumentCommand
+
+        maybeUsername =
+            parts |> List.take 1 |> List.head
+
+        maybeAction =
+            parts |> List.drop 1 |> List.head
+
+        finalSegment =
+            case ( maybeUsername, maybeAction ) of
+                ( Just username, Just action ) ->
+                    (String.trim username) ++ "/" ++ (String.trim action)
+
+                ( _, _ ) ->
+                    ""
+
+        token =
+            Utility.getToken model
+
+        route =
+            Debug.log "updateSharingData, route"
+                (if finalSegment == "" then
+                    ""
+                 else
+                    "/share/" ++ ((toString model.currentDocument.id) ++ "/" ++ finalSegment)
+                )
+
+        encodedValue =
+            Data.encodeDocumentRecord model.currentDocument
+    in
+        Api.Request.doRequest <|
+            Document.RequestParameters.shareDocumentParameters token route encodedValue (Msg.DocumentMsg << SaveDocument)

@@ -27,6 +27,7 @@ type Msg
     | CancelNewDocument
     | InputNewDocumentTitle String
     | InputRepositoryName String
+    | InputShareDocumentCommand String
     | SetDocumentTextType TextType
     | SetDocumentType DocType
     | SetSubdocumentPosition SubdocumentPosition

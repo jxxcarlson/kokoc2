@@ -12,6 +12,7 @@ type MyStyles
     = Main
     | MainContent
     | Menubar
+    | Menulabel
     | Menubar2
     | Menu
     | Alternate
@@ -85,6 +86,7 @@ stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
         , style Menubar [ Color.background <| menubarColor, Color.text Color.white ]
+        , style Menulabel [ Color.background <| menubarColor, Color.text Color.lightGray ]
         , style Menubar2 [ Color.background <| menubar2Color, Color.text Color.white ]
         , style Menu [ Font.typeface fontList, Color.background <| menuColor, Color.text Color.white ]
         , style Alternate [ Color.background alternateColor ]

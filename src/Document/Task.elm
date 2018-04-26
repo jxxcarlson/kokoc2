@@ -59,7 +59,7 @@ saveDocumentTask token document =
         tagger =
             Msg.DocumentMsg << SaveDocument
     in
-        Api.Request.makeTask <| Document.RequestParameters.updateDocumentParameters token route encodedValue tagger
+        Api.Request.makeTask <| Document.RequestParameters.putDocumentParameters token route encodedValue tagger
 
 
 attachChildToMasterDocumentTask : Model -> String -> Int -> Int -> Task Http.Error DocumentRecord
@@ -107,7 +107,7 @@ attachChildToMasterDocumentTask model token childId currentlySelectedDocumentId 
         tagger =
             Msg.DocumentMsg << SaveDocument
     in
-        Api.Request.makeTask <| Document.RequestParameters.updateDocumentParameters token route encodedValue tagger
+        Api.Request.makeTask <| Document.RequestParameters.putDocumentParameters token route encodedValue tagger
 
 
 getOneDocumentTask : String -> String -> String -> Tagger DocumentRecord -> Task Http.Error DocumentRecord

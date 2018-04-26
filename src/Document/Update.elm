@@ -192,6 +192,9 @@ update submessage model =
             SetRepositoryName ->
                 ActionEdit.updateRepositoryName model
 
+            UpdateShareData ->
+                ( model, Document.Cmd.updateSharingData model )
+
 
 
 {- 12 ACTIONS -}

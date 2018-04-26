@@ -1,7 +1,34 @@
-module Document.Utility exposing (archiveName)
+module Document.Utility
+    exposing
+        ( archiveName
+        , wordCount
+        , identifier
+        , masterDocumenWordCount
+        )
 
 import Model exposing (Model)
 import Document.Model exposing (Document)
+import Array
+
+
+concatenateText : List Document -> String
+concatenateText documentList =
+    documentList |> List.foldl (\doc acc -> acc ++ "\n\n" ++ doc.content) ""
+
+
+masterDocumenWordCount : Model -> Int
+masterDocumenWordCount model =
+    List.drop 1 model.documentList
+        |> concatenateText
+        |> String.words
+        |> List.length
+
+
+wordCount : Document -> Int
+wordCount document =
+    document.content
+        |> String.words
+        |> List.length
 
 
 archiveName : Model -> Document -> String
@@ -33,3 +60,18 @@ archiveName model document =
                 "default"
     in
         archiveName
+
+
+identifier : Document -> String
+identifier document =
+    let
+        parts =
+            String.split "." document.identifier |> Array.fromList
+
+        datePart =
+            Array.get 2 parts |> Maybe.withDefault "--"
+
+        hashPart =
+            Array.get 3 parts |> Maybe.withDefault "--"
+    in
+        datePart ++ "." ++ hashPart
