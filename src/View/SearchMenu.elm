@@ -24,6 +24,7 @@ view model =
                 column Menu
                     [ moveRight 200, width (px 130), height (px 240), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
                     [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
+                    , hairline Hairline
                     , randomSearch model
                     , Widget.hairline
                     , searchPublic model
@@ -35,7 +36,7 @@ view model =
 
 
 randomSearch model =
-    Widget.menuButton "Random Docs" 90 [ onClick (DocumentMsg GetRandomDocuments) ] False
+    Widget.menuButton "Random Docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRandomDocuments) ] False
 
 
 searchPublic model =

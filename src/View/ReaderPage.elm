@@ -19,6 +19,7 @@ view model =
     Element.column Alternate
         [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
         [ Menubar.view model
+        , Element.hairline Hairline
         , mainRow model
         , Footer.view model
         ]

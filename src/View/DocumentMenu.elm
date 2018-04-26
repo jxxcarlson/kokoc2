@@ -60,13 +60,21 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 150), height (px 495), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 150), height (menuHeight model), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
+                     , hairline Hairline
                      , printDocument model
                      ]
                         ++ editingCommmands model
                         ++ [ Widget.hairline, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
                     )
+
+
+menuHeight model =
+    if model.page == EditorPage then
+        (px 495)
+    else
+        (px 130)
 
 
 newDocumentPanel model =
