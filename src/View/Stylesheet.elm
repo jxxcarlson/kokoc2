@@ -170,6 +170,7 @@ stylesheet =
         , style InnerMenuButton
             [ Color.text Color.white
             , Color.background Color.blue
+            , Border.rounded 8
             , pseudo "active" [ Transition.all, Color.background Color.darkRed ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
@@ -177,6 +178,7 @@ stylesheet =
         , style InnerMenuButtonSelected
             [ Color.text (Color.rgb 230 57 57)
             , Color.background Color.lightBlue
+            , Border.rounded 8
             , pseudo "active" [ Transition.all, Color.background Color.red ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList

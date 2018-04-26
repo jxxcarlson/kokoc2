@@ -62,7 +62,7 @@ view model =
         DocumentMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 330, width (px 150), height (menuHeight model), paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
+                    [ moveRight 330, width (px 150), height (menuHeight model), spacing 4, paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
                     ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                      , hairline Hairline
                      , printDocument model
@@ -74,7 +74,7 @@ view model =
 
 menuHeight model =
     if model.page == EditorPage then
-        (px 540)
+        (px 620)
     else
         (px 130)
 
@@ -86,8 +86,8 @@ newDocumentPanel model =
                 [ moveRight 445, moveDown 80, width (px 350), height (newDocumentMenuHeight model), padding 25, spacing 3 ]
                 ([ el Menu [ paddingBottom 8 ] (text "New Document")
                  , Widget.inputField "Title" "" 300 (InputNewDocumentTitle)
-                 , Widget.strongMenuButton "Create" 60 [ paddingTop 8, onClick (DocumentMsg NewDocument) ] False
-                 , Widget.strongMenuButton "Cancel" 60 [ paddingBottom 12, paddingTop 6, onClick (CancelNewDocument) ] False
+                 , Widget.strongMenuButton "Create" 60 [ onClick (DocumentMsg NewDocument) ] False
+                 , Widget.strongMenuButton "Cancel" 60 [ onClick (CancelNewDocument) ] False
                  , hairline Hairline
                  , el Menu [ paddingTop 12 ] (text "Text type")
                  , Widget.menuButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
@@ -180,12 +180,13 @@ editingCommmands model =
 
 
 versionDisplay model =
-    el MenuButton [ paddingTop 2, paddingBottom 2 ] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
+    el MenuButton [] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
 
 
-repositoryDisplay model =
-    --nel MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: " ++ archiveName model model.currentDocument)
-    el MenuButton [ paddingTop 2, paddingBottom 6 ] (text <| "Repository: ")
+
+--
+-- repositoryDisplay model =
+--     el MenuButton [ ] (text <| "Repository: ")
 
 
 repositoryNameInputPane model =
@@ -201,7 +202,7 @@ exportButton model =
             prefix ++ ".tex"
     in
         Element.downloadAs { src = dataUrl model.textToExport, filename = fileName } <|
-            el MenuButton [ paddingTop 8, paddingBottom 8 ] (text "Export LaTeX")
+            el MenuButton [] (text "Export LaTeX")
 
 
 dataUrl : String -> String
@@ -235,7 +236,7 @@ newVersionButton document =
 
 
 setRepository model =
-    Widget.innerMenuButton "Set repository:" 100 [ onClick (DocumentMsg SetRepositoryName) ] False
+    Widget.innerMenuButton "Set repository" 100 [ onClick (DocumentMsg SetRepositoryName) ] False
 
 
 newVersionUrl : Document -> String
