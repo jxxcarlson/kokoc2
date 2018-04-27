@@ -12,6 +12,7 @@ module Document.Model
         , TextType(..)
         , DocType(..)
         , DocumentDict
+        , DocumentAccessibility(..)
         )
 
 import Time exposing (Time)
@@ -73,6 +74,11 @@ type TextType
     | Asciidoc
     | AsciidocLatex
     | Plain
+
+
+type DocumentAccessibility
+    = PublicDocument
+    | PrivateDocument
 
 
 type alias DocumentRecord =

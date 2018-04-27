@@ -38,7 +38,7 @@ loadFromUrl location =
         if id > 0 then
             Navigation.newUrl (Configuration.client ++ "/##public/" ++ toString id)
         else
-            Cmd.none
+            Navigation.newUrl (Configuration.client ++ "/##public/181")
 
 
 init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
@@ -46,8 +46,9 @@ init flags location =
     ( Model.initialModel flags
     , Cmd.batch
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
-        , Document.Cmd.getDocuments "" "/public/documents" "random=public" (DocumentMsg << GetDocumentList)
-        , Document.Cmd.loadDocumentIntoDictionary "" Configuration.startupDocumentId
+
+        -- , Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList)
+        -- , Document.Cmd.loadDocumentIntoDictionary "" Configuration.startupDocumentId
         , loadFromUrl location
         ]
     )

@@ -3,6 +3,7 @@ module Nav.Navigation exposing (navigateTo)
 import Document.Cmd
 import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
+import Document.Model exposing (DocumentAccessibility(..))
 
 
 navigateTo : Maybe Page -> Model -> ( Model, Cmd Msg )
@@ -18,7 +19,7 @@ navigateTo maybepage model =
             Just page ->
                 case page of
                     UrlPage k ->
-                        ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model ("id=" ++ toString k) )
+                        ( model, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument ("id=" ++ toString k) )
 
                     _ ->
                         ( model, Cmd.none )

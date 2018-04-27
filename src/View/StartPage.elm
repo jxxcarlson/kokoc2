@@ -75,15 +75,20 @@ mainContent model =
 
 leftColumn model =
     let
-        document =
-            case Dictionary.get "startDocument" model.documentDict of
-                Just document ->
-                    document
+        _ =
+            Debug.log "startup, left column, doc id" model.currentDocument.id
 
-                Nothing ->
-                    Document.Default.make "Oops" "Startup document not found"
+        -- let
+        --     document =
+        --         case Dictionary.get "startDocument" model.documentDict of
+        --             Just document ->
+        --                 document
+        --
+        --             Nothing ->
+        --                 Document.Default.make "Oops" "Startup document not found"
+        -- in
     in
-        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 document ]
+        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 model.currentDocument ]
         ]
 
 

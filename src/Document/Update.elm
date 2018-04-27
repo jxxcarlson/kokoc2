@@ -53,30 +53,16 @@ update submessage model =
 
             LoadIntoDictionary (Ok documentRecord) ->
                 let
-                    _ =
-                        Debug.log "LoadIntoDictionary" "Ok!!"
-
-                    _ =
-                        Debug.log "FOO"
-
-                    _ =
-                        Debug.log "load, dict, doc id" documentRecord.document.id
-
                     documentDict =
                         model.documentDict
 
                     updatedDict =
-                        Debug.log "updatedDict"
-                            (Dictionary.set "startDocument" documentRecord.document documentDict)
+                        (Dictionary.set "startDocument" documentRecord.document documentDict)
                 in
                     ( { model | documentDict = updatedDict }, Cmd.none )
 
             LoadIntoDictionary (Err error) ->
-                let
-                    _ =
-                        Debug.log "LoadIntoDictionary" "Error"
-                in
-                    ( { model | message = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | message = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
                 ( { model | message = "Document saved: " ++ documentRecord.document.title }, Cmd.none )

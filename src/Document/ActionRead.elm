@@ -81,7 +81,7 @@ getDocumentsAux documentListRecord model =
 
 loadContentsIfNecessary : String -> Document -> List Document -> Cmd Msg
 loadContentsIfNecessary token currentDocument documentList =
-    if currentDocument.content == "Loading ..." then
+    if currentDocument.content == "Loading ..." || List.length documentList == 1 then
         Document.Cmd.getDocumentsAndContent token (List.take Configuration.maxDocs documentList)
     else
         Cmd.none

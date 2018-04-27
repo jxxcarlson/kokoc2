@@ -74,21 +74,25 @@ makeQueryHelper searchDomain searchOrder userId queryString =
 
 queryPrefix : Int -> SearchDomain -> String -> String
 queryPrefix userId searchDomain queryString =
-    case ( searchDomain, queryString ) of
-        ( SearchAll, "" ) ->
-            "random=all"
+    ""
 
-        ( SearchPublic, "" ) ->
-            "random=public"
 
-        ( SearchPrivate, "" ) ->
-            "random_user=" ++ toString userId
 
-        ( SearchAll, _ ) ->
-            "docs=any"
-
-        ( _, _ ) ->
-            ""
+-- case ( searchDomain, queryString ) of
+--     ( SearchAll, "" ) ->
+--         "random=all"
+--
+--     ( SearchPublic, "" ) ->
+--         "random=public"
+--
+--     ( SearchPrivate, "" ) ->
+--         "random_user=" ++ toString userId
+--
+--     ( SearchAll, _ ) ->
+--         "docs=any"
+--
+--     ( _, _ ) ->
+--         ""
 
 
 querySuffix : SearchDomain -> String
@@ -128,21 +132,3 @@ buildQuery queryParts =
     queryParts
         |> List.filter (\x -> x /= "")
         |> String.join "&"
-
-
-
-{- STUFF -}
--- processorAndRoute : SearchDomain -> ( Result Http.Error Types.DocumentsRecord -> DocMsg, String )
--- processorAndRoute searchDomain =
---     case searchDomain of
---         SearchPublic ->
---             ( GetDocuments, "public/documents" )
---
---         SearchPrivate ->
---             ( GetUserDocuments, "documents" )
---
---         SearchShared ->
---             ( GetUserDocuments, "documents" )
---
---         SearchAll ->
---             ( GetUserDocuments, "documents" )

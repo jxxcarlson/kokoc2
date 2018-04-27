@@ -22,7 +22,16 @@ import Model exposing (Model)
 import Api.Request exposing (Tagger)
 import Document.RequestParameters
 import Document.Data as Data
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, SearchDomain(..), SortOrder, DocType(..))
+import Document.Model
+    exposing
+        ( Document
+        , DocumentRecord
+        , DocumentListRecord
+        , SearchDomain(..)
+        , SortOrder
+        , DocType(..)
+        , DocumentAccessibility(..)
+        )
 import Document.Msg exposing (DocumentMsg(..))
 import Msg exposing (Msg(DocumentMsg))
 import OutsideInfo
@@ -189,16 +198,18 @@ searchWithAuthorizationCmd model =
         getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
 
 
-searchWithQueryCmd : Model -> String -> Cmd Msg
-searchWithQueryCmd model queryString =
+searchWithQueryCmd : Model -> DocumentAccessibility -> String -> Cmd Msg
+searchWithQueryCmd model accessibility queryString =
     let
         query =
             Query.makeImmediateQuery model.searchDomain model.sortOrder (Utility.getUserId model) queryString
-
-        token =
-            Utility.getToken model
     in
-        getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
+        case accessibility of
+            PublicDocument ->
+                getDocuments "" "/public/documents" query (Msg.DocumentMsg << GetDocumentList)
+
+            PrivateDocument ->
+                getDocuments (Utility.getToken model) "/documents" query (Msg.DocumentMsg << GetDocumentList)
 
 
 

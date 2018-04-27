@@ -6,7 +6,7 @@ import User.Update
 import Document.ActionRead
 import Document.Update
 import Document.Cmd
-import Document.Model exposing (DocType(..))
+import Document.Model exposing (DocType(..), DocumentAccessibility)
 import OutsideInfo
 import User.Action
 import Model
@@ -54,7 +54,6 @@ update msg model =
                         updatedDocument =
                             { document | renderedContent = renderedText }
                     in
-                        -- OutsideInfo.updateRenderedText model renderedText
                         ( { model | currentDocument = updatedDocument }, Cmd.none )
 
         LogErr error ->
@@ -67,7 +66,7 @@ update msg model =
             ( { model | page = ReaderPage }, Cmd.none )
 
         GotoStartPage ->
-            ( { model | page = StartPage }, Cmd.none )
+            ( { model | page = StartPage }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
 
         ToggleSearchMenu menu ->
             let
@@ -159,7 +158,7 @@ update msg model =
             ( { model | shareDocumentCommand = str }, Cmd.none )
 
         GotoHomePage ->
-            ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model <| "key=home&authorname=" ++ (Utility.getUsername model) )
+            ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )
 
         GoToPage maybepage ->
             Nav.Navigation.navigateTo maybepage model
