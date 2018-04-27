@@ -134,20 +134,25 @@ documentAttributesPanel model =
     if model.documentAttributePanelState == DocumentAttributePanelActive then
         screen <|
             column Menu
-                [ moveRight 430, moveDown 80, width (px 300), height (px 480), padding 25, spacing 4 ]
+                [ moveRight 560, moveDown 80, width (px 375), height (px 450), padding 25, spacing 2 ]
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
-                , Widget.inputField "Title" model.newDocumentTitle 300 (InputNewDocumentTitle)
-                , el Menu [ paddingTop 12 ] (text "Text type")
+                , Widget.inputField "Title" model.newDocumentTitle 330 (InputNewDocumentTitle)
+                , Widget.hairline
+                , el Menu [ paddingTop 8 ] (text "Text type")
                 , Widget.menuButton "Asciidoc" 125 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
                 , Widget.menuButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
                 , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
-                , Widget.menuButton "Update" 125 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
-                , el Menu [ paddingTop 12 ] (text "Document type")
+                , Widget.hairline
+                , el Menu [ paddingTop 8 ] (text "Document type")
                 , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
                 , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
-                , Widget.menuButton "Update" 125 [ paddingTop 24, onClick (DocumentMsg UpdateDocumentAttributes) ] False
-                , Widget.menuButton "Cancel" 125 [ paddingBottom 25, paddingTop 20, onClick (CloseMenus) ] False
+                , Widget.hairline
+                , row Menu
+                    [ spacing 15 ]
+                    [ Widget.strongMenuButton "Update" 125 [ onClick (DocumentMsg UpdateDocumentAttributes) ] False
+                    , Widget.strongMenuButton "Cancel" 125 [ onClick (CloseMenus) ] False
+                    ]
                 ]
     else
         empty

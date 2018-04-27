@@ -1,6 +1,6 @@
 module User.Update exposing (..)
 
-import Model exposing (Model, Flags, initialModel, Mode(..))
+import Model exposing (Model, Flags, initialModel, Mode(..), Page(..))
 import Msg exposing (Msg)
 import User.Msg exposing (..)
 import Api.Request as Request
@@ -25,7 +25,7 @@ update : UserMsg -> Model -> ( Model, Cmd Msg )
 update submessage model =
     case submessage of
         SignIn ->
-            ( { model | mode = Action.setMode model }, Action.signOutCommand model )
+            ( { model | mode = Action.setMode model, page = StartPage }, Action.signOutCommand model )
 
         AuthenticateUser ->
             ( model, Request.doRequest <| RequestParameters.authenticateUser model )

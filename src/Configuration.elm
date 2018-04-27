@@ -10,7 +10,7 @@ module Configuration
 
 host : String
 host =
-    "http://localhost:4000"
+    "https://nshost.herokuapp.com"
 
 
 
