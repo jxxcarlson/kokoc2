@@ -201,6 +201,21 @@ searchWithQueryCmd model queryString =
         getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentList)
 
 
+
+--
+-- getDocumentWithIdCmd : Model -> Int -> Cmd Msg
+-- getDocumentWithIdCmd model id =
+--     let
+--         query =
+--             Query.makeImmediateQuery model.searchDomain model.sortOrder (Utility.getUserId model) ("id=" ++ (toString id))
+--
+--         token =
+--             Utility.getToken model
+--     in
+--         getDocuments token "/documents" query (Msg.DocumentMsg << GetDocumentListForOne)
+--
+
+
 randomDocuments : Model -> Cmd Msg
 randomDocuments model =
     let

@@ -13,6 +13,7 @@ import Document.Msg exposing (DocumentMsg(GetDocumentList))
 import Configuration
 import Nav.Parser
 import Navigation
+import Nav.UrlParseExtra
 
 
 --
@@ -29,6 +30,17 @@ main =
         }
 
 
+loadFromUrl location =
+    let
+        id =
+            Nav.UrlParseExtra.getInitialIdFromLocation location
+    in
+        if id > 0 then
+            Navigation.newUrl (Configuration.client ++ "/##public/" ++ toString id)
+        else
+            Cmd.none
+
+
 init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
 init flags location =
     ( Model.initialModel flags
@@ -36,6 +48,7 @@ init flags location =
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
         , Document.Cmd.getDocuments "" "/public/documents" "random=public" (DocumentMsg << GetDocumentList)
         , Document.Cmd.loadDocumentIntoDictionary "" Configuration.startupDocumentId
+        , loadFromUrl location
         ]
     )
 

@@ -25,7 +25,11 @@ api =
 
 client : String
 client =
-    "http://localhost:3000"
+    "http://www.knode.io"
+
+
+
+-- "http://localhost:3000"
 
 
 maxDocs =

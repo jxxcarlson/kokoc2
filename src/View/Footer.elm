@@ -25,6 +25,7 @@ footerContent model =
     , textLabel <| "Host: " ++ Configuration.host
     , wordCount model
     , textLabel <| "Identifier: " ++ Document.Utility.identifier model.currentDocument
+    , textLabel <| shareUrl model
     ]
 
 
@@ -39,6 +40,13 @@ wordCount model =
 
 textLabel content =
     el Menulabel [ paddingLeft 24, verticalCenter ] (text <| content)
+
+
+shareUrl model =
+    if model.currentDocument.attributes.public then
+        Configuration.client ++ "/#@public/" ++ toString model.currentDocument.id
+    else
+        ""
 
 
 testButton =

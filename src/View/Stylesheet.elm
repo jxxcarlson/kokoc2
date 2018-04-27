@@ -29,6 +29,7 @@ type MyStyles
     | MenuInputField
     | Button
     | ButtonSelected
+    | StrongButton
     | MenuButton
     | MenuButtonSelected
     | InnerMenuButton
@@ -152,6 +153,14 @@ stylesheet =
             , Color.background (Color.darkBlue)
             , Border.rounded 8
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
+            , Font.size 16 -- all units given as px
+            , Font.typeface fontList
+            ]
+        , style StrongButton
+            [ Color.text <| Color.rgb 255 194 102
+            , Color.background (Color.rgb 100 100 100)
+            , Border.rounded 8
+            , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
             ]

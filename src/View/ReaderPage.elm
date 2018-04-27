@@ -84,7 +84,7 @@ contentsWidth model =
 
 parentButton model =
     if model.currentDocument.parentId > 0 && model.maybeMasterDocument == Nothing then
-        Widget.bareButton Button
+        Widget.bareButton StrongButton
             ("Open: " ++ model.currentDocument.parentTitle)
             400
             [ paddingLeft 10
