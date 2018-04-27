@@ -30,3 +30,6 @@ dispatcher model =
 
         EditorPage ->
             EditorPage.view model
+
+        UrlPage _ ->
+            ReaderPage.view model

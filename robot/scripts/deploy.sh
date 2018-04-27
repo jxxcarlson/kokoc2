@@ -36,6 +36,15 @@ reset=`tput setaf 7`
 # tput setaf 6;time npm run build; tput setaf 7;
 
 echo
+echo "${color}Compiling${reset}"
+
+start=`date +%s`
+elm make src/Main.elm --debug --output ./dist/main.js
+end=`date +%s`
+runtime=$((end-start))
+
+
+echo
 echo "${color}upload to cloud ...${reset}"
 scp -r ./dist/* root@138.197.81.6:/var/www/html/
 

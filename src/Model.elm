@@ -64,6 +64,7 @@ type Page
     = StartPage
     | ReaderPage
     | EditorPage
+    | UrlPage Int
 
 
 type Mode

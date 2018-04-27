@@ -21,6 +21,7 @@ import Model
         )
 import Utility
 import Configuration
+import Nav.Navigation
 
 
 --- TEST:
@@ -159,6 +160,9 @@ update msg model =
 
         GotoHomePage ->
             ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model <| "key=home&authorname=" ++ (Utility.getUsername model) )
+
+        GoToPage maybepage ->
+            Nav.Navigation.navigateTo maybepage model
 
         Test ->
             ( model

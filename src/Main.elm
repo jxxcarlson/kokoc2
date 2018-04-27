@@ -11,6 +11,8 @@ import Update exposing (update)
 import View.Main
 import Document.Msg exposing (DocumentMsg(GetDocumentList))
 import Configuration
+import Nav.Parser
+import Navigation
 
 
 --
@@ -19,7 +21,7 @@ import Document.Cmd
 
 
 main =
-    Html.programWithFlags
+    Navigation.programWithFlags Nav.Parser.urlParser
         { init = init
         , view = View.Main.view
         , update = update
@@ -27,8 +29,8 @@ main =
         }
 
 
-init : Flags -> ( Model, Cmd Msg )
-init flags =
+init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
+init flags location =
     ( Model.initialModel flags
     , Cmd.batch
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)

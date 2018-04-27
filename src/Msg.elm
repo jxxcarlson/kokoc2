@@ -2,7 +2,7 @@ module Msg exposing (..)
 
 import Http
 import User.Model exposing (User)
-import Model exposing (SearchMenuState, DocumentMenuState, SubdocumentPosition)
+import Model exposing (SearchMenuState, DocumentMenuState, SubdocumentPosition, Page(..))
 import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
 import Document.Model exposing (SearchDomain(..), TextType(..), DocType(..))
@@ -32,6 +32,7 @@ type Msg
     | SetDocumentTextType TextType
     | SetDocumentType DocType
     | SetSubdocumentPosition SubdocumentPosition
+    | GoToPage (Maybe Page)
 
 
 type InfoForElm
