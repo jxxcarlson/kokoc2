@@ -34,7 +34,7 @@ getDocuments result model =
             getDocumentsAux documentListRecord model
 
         Err message ->
-            ( { model | message = (toString message) }, Cmd.none )
+            ( { model | errorMessage = (toString message) }, Cmd.none )
 
 
 getDocumentsAux : DocumentListRecord -> Model -> ( Model, Cmd Msg )

@@ -25,6 +25,7 @@ type alias Model =
     , password : String
     , maybeCurrentUser : Maybe User
     , message : String
+    , errorMessage : String
     , documentList : List Document
     , documentDict : Dict String Document
     , currentDocument : Document
@@ -119,7 +120,8 @@ initialModel flags =
      , email = ""
      , password = ""
      , maybeCurrentUser = Nothing
-     , message = "App started"
+     , message = ""
+     , errorMessage = ""
      , documentList = []
      , documentDict = Dict.empty
      , currentDocument = Document.Default.make "TITLE" "CONTENT"

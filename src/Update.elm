@@ -57,7 +57,7 @@ update msg model =
                         ( { model | currentDocument = updatedDocument }, Cmd.none )
 
         LogErr error ->
-            ( { model | message = "Error: " ++ error }, Cmd.none )
+            ( { model | errorMessage = "Error: " ++ error }, Cmd.none )
 
         GotoEditorPage ->
             ( { model | page = EditorPage }, Cmd.none )

@@ -20,11 +20,10 @@ view model =
 
 
 footerContent model =
-    [ testButton
-    , el Menu [ verticalCenter ] (text model.message)
-    , textLabel <| "Host: " ++ Configuration.host
+    [ el Menu
+        [ verticalCenter ]
+        (text model.message)
     , wordCount model
-    , textLabel <| "Identifier: " ++ Document.Utility.identifier model.currentDocument
     , textLabel <| shareUrl model
     ]
 

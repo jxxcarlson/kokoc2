@@ -97,7 +97,6 @@ selectNewDocument model document =
         ( { model
             | currentDocument = document
             , documentList = [ document ] ++ model.documentList
-            , message = "New document added: " ++ document.title
             , counter = model.counter + 1
           }
         , Cmd.batch commands
@@ -211,8 +210,7 @@ deleteDocumentFromList document model =
             List.head updatedDocumentList |> Maybe.withDefault (Document.Default.make "Error" "There was an error deleting this documents.")
     in
         { model
-            | message = "Document deleted, remaining = " ++ toString (List.length updatedDocumentList)
-            , documentList = updatedDocumentList
+            | documentList = updatedDocumentList
             , currentDocument = newCurrentDocument
         }
 

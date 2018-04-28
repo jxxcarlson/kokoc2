@@ -34,7 +34,7 @@ update submessage model =
             Action.handleToken model token
 
         VerifyAuthentication (Err error) ->
-            ( { model | message = (toString error) }, Cmd.none )
+            ( { model | errorMessage = (toString error) }, Cmd.none )
 
         SignUpUser ->
             ( model, Request.doRequest <| RequestParameters.signUpUser model )
@@ -43,7 +43,7 @@ update submessage model =
             Action.handleUserRecord model userRecord
 
         VerifySignUp (Err error) ->
-            ( { model | message = (toString error) }, Cmd.none )
+            ( { model | errorMessage = (toString error) }, Cmd.none )
 
         CancelSignIn ->
             ( { model | mode = Public }, Cmd.none )

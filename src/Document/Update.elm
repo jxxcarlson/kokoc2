@@ -43,13 +43,13 @@ update submessage model =
                 ( ActionRead.loadContent model documentRecord, Cmd.none )
 
             LoadContent (Err error) ->
-                ( { model | message = "LC: " ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "LC: " ++ Error.httpErrorString error }, Cmd.none )
 
             LoadContentAndRender (Ok documentRecord) ->
                 ( ActionRead.loadContent model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
 
             LoadContentAndRender (Err error) ->
-                ( { model | message = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             LoadIntoDictionary (Ok documentRecord) ->
                 let
@@ -62,13 +62,13 @@ update submessage model =
                     ( { model | documentDict = updatedDict }, Cmd.none )
 
             LoadIntoDictionary (Err error) ->
-                ( { model | message = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
-                ( { model | message = "Document saved: " ++ documentRecord.document.title }, Cmd.none )
+                ( { model | message = "Document saved" }, Cmd.none )
 
             SaveDocument (Err error) ->
-                ( { model | message = "Save: " ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "Save: " ++ Error.httpErrorString error }, Cmd.none )
 
             LoadParent currentDocument ->
                 ActionRead.loadParentDocument model currentDocument
@@ -80,13 +80,13 @@ update submessage model =
                 ActionEdit.selectNewDocument model documentRecord.document
 
             CreateDocument (Err error) ->
-                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             DeleteDocument (Ok str) ->
                 ( ActionEdit.deleteDocumentFromList model.currentDocument model, Cmd.none )
 
             DeleteDocument (Err error) ->
-                ( { model | message = "CD: " ++ Error.httpErrorString error }, Cmd.none )
+                ( { model | errorMessage = "CD: " ++ Error.httpErrorString error }, Cmd.none )
 
             SelectDocument document ->
                 ActionRead.selectDocument model document
@@ -164,7 +164,7 @@ update submessage model =
                     ( { model | documentDict = newDocumentDict }, Cmd.none )
 
             SetDocumentInDict (Err err) ->
-                ( { model | message = "Error setting key in documentDict" }, Cmd.none )
+                ( { model | errorMessage = "Error setting key in documentDict" }, Cmd.none )
 
             RenumberMasterDocument ->
                 Document.TOC.renumberMasterDocument model
@@ -180,9 +180,3 @@ update submessage model =
 
             UpdateShareData ->
                 ( model, Document.Cmd.updateSharingData model )
-
-
-
-{- 12 ACTIONS -}
--- s( { model | message = "Render content" }, Document.Cmd.putTextToRender model.currentDocument )
-{- HELPERS -}
