@@ -35,7 +35,7 @@ import Document.Default
 
 view model =
     Element.column Main
-        [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
+        []
         [ Menubar.view model
         , mainRow model
         , Footer.view model
@@ -74,12 +74,8 @@ mainContent model =
 
 
 leftColumn model =
-    let
-        _ =
-            Debug.log "startup, left column, doc id" model.currentDocument.id
-    in
-        [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 model.currentDocument ]
-        ]
+    [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 model.currentDocument ]
+    ]
 
 
 contentsWidth model =
