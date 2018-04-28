@@ -35,7 +35,7 @@ import Document.Default
 
 view model =
     Element.column Main
-        []
+        [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
         [ Menubar.view model
         , mainRow model
         , Footer.view model
@@ -48,9 +48,9 @@ view model =
 
 mainRow model =
     row Main
-        [ height fill ]
+        [ width fill, height fill ]
         [ column Alternate [ width (fillPortion 30), height fill ] (leftColumn model)
-        , column Main [ width (fillPortion 70), height fill, center, verticalCenter, spacing 40 ] (mainContent model)
+        , column Main [ width (fillPortion 70), height fill, center, verticalCenter, spacing 10 ] (mainContent model)
         ]
 
 
@@ -96,7 +96,7 @@ startContent model =
 
 
 mainImage =
-    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Kandinsky" }
+    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Crab Nebula" }
 
 
 usernameText model =
@@ -115,14 +115,10 @@ signedInContent model =
 
 
 signedInMainImage =
-    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Bubble chamber" }
+    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Crab Nebula" }
 
 
 
---
--- https://www.physicsforums.com/attachments/collider-jpg.148712/
--- https://dg19s6hp6ufoh.cloudfront.net/pictures/613145863/large/Paul-Klee-Flora-on-sand.jpeg?1481352336
---
 {- SIGN IN -}
 
 

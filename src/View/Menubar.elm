@@ -41,7 +41,10 @@ centerMenu model =
 
 
 homePageButton model =
-    Widget.button "Home" 75 [ onClick (GotoHomePage) ] False
+    if model.maybeCurrentUser == Nothing then
+        empty
+    else
+        Widget.button "Home" 75 [ onClick (GotoHomePage) ] False
 
 
 rightMenu model =
@@ -63,7 +66,10 @@ searchField =
 
 
 editorPageButton model =
-    Widget.button "Edit" 75 [ onClick (GotoEditorPage) ] (model.page == EditorPage)
+    if model.maybeCurrentUser == Nothing then
+        empty
+    else
+        Widget.button "Edit" 75 [ onClick (GotoEditorPage) ] (model.page == EditorPage)
 
 
 readerPageButton model =
