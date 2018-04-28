@@ -4,6 +4,17 @@ import Document.Cmd
 import Model exposing (Model, Page(..))
 import Msg exposing (Msg)
 import Document.Model exposing (DocumentAccessibility(..))
+import Configuration
+import Navigation
+
+
+startPage model =
+    ( { model | page = StartPage }
+    , Cmd.batch
+        [ -- Navigation.newUrl (Configuration.client ++ "/##public/181")
+          Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument "id=181"
+        ]
+    )
 
 
 navigateTo : Maybe Page -> Model -> ( Model, Cmd Msg )
@@ -19,7 +30,15 @@ navigateTo maybepage model =
             Just page ->
                 case page of
                     UrlPage k ->
-                        ( model, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument ("id=" ++ toString k) )
+                        case k of
+                            0 ->
+                                startPage model
+
+                            181 ->
+                                startPage model
+
+                            _ ->
+                                ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument ("id=" ++ toString k) )
 
                     _ ->
-                        ( model, Cmd.none )
+                        startPage model

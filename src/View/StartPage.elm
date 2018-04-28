@@ -77,16 +77,6 @@ leftColumn model =
     let
         _ =
             Debug.log "startup, left column, doc id" model.currentDocument.id
-
-        -- let
-        --     document =
-        --         case Dictionary.get "startDocument" model.documentDict of
-        --             Just document ->
-        --                 document
-        --
-        --             Nothing ->
-        --                 Document.Default.make "Oops" "Startup document not found"
-        -- in
     in
         [ row Alternate [] [ Render.renderedContent model (contentsWidth model) 70 model.currentDocument ]
         ]
@@ -110,7 +100,7 @@ startContent model =
 
 
 mainImage =
-    image Main [ width (percent 80) ] { src = "https://www.ibiblio.org/wm/paint/auth/kandinsky/kandinsky.comp-8.jpg", caption = "Kandinsky" }
+    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Kandinsky" }
 
 
 usernameText model =
@@ -129,7 +119,7 @@ signedInContent model =
 
 
 signedInMainImage =
-    image Main [ width (percent 80) ] { src = "https://www.physicsforums.com/attachments/collider-jpg.148712/", caption = "Bubble chamber" }
+    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Bubble chamber" }
 
 
 

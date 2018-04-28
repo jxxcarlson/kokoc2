@@ -1,4 +1,4 @@
-module Nav.UrlParseExtra exposing (id, getInitialIdFromLocation)
+module Nav.UrlParseExtra exposing (id, idFromLocation, getInitialIdFromLocation)
 
 import Configuration
 import Parser exposing (..)
@@ -10,6 +10,10 @@ id =
     succeed identity
         |. symbol (Configuration.client ++ "/##public/")
         |= int
+
+
+idFromLocation location =
+    Parser.run id location
 
 
 getInitialIdFromLocation location =

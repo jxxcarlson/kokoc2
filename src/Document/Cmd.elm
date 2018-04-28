@@ -59,10 +59,11 @@ getOneDocument : String -> String -> String -> Tagger DocumentRecord -> Cmd Msg
 getOneDocument token route query tagger =
     let
         routeAndQuery =
-            if query == "" then
+            (if query == "" then
                 route
-            else
+             else
                 route ++ "?" ++ query
+            )
     in
         Api.Request.doRequest <| Document.RequestParameters.getOneDocumentParameters token routeAndQuery tagger
 
@@ -90,22 +91,30 @@ putTextToRender document =
         OutsideInfo.sendInfoOutside (OutsideInfo.PutTextToRender value)
 
 
+documentRoute : Document -> String
+documentRoute document =
+    if document.attributes.public then
+        "/public/documents/"
+    else
+        "/documents/"
+
+
 getDocumentsAndContent : String -> List Document -> Cmd Msg
 getDocumentsAndContent token documents =
     let
         idList =
-            (List.map (\doc -> doc.id) documents)
+            (List.map (\doc -> ( doc.id, documentRoute doc )) documents)
 
         hCmd =
-            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContentAndRender)
+            \( id, route ) -> getOneDocument token (route ++ (toString id)) "" (Msg.DocumentMsg << LoadContentAndRender)
 
         tCmd =
-            \id -> getOneDocument token ("/documents/" ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
+            \( id, route ) -> getOneDocument token (route ++ (toString id)) "" (Msg.DocumentMsg << LoadContent)
 
         headCommand =
             case List.head idList of
-                Just id ->
-                    hCmd id
+                Just ( id, route ) ->
+                    hCmd ( id, route )
 
                 Nothing ->
                     Cmd.none
@@ -117,8 +126,11 @@ getDocumentsAndContent token documents =
 
                 Nothing ->
                     [ Cmd.none ]
+
+        commands =
+            tailCommands ++ [ headCommand ]
     in
-        Cmd.batch (tailCommands ++ [ headCommand ])
+        Cmd.batch commands
 
 
 
@@ -314,12 +326,11 @@ updateSharingData model =
             Utility.getToken model
 
         route =
-            Debug.log "updateSharingData, route"
-                (if finalSegment == "" then
-                    ""
-                 else
-                    "/share/" ++ ((toString model.currentDocument.id) ++ "/" ++ finalSegment)
-                )
+            (if finalSegment == "" then
+                ""
+             else
+                "/share/" ++ ((toString model.currentDocument.id) ++ "/" ++ finalSegment)
+            )
 
         encodedValue =
             Data.encodeDocumentRecord model.currentDocument

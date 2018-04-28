@@ -161,6 +161,7 @@ update msg model =
             ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )
 
         GoToPage maybepage ->
+            -- Navigation.newUrl (Configuration.client ++ "/##public/181")
             Nav.Navigation.navigateTo maybepage model
 
         Test ->
