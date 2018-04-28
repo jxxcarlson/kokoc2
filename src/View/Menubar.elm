@@ -88,9 +88,9 @@ signInButton model =
 signInButtonLabel : { a | mode : Mode } -> String
 signInButtonLabel model =
     if model.mode == SignedIn then
-        "Sign out"
+        "Sign out!"
     else
-        "Sign in"
+        "Sign in!"
 
 
 

@@ -15,7 +15,7 @@ host =
 
 client : String
 client =
-    "http://www.knode.io"
+    "http://localhost:8080"
 
 
 api : String

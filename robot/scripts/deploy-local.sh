@@ -5,8 +5,8 @@ red=`tput setaf 1`
 reset=`tput setaf 7`
 
 echo
-echo "${color}Use deploy configuration.${reset}"
-cp ./robot/src/deploy/Configuration.elm ./src/Configuration.elm
+echo "${color}Use deploy-local configuration.${reset}"
+cp ./robot/src/deploy-local/Configuration.elm ./src/Configuration.elm
 
 echo
 echo "${color}Compiling${reset}"
@@ -36,11 +36,9 @@ ls -lh ./dist/main.js
 # ls -lh ./dist/main.js.gzip
 
 echo
-echo "${color}upload to cloud ...${reset}"
-scp -r ./dist/* root@138.197.81.6:/var/www/html/
+tput setaf 2; echo "${color}Run server${reset}"
 
-echo
-tput setaf 2; echo "${color}Done${reset}"
+http-server ./dist
 #
 # echo
 # echo "${color}... Now use dev configuration.${reset}"
