@@ -25,7 +25,13 @@ update : UserMsg -> Model -> ( Model, Cmd Msg )
 update submessage model =
     case submessage of
         SignIn ->
-            ( { model | mode = Action.setMode model, page = StartPage }, Action.signOutCommand model )
+            ( { model
+                | mode = Action.setMode model
+                , page = StartPage
+                , maybeCurrentUser = Nothing
+              }
+            , Action.signOutCommand model
+            )
 
         AuthenticateUser ->
             ( model, Request.doRequest <| RequestParameters.authenticateUser model )
