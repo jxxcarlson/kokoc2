@@ -33,9 +33,12 @@ import Document.Dictionary as Dictionary
 import Document.Default
 
 
+--width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight
+
+
 view model =
     Element.column Main
-        [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
+        [ width fill, height fill ]
         [ Menubar.view model
         , mainRow model
         , Footer.view model
@@ -96,7 +99,7 @@ startContent model =
 
 
 mainImage =
-    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Crab Nebula" }
+    image Main [ width (percent 70) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Crab Nebula" }
 
 
 usernameText model =
@@ -110,12 +113,8 @@ usernameText model =
 
 signedInContent model =
     [ row Heading [ center ] [ text (usernameText model) ]
-    , row Main [ center ] [ signedInMainImage ]
+    , row Main [ center ] [ mainImage ]
     ]
-
-
-signedInMainImage =
-    image Main [ width (percent 100) ] { src = "http://noteshare-images.s3.amazonaws.com/crab_nebula_hubble.png", caption = "Crab Nebula" }
 
 
 
