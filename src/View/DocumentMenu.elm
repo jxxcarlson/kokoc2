@@ -55,22 +55,57 @@ import Document.Utility
 view model =
     case model.documentMenuState of
         DocumentMenu MenuInactive ->
-            screen <|
-                column Menu
-                    [ moveRight 340, width (px 80), height (px 35), spacing 15, paddingTop 4 ]
-                    [ toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive) ]
+            toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive)
 
         DocumentMenu MenuActive ->
-            screen <|
-                column Menu
-                    [ moveRight 330, width (px 210), height (menuHeight model), spacing 4, paddingTop 8, paddingLeft 15, paddingRight 15, paddingBottom 15 ]
-                    ([ (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
-                     , hairline Hairline
-                     , printDocument model
-                     ]
-                        ++ editingCommmands model
-                        ++ [ Widget.hairline, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
-                    )
+            (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
+                |> below
+                    [ if model.maybeCurrentUser == Nothing then
+                        documentMenuWhenNotSignedIn model
+                      else
+                        documentMenuWhenSignedIn model
+                    ]
+
+
+documentMenuWhenNotSignedIn model =
+    column Menu
+        [ width (px 200), padding 12, spacing 4 ]
+        [ hairline Hairline
+        , printDocument model
+        , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
+        ]
+
+
+documentMenuWhenSignedIn model =
+    column Menu
+        [ width (px 200), padding 12, spacing 4 ]
+        [ hairline Hairline
+        , printDocument model
+        , newDocument model
+        , deleteDocument model
+        , Widget.hairline
+        , documentAttributes model
+        , togglePublic model
+        , Widget.hairline
+        , renumberMaster model
+        , compileMaster model
+        , exportButton model
+        , Widget.hairline
+        , repositoryNameInputPane model
+        , setRepository model
+        , Widget.hairline
+        , versionDisplay model
+        , showVersionsButton model.currentDocument
+        , newVersionButton model.currentDocument
+        , Widget.hairline
+        , shareDocumentInputPane model
+        , shareDocumentButton model
+        , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
+        ]
+
+
+
+-- ++ [ Widget.hairline, (toggleDocumentMenuButton model "X" 50 (DocumentMenu MenuActive)) ]
 
 
 menuHeight model =
@@ -286,7 +321,7 @@ togglePublic model =
 
 
 toggleDocumentMenuButton model labelText width msg =
-    Widget.menuButton labelText width [ onClick (ToggleDocumentMenu msg) ] False
+    Widget.menuButton labelText width [ verticalCenter, onClick (ToggleDocumentMenu msg) ] False
 
 
 publicStatus model =
