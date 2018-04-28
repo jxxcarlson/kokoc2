@@ -85,6 +85,9 @@ deleteDocument token documentId =
 putTextToRender : Document -> Cmd msg
 putTextToRender document =
     let
+        _ =
+            Debug.log "putTextToRender, chars" (String.length document.content)
+
         value =
             (Data.encodeDocumentForOutside document)
     in

@@ -1,7 +1,11 @@
-module Configuration exposing (..)
-
--- --
--- -- --
+module Configuration
+    exposing
+        ( host
+        , api
+        , client
+        , maxDocs
+        , startupDocumentId
+        )
 
 
 host : String
@@ -11,24 +15,17 @@ host =
 
 client : String
 client =
-    "http://localhost:3000"
+    "http://localhost:8080"
 
 
-websocketHost : String
-websocketHost =
-    "ws://localhost:4000/socket/websocket"
+api : String
+api =
+    host ++ "/api"
 
 
-tickInterval : Float
-tickInterval =
-    60.0
+maxDocs =
+    40
 
 
-tabletWidth : Int
-tabletWidth =
-    800
-
-
-phoneWidth : Int
-phoneWidth =
-    600
+startupDocumentId =
+    181

@@ -1,4 +1,11 @@
-module Configuration exposing (..)
+module Configuration
+    exposing
+        ( host
+        , api
+        , client
+        , maxDocs
+        , startupDocumentId
+        )
 
 
 host : String
@@ -11,21 +18,14 @@ client =
     "http://www.knode.io"
 
 
-websocketHost : String
-websocketHost =
-    "wss://nshost.herokuapp.com/socket/websocket"
+api : String
+api =
+    host ++ "/api"
 
 
-tickInterval : Float
-tickInterval =
-    1.0
+maxDocs =
+    40
 
 
-tabletWidth : Int
-tabletWidth =
-    800
-
-
-phoneWidth : Int
-phoneWidth =
-    600
+startupDocumentId =
+    181

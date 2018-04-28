@@ -4,6 +4,9 @@ color=`tput setaf 48`
 red=`tput setaf 1`
 reset=`tput setaf 7`
 
+echo
+echo "${color}Use deploy configuration.${reset}"
+cp ./robot/src/deploy/Configuration.elm ./src/Configuration.elm
 
 echo
 echo "${color}Compiling${reset}"
@@ -12,6 +15,7 @@ start=`date +%s`
 elm make src/Main.elm --debug --output ./dist/main.js
 end=`date +%s`
 runtime=$((end-start))
+echo "runtime: ${runtime}"
 
 echo "size of main.js:"
 ls -lh ./dist/main.js
@@ -24,8 +28,8 @@ ls -lh ./dist/main.min.js
 mv ./dist/main.min.js ./dist/main.js
 echo
 echo "${color}Compressing${reset}"
-gzip ./dist/main.js
-ls -lh ./dist/main.js.gzip
+gzip -f ./dist/main.js
+
 
 echo
 echo "${color}upload to cloud ...${reset}"

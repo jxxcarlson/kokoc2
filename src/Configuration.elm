@@ -10,26 +10,17 @@ module Configuration
 
 host : String
 host =
-    "https://nshost.herokuapp.com"
+    "http://localhost:4000"
 
 
-
---- "https://nshost.herokuapp.com"
---"http://localhost:4000"
+client : String
+client =
+    "http://localhost:8080"
 
 
 api : String
 api =
     host ++ "/api"
-
-
-client : String
-client =
-    "http://www.knode.io"
-
-
-
--- "http://localhost:3000"
 
 
 maxDocs =

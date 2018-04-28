@@ -20,9 +20,7 @@ view model =
 
 
 footerContent model =
-    [ el Menu
-        [ verticalCenter ]
-        (text model.message)
+    [ el Menu [ verticalCenter ] (text model.message)
     , wordCount model
     , textLabel <| shareUrl model
     ]

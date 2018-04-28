@@ -112,8 +112,20 @@ update submessage model =
 
                     updatedDocument =
                         { document | content = str }
+
+                    _ =
+                        Debug.log "HOLA!"
+
+                    n =
+                        Debug.log "InputEditorText, chars" (String.length document.content)
+
+                    cmd =
+                        if document.attributes.textType == MiniLatex then
+                            Cmd.none
+                        else
+                            Document.Cmd.putTextToRender updatedDocument
                 in
-                    ( { model | currentDocument = updatedDocument }, Cmd.none )
+                    ( { model | currentDocument = updatedDocument }, cmd )
 
             RenderContent ->
                 if model.currentDocument.attributes.textType == MiniLatex then
