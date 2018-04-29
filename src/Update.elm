@@ -22,6 +22,7 @@ import Model
 import Utility
 import Configuration
 import Nav.Navigation
+import View.MenuManager
 
 
 --- TEST:
@@ -69,74 +70,26 @@ update msg model =
             ( { model | page = StartPage }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
 
         ToggleSearchMenu menu ->
-            let
-                searchMenuState =
-                    case menu of
-                        SearchMenu MenuInactive ->
-                            SearchMenu MenuActive
-
-                        SearchMenu MenuActive ->
-                            SearchMenu MenuInactive
-            in
-                ( { model | documentMenuState = DocumentMenu MenuInactive, searchMenuState = searchMenuState }, Cmd.none )
+            View.MenuManager.toggleSearchMenu model menu
 
         ToggleDocumentMenu menu ->
-            let
-                documentMenuState =
-                    case menu of
-                        DocumentMenu MenuInactive ->
-                            DocumentMenu MenuActive
+            View.MenuManager.toggleDocumentsMenu model menu
 
-                        DocumentMenu MenuActive ->
-                            DocumentMenu MenuInactive
-            in
-                ( { model
-                    | searchMenuState = SearchMenu MenuInactive
-                    , documentMenuState = documentMenuState
-                    , deleteDocumentState = DeleteDocumentInactive
-                  }
-                , Cmd.none
-                )
+        CloseMenus ->
+            View.MenuManager.closeMenus model
+
+        DisplayNewDocumentPanel ->
+            View.MenuManager.displayNewDocumentsPanel model
+
+        DisplayDocumentAttributesPanel ->
+            View.MenuManager.displayNewDocumentsPanel model
+
+        CancelNewDocument ->
+            View.MenuManager.cancelNewDocument model
 
         ChooseSearchType searchDomain ->
             ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
             , Document.Cmd.search model
-            )
-
-        CloseMenus ->
-            ( { model
-                | searchMenuState = SearchMenu MenuInactive
-                , documentMenuState = DocumentMenu MenuInactive
-                , deleteDocumentState = DeleteDocumentInactive
-                , documentAttributePanelState = DocumentAttributePanelInactive
-              }
-            , Cmd.none
-            )
-
-        DisplayNewDocumentPanel ->
-            ( { model
-                | newDocumentPanelState = NewDocumentPanelActive
-                , documentType = Standard
-              }
-            , Cmd.none
-            )
-
-        DisplayDocumentAttributesPanel ->
-            ( { model
-                | documentAttributePanelState = DocumentAttributePanelActive
-                , newDocumentTitle = model.currentDocument.title
-                , documentTextType = model.currentDocument.attributes.textType
-                , documentType = model.currentDocument.attributes.docType
-              }
-            , Cmd.none
-            )
-
-        CancelNewDocument ->
-            ( { model
-                | newDocumentPanelState = NewDocumentPanelInactive
-                , documentMenuState = DocumentMenu MenuInactive
-              }
-            , Cmd.none
             )
 
         InputNewDocumentTitle str ->

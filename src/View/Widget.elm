@@ -30,10 +30,6 @@ hairline =
     el Menu [ paddingTop 12, paddingBottom 12 ] (Element.hairline Hairline)
 
 
-xcolumn columnStyle widthExpression attributes content =
-    Element.column columnStyle (widthExpression :: attributes) [ content ]
-
-
 menubar model menuContent =
     row Menubar
         [ width (percent 100), height (px 35) ]

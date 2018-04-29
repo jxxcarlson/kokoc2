@@ -17,7 +17,7 @@ import Element.Events exposing (onClick)
 view : Model -> Element.Element MyStyles variation Msg
 view model =
     Element.column Alternate
-        [ width <| px <| toFloat <| model.windowWidth, height <| px <| toFloat <| model.windowHeight ]
+        [ width fill, height <| px <| toFloat <| model.windowHeight ]
         [ Menubar.view model
         , Element.hairline Hairline
         , mainRow model
@@ -34,7 +34,7 @@ mainContentWidth model =
 
 mainRow model =
     row Alternate
-        [ height fill ]
+        [ width fill, height fill ]
         [ tableOfContentsPanel model
         , contentPanel model
         ]
