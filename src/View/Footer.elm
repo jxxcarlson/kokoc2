@@ -6,7 +6,7 @@ import Element.Input
 import Element.Events exposing (onClick, onInput)
 import Element.Keyed
 import View.Stylesheet exposing (..)
-import Model exposing (Model, Mode(..))
+import Model exposing (Model, Mode(..), Page(..))
 import Helper
 import View.Widget as Widget
 import Msg exposing (Msg(Test))
@@ -25,8 +25,15 @@ footerContent model =
     , wordCount model
     , textLabel <| shareUrl model
     , textLabel <| Configuration.host
-    , View.DocumentMenu.versionsMenu model
+    , versionsMenu model
     ]
+
+
+versionsMenu model =
+    if model.maybeCurrentUser /= Nothing && model.page == EditorPage then
+        View.DocumentMenu.versionsMenu model
+    else
+        empty
 
 
 wordCount model =
