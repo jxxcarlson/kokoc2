@@ -22,7 +22,7 @@ view model =
         SearchMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 200, width (px 130), height (px 240), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
+                    [ moveRight 200, width (px 130), height (px 225), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
                     [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
                     , hairline Hairline
                     , randomSearch model

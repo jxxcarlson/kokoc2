@@ -24,7 +24,8 @@ footerContent model =
     [ el Menu [ verticalCenter ] (text model.message)
     , wordCount model
     , textLabel <| shareUrl model
-    , textLabel <| Configuration.host
+
+    -- , textLabel <| Configuration.host
     , versionsMenu model
     ]
 
