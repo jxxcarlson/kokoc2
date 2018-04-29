@@ -13,6 +13,7 @@ import Msg exposing (Msg(Test))
 import Configuration
 import Document.Utility
 import Document.Model exposing (DocType(..))
+import View.DocumentMenu
 
 
 view model =
@@ -24,6 +25,7 @@ footerContent model =
     , wordCount model
     , textLabel <| shareUrl model
     , textLabel <| Configuration.host
+    , View.DocumentMenu.versionsMenu model
     ]
 
 

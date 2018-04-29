@@ -38,7 +38,7 @@ menubar model menuContent =
 
 footer model footerContent =
     row Menubar
-        [ width (percent 100), height (px 35), alignBottom, spacing 12, verticalCenter ]
+        [ width (percent 100), height (px 35), alignBottom, spacing 24, verticalCenter ]
         footerContent
 
 

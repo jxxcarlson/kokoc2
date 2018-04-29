@@ -75,6 +75,9 @@ update msg model =
         ToggleDocumentMenu menu ->
             View.MenuManager.toggleDocumentsMenu model menu
 
+        ToggleVersionsMenu menu ->
+            View.MenuManager.toggleVersionsMenu model menu
+
         CloseMenus ->
             View.MenuManager.closeMenus model
 

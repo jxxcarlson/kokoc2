@@ -1,4 +1,11 @@
-module View.DocumentMenu exposing (view, newDocumentPanel, documentAttributesPanel)
+module View.DocumentMenu
+    exposing
+        ( view
+        , newDocumentPanel
+        , documentAttributesPanel
+        , versionsMenu
+        , toggleVersionsMenuButton
+        )
 
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -15,6 +22,7 @@ import Model
         , DocumentMenuState(..)
         , MenuStatus(..)
         , NewDocumentPanelState(..)
+        , VersionsMenuState(..)
         , DeleteDocumentState(..)
         , DocumentAttributePanelState(..)
         , SubdocumentPosition(..)
@@ -50,6 +58,7 @@ import User.Msg exposing (UserMsg(SignIn))
 import Utility
 import Http
 import Document.Utility
+import View.MenuManager as MenuManager
 
 
 view model =
@@ -91,17 +100,40 @@ documentMenuWhenSignedIn model =
         , compileMaster model
         , exportButton model
         , Widget.hairline
+        , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
+        ]
+
+
+versionsMenu model =
+    case model.versionsMenuState of
+        VersionsMenu MenuInactive ->
+            toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuInactive)
+
+        VersionsMenu MenuActive ->
+            toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuActive)
+                |> above
+                    (versionsMenuAux model)
+
+
+textLabel content =
+    el Menu [ paddingTop 8, verticalCenter ] (text <| content)
+
+
+versionsMenuAux model =
+    [ column Menu
+        [ width (px 220), padding 18, spacing 6 ]
+        [ versionDisplay model
+        , showVersionsButton model.currentDocument
+        , newVersionButton model.currentDocument
+        , textLabel <| "Repository:"
         , repositoryNameInputPane model
         , setRepository model
         , Widget.hairline
-        , versionDisplay model
-        , showVersionsButton model.currentDocument
-        , newVersionButton model.currentDocument
-        , Widget.hairline
+        , textLabel <| "Sharing"
         , shareDocumentInputPane model
         , shareDocumentButton model
-        , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
         ]
+    ]
 
 
 
@@ -197,42 +229,16 @@ dismissNewDocumentPanel =
     Widget.menuButton "Done" 60 [ onClick (CancelNewDocument) ] False
 
 
-editingCommmands model =
-    if model.page == EditorPage then
-        [ newDocument model
-        , deleteDocument model
-        , Widget.hairline
-        , documentAttributes model
-        , togglePublic model
-        , Widget.hairline
-        , renumberMaster model
-        , compileMaster model
-        , exportButton model
-        , Widget.hairline
-        , repositoryNameInputPane model
-        , setRepository model
-        , Widget.hairline
-        , versionDisplay model
-        , showVersionsButton model.currentDocument
-        , newVersionButton model.currentDocument
-        , Widget.hairline
-        , shareDocumentInputPane model
-        , shareDocumentButton model
-        ]
-    else
-        []
-
-
 shareDocumentInputPane model =
     Widget.menuInputField "share" (model.shareDocumentCommand) 180 (InputShareDocumentCommand)
 
 
 shareDocumentButton model =
-    Widget.innerMenuButton "Share" 60 [ onClick (DocumentMsg UpdateShareData) ] False
+    Widget.innerMenuButton "Share" 50 [ onClick (DocumentMsg UpdateShareData) ] False
 
 
 versionDisplay model =
-    el MenuButton [] (text <| "Version: " ++ (toString model.currentDocument.attributes.version))
+    el MenuButton [] (text <| "Document version: " ++ (toString model.currentDocument.attributes.version))
 
 
 repositoryNameInputPane model =
@@ -282,7 +288,7 @@ newVersionButton document =
 
 
 setRepository model =
-    Widget.innerMenuButton "Set repository" 100 [ onClick (DocumentMsg SetRepositoryName) ] False
+    Widget.innerMenuButton "Set" 35 [ onClick (DocumentMsg SetRepositoryName) ] False
 
 
 newVersionUrl : Document -> String
@@ -322,6 +328,10 @@ togglePublic model =
 
 toggleDocumentMenuButton model labelText width msg =
     Widget.menuButton labelText width [ verticalCenter, onClick (ToggleDocumentMenu msg) ] False
+
+
+toggleVersionsMenuButton model labelText width msg =
+    Widget.menuButton labelText width [ paddingLeft 12, verticalCenter, onClick (ToggleVersionsMenu msg) ] False
 
 
 publicStatus model =
