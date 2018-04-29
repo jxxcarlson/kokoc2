@@ -42,6 +42,7 @@ type alias Model =
     , searchDomain : SearchDomain
     , searchMenuState : SearchMenuState
     , documentMenuState : DocumentMenuState
+    , versionsMenuState : VersionsMenuState
     , newDocumentPanelState : NewDocumentPanelState
     , documentAttributePanelState : DocumentAttributePanelState
     , newDocumentTitle : String
@@ -81,6 +82,10 @@ type SearchMenuState
 
 type DocumentMenuState
     = DocumentMenu MenuStatus
+
+
+type VersionsMenuState
+    = VersionsMenu MenuStatus
 
 
 type MenuStatus
@@ -138,6 +143,7 @@ initialModel flags =
      , searchDomain = SearchPublic
      , searchMenuState = SearchMenu MenuInactive
      , documentMenuState = DocumentMenu MenuInactive
+     , versionsMenuState = VersionsMenu MenuInactive
      , newDocumentPanelState = NewDocumentPanelInactive
      , documentAttributePanelState = DocumentAttributePanelInactive
      , newDocumentTitle = "New Document"
