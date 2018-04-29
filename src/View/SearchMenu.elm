@@ -29,7 +29,8 @@ view model =
                     , Widget.hairline
                     , searchPublic model
                     , searchPrivate model
-                    , searchAll model
+
+                    -- , searchAll model
                     , Widget.hairline
                     , (toggleSearchMenuButton model "X" 50 (SearchMenu MenuActive))
                     ]
