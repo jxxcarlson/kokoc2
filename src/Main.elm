@@ -14,6 +14,7 @@ import Configuration
 import Nav.Parser
 import Navigation
 import Nav.UrlParseExtra
+import Keyboard.Extra
 
 
 --
@@ -58,4 +59,5 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ OutsideInfo.getInfoFromOutside Outside LogErr
+        , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
         ]

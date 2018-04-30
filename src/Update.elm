@@ -4,8 +4,10 @@ import Model exposing (Model, Flags, initialModel, Mode(..))
 import Msg exposing (..)
 import User.Update
 import Document.ActionRead
+import Document.ActionEdit
 import Document.Update
 import Document.Cmd
+import Document.Msg exposing (DocumentMsg(RenderContent))
 import Document.Model exposing (DocType(..), DocumentAccessibility)
 import OutsideInfo
 import User.Action
@@ -23,6 +25,7 @@ import Utility
 import Configuration
 import Nav.Navigation
 import View.MenuManager
+import Keyboard.Extra exposing (Key(..))
 
 
 --- TEST:
@@ -120,7 +123,51 @@ update msg model =
             -- Navigation.newUrl (Configuration.client ++ "/##public/181")
             Nav.Navigation.navigateTo maybepage model
 
+        KeyboardMsg keyMsg ->
+            let
+                pressedKeys =
+                    Keyboard.Extra.update keyMsg model.pressedKeys
+
+                _ =
+                    Debug.log "pressedKeys" pressedKeys
+            in
+                respondToKeysDispatch model pressedKeys
+
+        -- respondToKeys model <| Keyboard.Extra.update keyMsg model.pressedKeys
         Test ->
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181
             )
+
+
+respondToKeysDispatch : Model -> List Key -> ( Model, Cmd Msg )
+respondToKeysDispatch model pressedKeys =
+    if model.previousKey == Control then
+        respondToKeys model pressedKeys
+    else
+        ( { model | previousKey = headKey pressedKeys }, Cmd.none )
+
+
+respondToKeys : Model -> List Key -> ( Model, Cmd Msg )
+respondToKeys model pressedKeys =
+    let
+        newModel =
+            { model | previousKey = headKey pressedKeys }
+    in
+        if List.member BackSlash pressedKeys then
+            Document.ActionEdit.renderContent newModel
+        else
+            ( newModel, Cmd.none )
+
+
+
+-- keyCommandDict: Dict.Dict -> Key -> (Model -> (Model, Cmd Msg))
+-- keyCommandDict = Dict.fromList [
+--   (BackSlash)
+--
+-- ]
+
+
+headKey : List Key -> Key
+headKey keyList =
+    List.head keyList |> Maybe.withDefault F24

@@ -10,6 +10,7 @@ module Document.ActionEdit
         , updateAttributesOfCurrentDocument
         , togglePublic
         , updateRepositoryName
+        , renderContent
         )
 
 import Document.Default
@@ -107,6 +108,14 @@ selectNewDocument model document =
 -- |> Task.andThen (Msg.DocumentMsg << GetDocumentList) (Document.Task.selectMasterTask document.parentId (Utility.getToken model))
 
 
+renderContent : Model -> ( Model, Cmd Msg )
+renderContent model =
+    if model.currentDocument.attributes.textType == MiniLatex then
+        renderLatex model
+    else
+        ( model, Document.Cmd.renderNonLatexCmd model )
+
+
 renderLatex : Model -> ( Model, Cmd Msg )
 renderLatex model =
     let
@@ -141,7 +150,7 @@ renderLatex model =
         ( { model
             | currentDocument = updatedDocument
             , editRecord = newEditRecord
-            , textToExport = Debug.log "textToExport" textToExport
+            , textToExport = textToExport
           }
         , Cmd.batch
             [ Document.Cmd.putTextToRender updatedDocument

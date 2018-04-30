@@ -6,6 +6,7 @@ import Model exposing (SearchMenuState, VersionsMenuState, DocumentMenuState, Su
 import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
 import Document.Model exposing (SearchDomain(..), TextType(..), DocType(..))
+import Keyboard.Extra
 
 
 type Msg
@@ -34,6 +35,7 @@ type Msg
     | SetDocumentType DocType
     | SetSubdocumentPosition SubdocumentPosition
     | GoToPage (Maybe Page)
+    | KeyboardMsg Keyboard.Extra.Msg
 
 
 type InfoForElm

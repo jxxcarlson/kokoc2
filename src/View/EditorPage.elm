@@ -58,8 +58,8 @@ contentPanel model =
 
 renderContentButton model =
     Widget.bareButton Button
-        "Render"
-        90
+        "Render   ctrl-\\"
+        120
         [ paddingLeft 10
         , onClick (Msg.DocumentMsg RenderContent)
         ]

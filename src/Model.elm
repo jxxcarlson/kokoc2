@@ -14,6 +14,8 @@ import Document.Default
 import MiniLatex.Differ exposing (EditRecord)
 import MiniLatex.Driver
 import Dict exposing (Dict)
+import Html exposing (Html, div, p, ul, li, text)
+import Keyboard.Extra exposing (Key(..))
 
 
 type alias Model =
@@ -53,6 +55,8 @@ type alias Model =
     , subdocumentPosition : SubdocumentPosition
     , repositoryName : String
     , shareDocumentCommand : String
+    , pressedKeys : List Key
+    , previousKey : Key
     }
 
 
@@ -154,5 +158,7 @@ initialModel flags =
      , subdocumentPosition = DoNotAttachSubdocument
      , repositoryName = "default"
      , shareDocumentCommand = "username: rw"
+     , pressedKeys = []
+     , previousKey = F24
      }
     )
