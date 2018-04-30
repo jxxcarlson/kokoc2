@@ -26,6 +26,7 @@ import Configuration
 import Nav.Navigation
 import View.MenuManager
 import Keyboard.Extra exposing (Key(..))
+import Dict
 
 
 --- TEST:
@@ -154,18 +155,20 @@ respondToKeys model pressedKeys =
         newModel =
             { model | previousKey = headKey pressedKeys }
     in
-        if List.member BackSlash pressedKeys then
-            Document.ActionEdit.renderContent newModel
-        else
-            ( newModel, Cmd.none )
+        (lookupKeyAction <| headKey pressedKeys) newModel
 
 
+lookupKeyAction : Key -> (Model -> ( Model, Cmd Msg ))
+lookupKeyAction key =
+    case key of
+        BackSlash ->
+            \model -> Document.ActionEdit.renderContent model
 
--- keyCommandDict: Dict.Dict -> Key -> (Model -> (Model, Cmd Msg))
--- keyCommandDict = Dict.fromList [
---   (BackSlash)
---
--- ]
+        CharN ->
+            \model -> Document.ActionEdit.newDocument model
+
+        _ ->
+            \model -> ( model, Cmd.none )
 
 
 headKey : List Key -> Key

@@ -100,7 +100,8 @@ documentMenuWhenSignedIn model =
         , compileMaster model
         , exportButton model
         , Widget.hairline
-        , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
+
+        --, toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
         ]
 
 
@@ -306,7 +307,7 @@ showVersionsUrl document =
 
 
 newDocument model =
-    Widget.menuButton "New" 60 [ onClick (DisplayNewDocumentPanel) ] False
+    Widget.menuButton "New ctrl-N" 60 [ onClick (DisplayNewDocumentPanel) ] False
 
 
 documentAttributes model =
