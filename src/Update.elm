@@ -27,6 +27,7 @@ import Nav.Navigation
 import View.MenuManager
 import Keyboard.Extra exposing (Key(..))
 import Dict
+import View.DocumentMenu
 
 
 --- TEST:
@@ -71,7 +72,7 @@ update msg model =
             ( { model | page = ReaderPage }, Cmd.none )
 
         GotoStartPage ->
-            ( { model | page = StartPage }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
+            goToStartPage model
 
         ToggleSearchMenu menu ->
             View.MenuManager.toggleSearchMenu model menu
@@ -86,9 +87,6 @@ update msg model =
             View.MenuManager.closeMenus model
 
         DisplayNewDocumentPanel ->
-            View.MenuManager.displayNewDocumentsPanel model
-
-        DisplayDocumentAttributesPanel ->
             View.MenuManager.displayNewDocumentsPanel model
 
         CancelNewDocument ->
@@ -118,7 +116,7 @@ update msg model =
             ( { model | shareDocumentCommand = str }, Cmd.none )
 
         GotoHomePage ->
-            ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )
+            goToHomePage model
 
         GoToPage maybepage ->
             -- Navigation.newUrl (Configuration.client ++ "/##public/181")
@@ -135,6 +133,9 @@ update msg model =
                 respondToKeysDispatch model pressedKeys
 
         -- respondToKeys model <| Keyboard.Extra.update keyMsg model.pressedKeys
+        DisplayDocumentAttributesPanel ->
+            ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
+
         Test ->
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181
@@ -164,8 +165,29 @@ lookupKeyAction key =
         BackSlash ->
             \model -> Document.ActionEdit.renderContent model
 
+        CharA ->
+            \model -> ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
+
+        CharC ->
+            \model -> View.MenuManager.closeMenus model
+
+        CharE ->
+            \model -> ( { model | page = EditorPage }, Cmd.none )
+
+        CharH ->
+            \model -> goToHomePage model
+
         CharN ->
             \model -> Document.ActionEdit.newDocument model
+
+        CharR ->
+            \model -> ( { model | page = ReaderPage }, Cmd.none )
+
+        CharS ->
+            \model -> goToStartPage model
+
+        CharV ->
+            \model -> View.MenuManager.toggleVersionsMenu model model.versionsMenuState
 
         _ ->
             \model -> ( model, Cmd.none )
@@ -174,3 +196,13 @@ lookupKeyAction key =
 headKey : List Key -> Key
 headKey keyList =
     List.head keyList |> Maybe.withDefault F24
+
+
+goToStartPage : Model -> ( Model, Cmd Msg )
+goToStartPage model =
+    ( { model | page = StartPage }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
+
+
+goToHomePage : Model -> ( Model, Cmd Msg )
+goToHomePage model =
+    ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )

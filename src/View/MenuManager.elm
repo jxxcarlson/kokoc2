@@ -78,6 +78,8 @@ closeMenus model =
         , documentMenuState = DocumentMenu MenuInactive
         , deleteDocumentState = DeleteDocumentInactive
         , documentAttributePanelState = DocumentAttributePanelInactive
+        , newDocumentPanelState = NewDocumentPanelInactive
+        , versionsMenuState = VersionsMenu MenuInactive
       }
     , Cmd.none
     )
@@ -88,6 +90,17 @@ displayNewDocumentsPanel model =
     ( { model
         | newDocumentPanelState = NewDocumentPanelActive
         , documentType = Standard
+      }
+    , Cmd.none
+    )
+
+
+displayAttributesPanel : Model -> ( Model, Cmd Msg )
+displayAttributesPanel model =
+    ( { model
+        | documentAttributePanelState = DocumentAttributePanelActive
+        , documentType = model.currentDocument.attributes.docType
+        , documentTextType = model.currentDocument.attributes.textType
       }
     , Cmd.none
     )
