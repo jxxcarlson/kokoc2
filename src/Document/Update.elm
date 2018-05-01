@@ -143,13 +143,7 @@ update submessage model =
                 ActionEdit.updateAttributesOfCurrentDocument model
 
             GetRandomDocuments ->
-                ( { model
-                    | page = ReaderPage
-                    , searchMenuState = SearchMenu MenuInactive
-                    , maybeMasterDocument = Nothing
-                  }
-                , Document.Cmd.randomDocuments model
-                )
+                ActionRead.getRandomDocuments model
 
             SetDocumentInDict (Ok ( documentsRecord, key )) ->
                 let

@@ -4,6 +4,7 @@ module Document.ActionRead
         , loadContent
         , loadParentDocument
         , selectDocument
+        , getRandomDocuments
         )
 
 import Document.Default
@@ -11,7 +12,7 @@ import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, Do
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList, LoadContentAndRender))
-import Model exposing (Model)
+import Model exposing (Model, Page(..), SearchMenuState(..), MenuStatus(..))
 import Msg exposing (Msg(DocumentMsg))
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
@@ -138,6 +139,17 @@ selectDocument model document =
             , setTexMacroFileCmd document token
             ]
         )
+
+
+getRandomDocuments : Model -> ( Model, Cmd Msg )
+getRandomDocuments model =
+    ( { model
+        | page = ReaderPage
+        , searchMenuState = SearchMenu MenuInactive
+        , maybeMasterDocument = Nothing
+      }
+    , Document.Cmd.randomDocuments model
+    )
 
 
 setTexMacroFileCmd document token =

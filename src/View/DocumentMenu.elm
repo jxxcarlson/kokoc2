@@ -93,7 +93,6 @@ documentMenuWhenSignedIn model =
         , newDocument model
         , deleteDocument model
         , Widget.hairline
-        , documentAttributesPanel model
         , documentAttributes model
         , togglePublic model
         , Widget.hairline

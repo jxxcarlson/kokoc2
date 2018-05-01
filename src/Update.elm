@@ -189,6 +189,9 @@ lookupKeyAction key =
         CharV ->
             \model -> View.MenuManager.toggleVersionsMenu model model.versionsMenuState
 
+        CharX ->
+            \model -> Document.ActionRead.getRandomDocuments model
+
         _ ->
             \model -> ( model, Cmd.none )
 
