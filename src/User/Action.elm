@@ -8,6 +8,7 @@ import Json.Encode as Encode
 import Msg exposing (Msg)
 import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))
+import Document.Model exposing (SearchDomain(..))
 
 
 handleToken model token =
@@ -15,7 +16,7 @@ handleToken model token =
         newModel =
             modelFromToken model token
     in
-        ( newModel, sendUserDataToLocalStorage newModel )
+        ( { newModel | searchDomain = SearchPrivate }, sendUserDataToLocalStorage newModel )
 
 
 userFromToken : Model -> String -> Maybe User
