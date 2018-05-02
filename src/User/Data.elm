@@ -108,25 +108,3 @@ type alias User =
     , token : String
     , admin : Bool
     }
-
-
-
--- registerUserEncoderOLD : Model -> Encode.Value
--- registerUserEncoderOLD model =
---     Encode.object
---         [ ( "user"
---           , Encode.object
---                 [ ( "name", Encode.string <| model.current_user.name )
---                 , ( "id", Encode.int <| model.current_user.id )
---                 , ( "username", Encode.string <| model.current_user.username )
---                 , ( "email", Encode.string <| model.current_user.email )
---                 , ( "password", Encode.string <| model.current_user.password )
---                 , ( "token", Encode.string <| model.current_user.token )
---                 , ( "admin", Encode.bool <| model.current_user.admin )
---                 , ( "blurb", Encode.string <| model.current_user.blurb )
---                 ]
---           )
---         ]
---
---
---

@@ -14,6 +14,7 @@ import Configuration
 import Document.Utility
 import Document.Model exposing (DocType(..))
 import View.DocumentMenu
+import User.Action
 
 
 view model =
@@ -24,6 +25,7 @@ footerContent model =
     [ el Menu [ verticalCenter ] (text model.message)
     , wordCount model
     , textLabel <| shareUrl model
+    , textLabel <| User.Action.displayUser model
 
     -- , textLabel <| Configuration.host
     , versionsMenu model

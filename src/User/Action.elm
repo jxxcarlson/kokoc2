@@ -1,4 +1,12 @@
-module User.Action exposing (..)
+module User.Action
+    exposing
+        ( handleToken
+        , displayUser
+        , handleUserRecord
+        , reconnectUser
+        , setMode
+        , signOutCommand
+        )
 
 import Jwt exposing (decodeToken)
 import Model exposing (Model, Mode(..))
@@ -9,8 +17,10 @@ import Msg exposing (Msg)
 import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))
 import Document.Model exposing (SearchDomain(..))
+import Utility
 
 
+handleToken : Model -> String -> ( Model, Cmd Msg )
 handleToken model token =
     let
         newModel =
@@ -34,6 +44,16 @@ userFromToken model token =
 
         Err error ->
             Nothing
+
+
+displayUser : Model -> String
+displayUser model =
+    case userFromToken model (Utility.getToken model) of
+        Just user ->
+            "Signed in as " ++ user.username
+
+        Nothing ->
+            "Token expired: please sign in again"
 
 
 modelFromToken : Model -> String -> Model
@@ -60,7 +80,7 @@ handleUserRecord model userRecord =
             Debug.log "handleUserRecord"
                 userRecord.user
     in
-        case Jwt.decodeToken Data.jwtDecoder user.token of
+        case Jwt.decodeToken Data.userRecordDecoder user.token of
             Ok value ->
                 let
                     newModel =

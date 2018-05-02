@@ -8,19 +8,6 @@ import User.RequestParameters as RequestParameters
 import User.Action as Action
 
 
--- type alias User =
---     { name : String
---     , id : Int
---     , username : String
---     , email : String
---     , blurb : String
---     , password : String
---     , token : String
---     , admin : Bool
---     }
---
-
-
 update : UserMsg -> Model -> ( Model, Cmd Msg )
 update submessage model =
     case submessage of
