@@ -81,9 +81,7 @@ update msg model =
             View.MenuManager.cancelNewDocument model
 
         ChooseSearchType searchDomain ->
-            ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
-            , Document.Cmd.search model
-            )
+            chooseSearchDomain model searchDomain
 
         InputNewDocumentTitle str ->
             ( { model | newDocumentTitle = str }, Cmd.none )
@@ -107,27 +105,16 @@ update msg model =
             goToHomePage model
 
         GoToPage maybepage ->
-            -- Navigation.newUrl (Configuration.client ++ "/##public/181")
             Nav.Navigation.navigateTo maybepage model
 
         KeyboardMsg keyMsg ->
-            let
-                pressedKeys =
-                    Keyboard.Extra.update keyMsg model.pressedKeys
+            processKeyboardMsg model keyMsg
 
-                _ =
-                    Debug.log "pressedKeys" pressedKeys
-            in
-                respondToKeysDispatch model pressedKeys
-
-        -- respondToKeys model <| Keyboard.Extra.update keyMsg model.pressedKeys
         DisplayDocumentAttributesPanel ->
             ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
 
         Test ->
-            ( model
-            , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181
-            )
+            ( model, Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181 )
 
 
 processInfoForElm model infoForElm =
@@ -144,6 +131,23 @@ processInfoForElm model infoForElm =
                     { document | renderedContent = renderedText }
             in
                 ( { model | currentDocument = updatedDocument }, Cmd.none )
+
+
+chooseSearchDomain model searchDomain =
+    ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
+    , Document.Cmd.search model
+    )
+
+
+processKeyboardMsg model keyMsg =
+    let
+        pressedKeys =
+            Keyboard.Extra.update keyMsg model.pressedKeys
+
+        _ =
+            Debug.log "pressedKeys" pressedKeys
+    in
+        respondToKeysDispatch model pressedKeys
 
 
 respondToKeysDispatch : Model -> List Key -> ( Model, Cmd Msg )
