@@ -15,6 +15,7 @@ import Document.Utility
 import Document.Model exposing (DocType(..))
 import View.DocumentMenu
 import User.Action
+import Utility
 
 
 view model =
@@ -25,7 +26,7 @@ footerContent model =
     [ el Menu [ verticalCenter ] (text model.message)
     , wordCount model
     , textLabel <| shareUrl model
-    , textLabel <| User.Action.displayUser model
+    , userStatus model
 
     -- , textLabel <| Configuration.host
     , versionsMenu model
@@ -48,8 +49,22 @@ wordCount model =
             textLabel <| "Word count: " ++ (toString <| Document.Utility.masterDocumenWordCount model)
 
 
-textLabel content =
-    el Menulabel [ paddingLeft 24, verticalCenter ] (text <| content)
+
+-- textLabel content =
+--     el Menulabel [ paddingLeft 24, verticalCenter ] (text <| content)
+
+
+userStatus model =
+    case User.Action.userFromToken model (Utility.getToken model) of
+        Just user ->
+            textLabel <| "Signed in as " ++ user.username
+
+        Nothing ->
+            Widget.textLabel 24 MenulabelWarning "Session expired.  Please sign in again."
+
+
+textLabel =
+    Widget.textLabel 24 Menulabel
 
 
 shareUrl model =

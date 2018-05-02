@@ -13,13 +13,9 @@ host =
     "https://nshost.herokuapp.com"
 
 
-
--- "http://localhost:4000"
-
-
 client : String
 client =
-    "http://localhost:8080"
+    "http://www.knode.io"
 
 
 api : String

@@ -1,8 +1,8 @@
 module User.Action
     exposing
         ( handleToken
-        , displayUser
         , handleUserRecord
+        , userFromToken
         , reconnectUser
         , setMode
         , signOutCommand
@@ -17,7 +17,6 @@ import Msg exposing (Msg)
 import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))
 import Document.Model exposing (SearchDomain(..))
-import Utility
 
 
 handleToken : Model -> String -> ( Model, Cmd Msg )
@@ -44,16 +43,6 @@ userFromToken model token =
 
         Err error ->
             Nothing
-
-
-displayUser : Model -> String
-displayUser model =
-    case userFromToken model (Utility.getToken model) of
-        Just user ->
-            "Signed in as " ++ user.username
-
-        Nothing ->
-            "Token expired: please sign in again"
 
 
 modelFromToken : Model -> String -> Model
