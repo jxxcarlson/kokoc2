@@ -27,6 +27,7 @@ footerContent model =
     , wordCount model
     , textLabel <| shareUrl model
     , userStatus model
+    , textLabel <| "Time: " ++ (toString model.time)
 
     -- , textLabel <| Configuration.host
     , versionsMenu model

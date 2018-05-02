@@ -16,6 +16,7 @@ import MiniLatex.Driver
 import Dict exposing (Dict)
 import Html exposing (Html, div, p, ul, li, text)
 import Keyboard.Extra exposing (Key(..))
+import Time exposing (Time)
 
 
 type alias Model =
@@ -57,6 +58,7 @@ type alias Model =
     , shareDocumentCommand : String
     , pressedKeys : List Key
     , previousKey : Key
+    , time : Time
     }
 
 
@@ -160,5 +162,6 @@ initialModel flags =
      , shareDocumentCommand = "username: rw"
      , pressedKeys = []
      , previousKey = F24
+     , time = 0
      }
     )

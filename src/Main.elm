@@ -15,6 +15,7 @@ import Nav.Parser
 import Navigation
 import Nav.UrlParseExtra
 import Keyboard.Extra
+import Time exposing (Time, second)
 
 
 --
@@ -60,4 +61,5 @@ subscriptions model =
     Sub.batch
         [ OutsideInfo.getInfoFromOutside Outside LogErr
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
+        , Time.every second Tick
         ]

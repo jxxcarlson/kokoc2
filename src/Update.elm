@@ -113,6 +113,9 @@ update msg model =
         DisplayDocumentAttributesPanel ->
             ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
 
+        Tick newTime ->
+            ( { model | time = newTime }, Cmd.none )
+
         Test ->
             ( model, Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181 )
 

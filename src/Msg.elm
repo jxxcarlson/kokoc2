@@ -7,6 +7,7 @@ import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
 import Document.Model exposing (SearchDomain(..), TextType(..), DocType(..))
 import Keyboard.Extra
+import Time exposing (Time)
 
 
 type Msg
@@ -36,6 +37,7 @@ type Msg
     | SetSubdocumentPosition SubdocumentPosition
     | GoToPage (Maybe Page)
     | KeyboardMsg Keyboard.Extra.Msg
+    | Tick Time
 
 
 type InfoForElm
