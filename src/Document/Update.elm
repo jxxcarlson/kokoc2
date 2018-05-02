@@ -128,10 +128,10 @@ update submessage model =
                     ( { model | currentDocument = updatedDocument }, cmd )
 
             RenderContent ->
-                if model.currentDocument.attributes.textType == MiniLatex then
-                    ActionEdit.renderLatex model
-                else
-                    ( model, Document.Cmd.renderNonLatexCmd model )
+                ActionEdit.renderContent model
+
+            RenderContentAndSave ->
+                ActionEdit.renderContentAndSave model
 
             PrepareToDeleteDocument ->
                 ( { model | deleteDocumentState = DeleteDocumentPending }, Cmd.none )

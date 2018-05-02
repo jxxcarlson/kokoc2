@@ -4,9 +4,14 @@ color=`tput setaf 48`
 red=`tput setaf 1`
 reset=`tput setaf 7`
 
+
+if [ "$1" = "-c" ]
+then
 echo
-echo "${color}Use deploy configuration.${reset}"
+echo "${color}Use dev configuration ... copying${reset}"
 cp ./robot/src/deploy/Configuration.elm ./src/Configuration.elm
+fi
+
 
 echo
 echo "${color}Compiling${reset}"

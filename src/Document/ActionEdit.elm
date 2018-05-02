@@ -1,7 +1,6 @@
 module Document.ActionEdit
     exposing
-        ( renderLatex
-        , createDocument
+        ( createDocument
         , selectNewDocument
         , deleteDocument
         , deleteDocumentFromList
@@ -11,6 +10,7 @@ module Document.ActionEdit
         , togglePublic
         , updateRepositoryName
         , renderContent
+        , renderContentAndSave
         )
 
 import Document.Default
@@ -114,6 +114,19 @@ renderContent model =
         renderLatex model
     else
         ( model, Document.Cmd.renderNonLatexCmd model )
+
+
+renderContentAndSave : Model -> ( Model, Cmd Msg )
+renderContentAndSave model =
+    if model.currentDocument.attributes.textType == MiniLatex then
+        renderLatex model
+    else
+        ( model
+        , Cmd.batch
+            [ Document.Cmd.renderNonLatexCmd model
+            , Document.Cmd.saveDocumentCmd model.currentDocument (Utility.getToken model)
+            ]
+        )
 
 
 renderLatex : Model -> ( Model, Cmd Msg )

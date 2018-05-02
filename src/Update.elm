@@ -163,7 +163,7 @@ lookupKeyAction : Key -> (Model -> ( Model, Cmd Msg ))
 lookupKeyAction key =
     case key of
         BackSlash ->
-            \model -> Document.ActionEdit.renderContent model
+            \model -> Document.ActionEdit.renderContentAndSave model
 
         CharA ->
             \model -> ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
@@ -178,7 +178,7 @@ lookupKeyAction key =
             \model -> goToHomePage model
 
         CharN ->
-            \model -> Document.ActionEdit.newDocument model
+            \model -> View.MenuManager.displayNewDocumentsPanel model
 
         CharR ->
             \model -> ( { model | page = ReaderPage }, Cmd.none )

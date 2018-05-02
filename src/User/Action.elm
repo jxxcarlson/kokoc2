@@ -16,7 +16,7 @@ handleToken model token =
         newModel =
             modelFromToken model token
     in
-        ( { newModel | searchDomain = SearchPrivate }, sendUserDataToLocalStorage newModel )
+        ( newModel, sendUserDataToLocalStorage newModel )
 
 
 userFromToken : Model -> String -> Maybe User
@@ -50,7 +50,7 @@ modelFromToken model token =
                 Just user ->
                     SignedIn
     in
-        { model | maybeCurrentUser = maybeUser, mode = mode, password = "" }
+        { model | maybeCurrentUser = maybeUser, searchDomain = SearchPrivate, mode = mode, password = "" }
 
 
 handleUserRecord : Model -> UserRecord -> ( Model, Cmd Msg )

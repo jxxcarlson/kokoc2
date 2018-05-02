@@ -5,7 +5,7 @@ import Element.Attributes exposing (..)
 import View.Stylesheet exposing (..)
 import Model exposing (Model)
 import Msg exposing (Msg(DocumentMsg))
-import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText, RenderContent))
+import Document.Msg exposing (DocumentMsg(LoadParent, InputEditorText, RenderContent, RenderContentAndSave))
 import View.Menubar as Menubar
 import View.Footer as Footer
 import View.Render as Render
@@ -58,10 +58,10 @@ contentPanel model =
 
 renderContentButton model =
     Widget.bareButton Button
-        "Render   ctrl-\\"
+        "Render and save (ctrl-\\)"
         120
         [ paddingLeft 10
-        , onClick (Msg.DocumentMsg RenderContent)
+        , onClick (Msg.DocumentMsg RenderContentAndSave)
         ]
 
 

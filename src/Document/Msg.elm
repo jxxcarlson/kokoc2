@@ -19,6 +19,7 @@ type DocumentMsg
     | LoadParent Document
     | InputEditorText String
     | RenderContent
+    | RenderContentAndSave
     | PrepareToDeleteDocument
     | DoDeleteDocument
     | UpdateDocumentAttributes
