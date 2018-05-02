@@ -48,19 +48,7 @@ update msg model =
             Document.Update.update submessage model
 
         Outside infoForElm ->
-            case infoForElm of
-                UserLoginInfo userLoginRecord ->
-                    ( User.Action.reconnectUser model userLoginRecord, Cmd.none )
-
-                RenderedText renderedText ->
-                    let
-                        document =
-                            model.currentDocument
-
-                        updatedDocument =
-                            { document | renderedContent = renderedText }
-                    in
-                        ( { model | currentDocument = updatedDocument }, Cmd.none )
+            processInfoForElm model infoForElm
 
         LogErr error ->
             ( { model | errorMessage = "Error: " ++ error }, Cmd.none )
@@ -140,6 +128,22 @@ update msg model =
             ( model
             , Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181
             )
+
+
+processInfoForElm model infoForElm =
+    case infoForElm of
+        UserLoginInfo userLoginRecord ->
+            ( User.Action.reconnectUser model userLoginRecord, Cmd.none )
+
+        RenderedText renderedText ->
+            let
+                document =
+                    model.currentDocument
+
+                updatedDocument =
+                    { document | renderedContent = renderedText }
+            in
+                ( { model | currentDocument = updatedDocument }, Cmd.none )
 
 
 respondToKeysDispatch : Model -> List Key -> ( Model, Cmd Msg )
