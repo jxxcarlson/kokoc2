@@ -69,7 +69,7 @@ view model =
         DocumentMenu MenuActive ->
             (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
                 |> below
-                    [ if model.maybeCurrentUser == Nothing then
+                    [ if (model.maybeCurrentUser == Nothing || model.page /= EditorPage) then
                         documentMenuWhenNotSignedIn model
                       else
                         documentMenuWhenSignedIn model
@@ -207,14 +207,14 @@ documentAttributesPanel model =
                 , Widget.inputField "Title" model.currentDocument.title 330 (InputNewDocumentTitle)
                 , Widget.hairline
                 , el Menu [ paddingTop 8 ] (text "Text type")
-                , Widget.menuButton "Asciidoc" 125 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.currentDocument.attributes.textType == Asciidoc)
-                , Widget.menuButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.currentDocument.attributes.textType == AsciidocLatex)
-                , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.currentDocument.attributes.textType == MiniLatex)
-                , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.currentDocument.attributes.textType == Plain)
+                , Widget.menuButton "Asciidoc" 125 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
+                , Widget.menuButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
+                , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 , Widget.hairline
                 , el Menu [ paddingTop 8 ] (text "Document type")
-                , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.currentDocument.attributes.docType == Standard)
-                , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.currentDocument.attributes.docType == Master)
+                , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)
+                , Widget.menuButton "Master" 125 [ paddingLeft 20, onClick (SetDocumentType Master) ] (model.documentType == Master)
                 , Widget.hairline
                 , row Menu
                     [ spacing 15 ]

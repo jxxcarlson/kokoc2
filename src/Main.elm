@@ -16,6 +16,7 @@ import Navigation
 import Nav.UrlParseExtra
 import Keyboard.Extra
 import Time exposing (Time, second)
+import Configuration exposing (TickerState(..))
 
 
 --
@@ -61,5 +62,17 @@ subscriptions model =
     Sub.batch
         [ OutsideInfo.getInfoFromOutside Outside LogErr
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
-        , Time.every second Tick
+        , runTicker model
         ]
+
+
+runTicker model =
+    case model.tickerState of
+        TickNever ->
+            Sub.none
+
+        TickEachSecond ->
+            Time.every second Tick
+
+        TickSlowly ->
+            Time.every (10 * second) Tick

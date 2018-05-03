@@ -125,7 +125,7 @@ update submessage model =
                         else
                             Document.Cmd.putTextToRender updatedDocument
                 in
-                    ( { model | currentDocument = updatedDocument }, cmd )
+                    ( { model | currentDocument = updatedDocument, currentDocumentNeedsToBeSaved = True }, cmd )
 
             RenderContent ->
                 ActionEdit.renderContent model

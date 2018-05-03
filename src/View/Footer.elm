@@ -28,6 +28,7 @@ footerContent model =
     , textLabel <| shareUrl model
     , userStatus model
     , textLabel <| "Time: " ++ (toString model.time)
+    , textLabel <| "CD needs update: " ++ (toString model.currentDocumentNeedsToBeSaved)
 
     -- , textLabel <| Configuration.host
     , versionsMenu model

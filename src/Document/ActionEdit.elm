@@ -121,7 +121,7 @@ renderContentAndSave model =
     if model.currentDocument.attributes.textType == MiniLatex then
         renderLatex model
     else
-        ( model
+        ( { model | currentDocumentNeedsToBeSaved = False }
         , Cmd.batch
             [ Document.Cmd.renderNonLatexCmd model
             , Document.Cmd.saveDocumentCmd model.currentDocument (Utility.getToken model)
@@ -164,6 +164,7 @@ renderLatex model =
             | currentDocument = updatedDocument
             , editRecord = newEditRecord
             , textToExport = textToExport
+            , currentDocumentNeedsToBeSaved = False
           }
         , Cmd.batch
             [ Document.Cmd.putTextToRender updatedDocument

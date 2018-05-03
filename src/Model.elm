@@ -17,6 +17,7 @@ import Dict exposing (Dict)
 import Html exposing (Html, div, p, ul, li, text)
 import Keyboard.Extra exposing (Key(..))
 import Time exposing (Time)
+import Configuration exposing (TickerState(..))
 
 
 type alias Model =
@@ -32,6 +33,7 @@ type alias Model =
     , documentList : List Document
     , documentDict : Dict String Document
     , currentDocument : Document
+    , currentDocumentNeedsToBeSaved : Bool
     , maybePreviousDocument : Maybe Document
     , editRecord : EditRecord
     , maybeMasterDocument : Maybe Document
@@ -59,6 +61,7 @@ type alias Model =
     , pressedKeys : List Key
     , previousKey : Key
     , time : Time
+    , tickerState : TickerState
     }
 
 
@@ -136,6 +139,7 @@ initialModel flags =
      , documentList = []
      , documentDict = Dict.empty
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
+     , currentDocumentNeedsToBeSaved = False
      , maybePreviousDocument = Nothing
      , editRecord = MiniLatex.Driver.setup 0 ""
      , maybeMasterDocument = Nothing
@@ -163,5 +167,6 @@ initialModel flags =
      , pressedKeys = []
      , previousKey = F24
      , time = 0
+     , tickerState = Configuration.initialTickerState
      }
     )

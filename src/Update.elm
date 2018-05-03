@@ -54,10 +54,10 @@ update msg model =
             ( { model | errorMessage = "Error: " ++ error }, Cmd.none )
 
         GotoEditorPage ->
-            ( { model | page = EditorPage }, Cmd.none )
+            goToEditorPage model
 
         GotoReaderPage ->
-            ( { model | page = ReaderPage }, Cmd.none )
+            goToReaderPage model
 
         GotoStartPage ->
             goToStartPage model
@@ -136,6 +136,24 @@ processInfoForElm model infoForElm =
                 ( { model | currentDocument = updatedDocument }, Cmd.none )
 
 
+goToEditorPage model =
+    ( { model | page = EditorPage, currentDocumentNeedsToBeSaved = False }, Cmd.none )
+
+
+goToReaderPage model =
+    ( { model | page = ReaderPage, currentDocumentNeedsToBeSaved = False }, Cmd.none )
+
+
+goToStartPage : Model -> ( Model, Cmd Msg )
+goToStartPage model =
+    ( { model | page = StartPage, currentDocumentNeedsToBeSaved = False }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
+
+
+goToHomePage : Model -> ( Model, Cmd Msg )
+goToHomePage model =
+    ( { model | page = ReaderPage, currentDocumentNeedsToBeSaved = False }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )
+
+
 chooseSearchDomain model searchDomain =
     ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
     , Document.Cmd.search model
@@ -183,7 +201,7 @@ lookupKeyAction key =
             \model -> View.MenuManager.closeMenus model
 
         CharE ->
-            \model -> ( { model | page = EditorPage }, Cmd.none )
+            \model -> goToEditorPage model
 
         CharH ->
             \model -> goToHomePage model
@@ -192,7 +210,7 @@ lookupKeyAction key =
             \model -> View.MenuManager.displayNewDocumentsPanel model
 
         CharR ->
-            \model -> ( { model | page = ReaderPage }, Cmd.none )
+            \model -> goToReaderPage model
 
         CharS ->
             \model -> goToStartPage model
@@ -210,13 +228,3 @@ lookupKeyAction key =
 headKey : List Key -> Key
 headKey keyList =
     List.head keyList |> Maybe.withDefault F24
-
-
-goToStartPage : Model -> ( Model, Cmd Msg )
-goToStartPage model =
-    ( { model | page = StartPage }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
-
-
-goToHomePage : Model -> ( Model, Cmd Msg )
-goToHomePage model =
-    ( { model | page = ReaderPage }, Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument <| "key=home&authorname=" ++ (Utility.getUsername model) )

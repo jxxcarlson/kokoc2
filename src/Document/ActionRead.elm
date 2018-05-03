@@ -131,6 +131,8 @@ selectDocument model document =
             | currentDocument = document
             , maybeMasterDocument = updatedMaybeMasterDocument
             , editRecord = MiniLatex.Driver.emptyEditRecord
+            , documentType = document.attributes.docType
+            , documentTextType = document.attributes.textType
             , counter = model.counter + 1
             , repositoryName = Document.Utility.archiveName model document
           }
