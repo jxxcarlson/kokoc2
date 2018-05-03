@@ -26,8 +26,8 @@ import Json.Decode as Decode
 import Msg exposing (Msg(CloseMenus))
 
 
-textLabel offset style content =
-    el style [ paddingXY offset 0, verticalCenter ] (text <| content)
+textLabel style attributes content =
+    el style ([ verticalCenter ] ++ attributes) (text <| content)
 
 
 hairline =

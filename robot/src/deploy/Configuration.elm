@@ -5,7 +5,19 @@ module Configuration
         , client
         , maxDocs
         , startupDocumentId
+        , TickerState(..)
+        , initialTickerState
         )
+
+
+type TickerState
+    = TickNever
+    | TickEachSecond
+    | TickSlowly
+
+
+initialTickerState =
+    TickNever
 
 
 host : String

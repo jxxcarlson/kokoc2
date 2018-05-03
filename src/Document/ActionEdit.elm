@@ -29,7 +29,7 @@ import Model
         , DocumentAttributePanelState(..)
         , SubdocumentPosition(..)
         )
-import Msg exposing (Msg(DocumentMsg))
+import Msg exposing (Msg(DocumentMsg, ReceiveStartTime))
 import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
 import Configuration
@@ -46,6 +46,7 @@ import Utility.KeyValue as KeyValue
 import MiniLatex.Source
 import MiniLatex.RenderLatexForExport
 import Document.MiniLatex
+import Time
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -125,6 +126,7 @@ renderContentAndSave model =
         , Cmd.batch
             [ Document.Cmd.renderNonLatexCmd model
             , Document.Cmd.saveDocumentCmd model.currentDocument (Utility.getToken model)
+            , Task.perform ReceiveStartTime Time.now
             ]
         )
 
@@ -170,6 +172,7 @@ renderLatex model =
             [ Document.Cmd.putTextToRender updatedDocument
             , Task.attempt (Msg.DocumentMsg << SaveDocument)
                 (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
+            , Task.perform ReceiveStartTime Time.now
             ]
         )
 
@@ -338,8 +341,11 @@ togglePublic model =
 
         updatedDocument =
             { currentDocument | attributes = updatedAttributes }
+
+        token =
+            Utility.getToken model
     in
-        ( { model | currentDocument = updatedDocument }, Cmd.none )
+        ( { model | currentDocument = updatedDocument }, Document.Cmd.saveDocumentCmd updatedDocument token )
 
 
 updateDocument : Model -> Document -> Cmd Msg

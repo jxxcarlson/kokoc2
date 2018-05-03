@@ -1,6 +1,7 @@
 
 
 color=`tput setaf 48`
+magenta=`tput setaf 5`
 red=`tput setaf 1`
 reset=`tput setaf 7`
 
@@ -15,16 +16,13 @@ fi
 
 echo
 echo "${color}Compiling${reset}"
-
 start=`date +%s`
 elm make src/Main.elm --debug --output ./dist/main.js
 end=`date +%s`
 runtime=$((end-start))
-echo "YADA!"
-echo "runtime: ${runtime}"
+echo
+echo "${magenta}Compile time: " $runtime " seconds${reset}"
 
-echo "./dist/main.js:"
-ls -lh ./dist/main.js
 
 # echo
 # echo "${color}Uglifying${reset}"

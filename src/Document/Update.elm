@@ -9,7 +9,7 @@ import Model
         , SearchMenuState(..)
         , MenuStatus(..)
         )
-import Msg exposing (Msg)
+import Msg exposing (Msg(ReceiveTime))
 import Document.Msg exposing (..)
 import Document.ActionRead as ActionRead
 import Document.Model exposing (Document, TextType(..), DocType(..))
@@ -22,6 +22,7 @@ import Document.Default
 import Document.Dictionary as Dictionary
 import Document.TOC
 import Document.MasterDocument
+import Time
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -65,7 +66,7 @@ update submessage model =
                 ( { model | errorMessage = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
-                ( { model | message = "Document saved" }, Cmd.none )
+                ( { model | message = "Document saved" }, Task.perform ReceiveTime Time.now )
 
             SaveDocument (Err error) ->
                 ( { model | errorMessage = "Save: " ++ Error.httpErrorString error }, Cmd.none )

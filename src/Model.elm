@@ -61,6 +61,7 @@ type alias Model =
     , pressedKeys : List Key
     , previousKey : Key
     , time : Time
+    , startTime : Time
     , tickerState : TickerState
     }
 
@@ -167,6 +168,7 @@ initialModel flags =
      , pressedKeys = []
      , previousKey = F24
      , time = 0
+     , startTime = 0
      , tickerState = Configuration.initialTickerState
      }
     )

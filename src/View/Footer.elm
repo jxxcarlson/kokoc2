@@ -27,12 +27,32 @@ footerContent model =
     , wordCount model
     , textLabel <| shareUrl model
     , userStatus model
-    , textLabel <| "Time: " ++ (toString model.time)
-    , textLabel <| "CD needs update: " ++ (toString model.currentDocumentNeedsToBeSaved)
+    , textLabel <| "Elapsed: " ++ (toString <| elapsedTime model)
+    , documentStatus model
 
     -- , textLabel <| Configuration.host
     , versionsMenu model
     ]
+
+
+elapsedTime model =
+    (model.time - model.startTime) / 1000.0
+
+
+documentStatus model =
+    if model.page == EditorPage then
+        documentStatusAux model
+    else
+        empty
+
+
+documentStatusAux model =
+    case model.currentDocumentNeedsToBeSaved of
+        True ->
+            Widget.textLabel MenulabelYellow [ paddingXY 24 3 ] "Save document"
+
+        False ->
+            Widget.textLabel MenulabelGreen [ paddingXY 24 3 ] "OK"
 
 
 versionsMenu model =
@@ -62,11 +82,11 @@ userStatus model =
             textLabel <| "Signed in as " ++ user.username
 
         Nothing ->
-            Widget.textLabel 24 MenulabelWarning "Session expired.  Please sign in again."
+            Widget.textLabel MenulabelWarning [ paddingXY 8 3 ] "Session expired.  Please sign in again."
 
 
 textLabel =
-    Widget.textLabel 24 Menulabel
+    Widget.textLabel Menulabel [ paddingXY 8 3 ]
 
 
 shareUrl model =

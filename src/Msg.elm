@@ -38,6 +38,10 @@ type Msg
     | GoToPage (Maybe Page)
     | KeyboardMsg Keyboard.Extra.Msg
     | Tick Time
+    | RequestTime
+    | ReceiveTime Time
+    | RequestStartTime
+    | ReceiveStartTime Time
 
 
 type InfoForElm

@@ -5,7 +5,15 @@ module Configuration
         , client
         , maxDocs
         , startupDocumentId
+        , TickerState(..)
+        , initialTickerState
         )
+
+
+type TickerState
+    = TickNever
+    | TickEachSecond
+    | TickSlowly
 
 
 host : String
@@ -25,6 +33,10 @@ client =
 api : String
 api =
     host ++ "/api"
+
+
+initialTickerState =
+    TickNever
 
 
 maxDocs =

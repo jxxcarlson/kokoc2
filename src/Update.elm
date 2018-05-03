@@ -28,6 +28,8 @@ import View.MenuManager
 import Keyboard.Extra exposing (Key(..))
 import Dict
 import View.DocumentMenu
+import Time
+import Task
 
 
 --- TEST:
@@ -116,6 +118,18 @@ update msg model =
         Tick newTime ->
             ( { model | time = newTime }, Cmd.none )
 
+        RequestTime ->
+            ( model, Task.perform ReceiveTime Time.now )
+
+        RequestStartTime ->
+            ( model, Task.perform ReceiveStartTime Time.now )
+
+        ReceiveTime time ->
+            ( { model | time = time }, Cmd.none )
+
+        ReceiveStartTime time ->
+            ( { model | startTime = time }, Cmd.none )
+
         Test ->
             ( model, Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181 )
 
@@ -133,7 +147,7 @@ processInfoForElm model infoForElm =
                 updatedDocument =
                     { document | renderedContent = renderedText }
             in
-                ( { model | currentDocument = updatedDocument }, Cmd.none )
+                ( { model | currentDocument = updatedDocument }, Task.perform ReceiveTime Time.now )
 
 
 goToEditorPage model =

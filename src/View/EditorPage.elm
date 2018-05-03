@@ -59,7 +59,7 @@ contentPanel model =
 renderContentButton model =
     Widget.bareButton Button
         "Render and save (ctrl-\\)"
-        120
+        190
         [ paddingLeft 10
         , onClick (Msg.DocumentMsg RenderContentAndSave)
         ]

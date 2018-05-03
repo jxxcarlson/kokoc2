@@ -14,6 +14,8 @@ type MyStyles
     | Menubar
     | Menulabel
     | MenulabelWarning
+    | MenulabelYellow
+    | MenulabelGreen
     | Menubar2
     | Menu
     | Alternate
@@ -89,6 +91,8 @@ stylesheet =
         [ style Main [ Color.background mainColor ]
         , style Menubar [ Color.background <| menubarColor, Color.text Color.white ]
         , style Menulabel [ Color.background <| menubarColor, Color.text Color.lightGray ]
+        , style MenulabelYellow [ Color.background Color.yellow, Color.text Color.black ]
+        , style MenulabelGreen [ Color.background Color.green, Color.text Color.white ]
         , style MenulabelWarning [ Color.background <| Color.red, Color.text Color.lightGray ]
         , style Menubar2 [ Color.background <| menubar2Color, Color.text Color.white ]
         , style Menu [ Font.typeface fontList, Color.background <| menuColor, Color.text Color.white ]

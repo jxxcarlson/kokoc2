@@ -16,6 +16,10 @@ type TickerState
     | TickSlowly
 
 
+initialTickerState =
+    TickNever
+
+
 host : String
 host =
     "https://nshost.herokuapp.com"
@@ -29,10 +33,6 @@ client =
 api : String
 api =
     host ++ "/api"
-
-
-initialTickerState =
-    TickNever
 
 
 maxDocs =
