@@ -195,9 +195,6 @@ processKeyboardMsg model keyMsg =
     let
         pressedKeys =
             Keyboard.Extra.update keyMsg model.pressedKeys
-
-        _ =
-            Debug.log "pressedKeys" pressedKeys
     in
         respondToKeysDispatch model pressedKeys
 
@@ -251,6 +248,9 @@ lookupKeyAction key =
 
         CharX ->
             \model -> Document.ActionRead.getRandomDocuments model
+
+        CharY ->
+            \model -> Document.ActionRead.getRecentDocuments model 5
 
         _ ->
             \model -> ( model, Cmd.none )

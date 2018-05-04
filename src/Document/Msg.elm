@@ -24,6 +24,7 @@ type DocumentMsg
     | DoDeleteDocument
     | UpdateDocumentAttributes
     | GetRandomDocuments
+    | GetRecentDocuments
     | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
     | RenumberMasterDocument
     | TogglePublic

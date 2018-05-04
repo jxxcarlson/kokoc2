@@ -7,9 +7,9 @@ import View.Stylesheet exposing (..)
 import Model exposing (Model, Mode(..), Page(..), SearchMenuState(..), DocumentMenuState(..), MenuStatus(..))
 import View.Widget as Widget
 import Msg exposing (..)
-import Document.Model exposing (Document, SearchDomain(..), SortOrder(..))
+import Document.Model exposing (Document, SearchDomain(..), SortOrder(..), DocumentAccessibility(..))
 import Model exposing (Model, Page(..), SearchMenuState(..))
-import Document.Msg exposing (DocumentMsg(GetRandomDocuments))
+import Document.Msg exposing (DocumentMsg(GetRandomDocuments, GetRecentDocuments))
 
 
 view model =
@@ -22,10 +22,11 @@ view model =
         SearchMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 200, width (px 130), height (px 375), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
+                    [ moveRight 200, width (px 150), height (px 400), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
                     [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
                     , hairline Hairline
                     , randomSearch model
+                    , recentDocuments model
                     , Widget.hairline
                     , searchPublic model
                     , searchPrivate model
@@ -60,15 +61,37 @@ randomSearch model =
     Widget.menuButton "Random Docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRandomDocuments) ] False
 
 
+recentDocuments model =
+    Widget.menuButton "Recent docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRecentDocuments) ] False
+
+
 searchPublic model =
     Widget.menuButton "Public Docs" 90 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
 
 
 searchPrivate model =
+    case model.maybeCurrentUser of
+        Nothing ->
+            empty
+
+        Just _ ->
+            searchPrivateAux model
+
+
+searchPrivateAux model =
     Widget.menuButton "My Docs" 90 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
 
 
 searchAll model =
+    case model.maybeCurrentUser of
+        Nothing ->
+            empty
+
+        Just _ ->
+            searchAllAux model
+
+
+searchAllAux model =
     Widget.menuButton "All Docs" 90 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
 
 

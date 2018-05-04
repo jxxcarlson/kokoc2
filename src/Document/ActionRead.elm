@@ -5,10 +5,19 @@ module Document.ActionRead
         , loadParentDocument
         , selectDocument
         , getRandomDocuments
+        , getRecentDocuments
         )
 
 import Document.Default
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, DocType(..))
+import Document.Model
+    exposing
+        ( Document
+        , DocumentRecord
+        , DocumentListRecord
+        , DocType(..)
+        , SearchDomain(..)
+        , DocumentAccessibility(..)
+        )
 import Document.Data as Data
 import Document.Cmd
 import Document.Msg exposing (DocumentMsg(GetDocumentList, LoadContentAndRender))
@@ -152,6 +161,33 @@ getRandomDocuments model =
       }
     , Document.Cmd.randomDocuments model
     )
+
+
+getRecentDocuments : Model -> Int -> ( Model, Cmd Msg )
+getRecentDocuments model daysBefore =
+    let
+        ( query, docAccess ) =
+            case model.searchDomain of
+                SearchPublic ->
+                    ( "days_before=" ++ (toString daysBefore), PublicDocument )
+
+                SearchPrivate ->
+                    ( "days_before=" ++ (toString daysBefore), PrivateDocument )
+
+                _ ->
+                    ( "days_before=" ++ (toString daysBefore), PublicDocument )
+
+        cmd =
+            Document.Cmd.searchWithQueryCmd model docAccess query
+    in
+        ( { model
+            | page = ReaderPage
+            , searchMenuState = SearchMenu MenuInactive
+            , maybeMasterDocument = Nothing
+            , searchQuery = query
+          }
+        , cmd
+        )
 
 
 setTexMacroFileCmd document token =

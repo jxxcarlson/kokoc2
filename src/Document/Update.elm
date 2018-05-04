@@ -146,6 +146,9 @@ update submessage model =
             GetRandomDocuments ->
                 ActionRead.getRandomDocuments model
 
+            GetRecentDocuments ->
+                ActionRead.getRecentDocuments model 7
+
             SetDocumentInDict (Ok ( documentsRecord, key )) ->
                 let
                     emptyDocument =
