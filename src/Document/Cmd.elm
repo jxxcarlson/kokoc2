@@ -260,8 +260,7 @@ renderNonLatexCmd : Model -> Cmd Msg
 renderNonLatexCmd model =
     Cmd.batch
         [ putTextToRender model.currentDocument
-        , Task.attempt (Msg.DocumentMsg << SaveDocument)
-            (Document.Task.saveDocumentTask (Utility.getToken model) model.currentDocument)
+        , saveDocumentCmd model.currentDocument (Utility.getToken model)
         ]
 
 
