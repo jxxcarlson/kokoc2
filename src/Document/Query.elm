@@ -63,11 +63,13 @@ makeQueryHelper : SearchDomain -> SortOrder -> Int -> String -> String
 makeQueryHelper searchDomain searchOrder userId queryString =
     let
         queryList =
-            [ queryPrefix userId searchDomain queryString
-            , parseQuery queryString
-            , searchOrderQuery searchOrder
-            , querySuffix searchDomain
-            ]
+            Debug.log "QUERY LIST"
+                ([ queryPrefix userId searchDomain queryString
+                 , parseQuery queryString
+                 , searchOrderQuery searchOrder
+                 , querySuffix searchDomain
+                 ]
+                )
     in
         (buildQuery queryList)
 

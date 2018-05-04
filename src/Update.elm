@@ -172,15 +172,23 @@ goToHomePage model =
 
 
 chooseSearchDomain model searchDomain =
-    ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
-    , Document.Cmd.search model
-    )
+    let
+        nextModel =
+            { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
+    in
+        ( nextModel
+        , Document.Cmd.search nextModel
+        )
 
 
 chooseSortOrder model sortOrder =
-    ( { model | sortOrder = sortOrder, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
-    , Document.Cmd.search model
-    )
+    let
+        nextModel =
+            { model | sortOrder = sortOrder, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
+    in
+        ( nextModel
+        , Document.Cmd.search nextModel
+        )
 
 
 processKeyboardMsg model keyMsg =
