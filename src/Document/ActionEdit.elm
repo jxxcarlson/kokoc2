@@ -170,8 +170,7 @@ renderLatex model =
           }
         , Cmd.batch
             [ Document.Cmd.putTextToRender updatedDocument
-            , Task.attempt (Msg.DocumentMsg << SaveDocument)
-                (Document.Task.saveDocumentTask (Utility.getToken model) updatedDocument)
+            , Document.Cmd.saveDocumentCmd model.currentDocument (Utility.getToken model)
             , Task.perform ReceiveStartTime Time.now
             ]
         )
