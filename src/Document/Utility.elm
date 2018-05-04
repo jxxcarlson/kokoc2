@@ -4,6 +4,8 @@ module Document.Utility
         , wordCount
         , identifier
         , masterDocumenWordCount
+        , hasId
+        , replaceIf
         )
 
 import Model exposing (Model)
@@ -75,3 +77,20 @@ identifier document =
             Array.get 3 parts |> Maybe.withDefault "--"
     in
         datePart ++ "." ++ hashPart
+
+
+hasId : Int -> Document -> Bool
+hasId id document =
+    document.id == id
+
+
+replaceIf : (a -> Bool) -> a -> List a -> List a
+replaceIf predicate replacement list =
+    List.map
+        (\item ->
+            if predicate item then
+                replacement
+            else
+                item
+        )
+        list

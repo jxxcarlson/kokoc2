@@ -276,7 +276,10 @@ createDocumentCmd document token =
 
 saveDocumentCmd : Document -> String -> Cmd Msg
 saveDocumentCmd document token =
-    Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token document)
+    if token == "" then
+        Cmd.none
+    else
+        Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token document)
 
 
 saveDocumentListCmd : List Document -> Model -> Cmd Msg

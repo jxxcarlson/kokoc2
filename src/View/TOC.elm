@@ -1,7 +1,7 @@
 module View.TOC exposing (view)
 
 import Document.ActionRead
-import Document.Model exposing (Document, DocumentAttributes, DocType(..))
+import Document.Model exposing (Document, DocumentAttributes, DocType(..), SearchDomain(..))
 import Model exposing (Model)
 import Msg exposing (Msg)
 import Document.Msg exposing (DocumentMsg(SelectDocument))
@@ -35,7 +35,18 @@ documenTitle model documentList =
     let
         titleWord =
             if model.maybeMasterDocument == Nothing then
-                "Documents"
+                case model.searchDomain of
+                    SearchPublic ->
+                        "Public docs"
+
+                    SearchPrivate ->
+                        "My docs"
+
+                    SearchAll ->
+                        "All docs"
+
+                    SearchShared ->
+                        "Shared docs"
             else
                 "Contents"
     in

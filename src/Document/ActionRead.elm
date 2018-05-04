@@ -1,7 +1,7 @@
 module Document.ActionRead
     exposing
         ( getDocuments
-        , loadContent
+        , refreshDocumentList
         , loadParentDocument
         , selectDocument
         , getRandomDocuments
@@ -97,19 +97,16 @@ loadContentsIfNecessary token currentDocument documentList =
         Cmd.none
 
 
-loadContent : Model -> DocumentRecord -> Model
-loadContent model documentRecord =
+refreshDocumentList : Model -> DocumentRecord -> Model
+refreshDocumentList model documentRecord =
     let
         document =
             documentRecord.document
 
-        documentsInModel =
-            model.documentList
-
-        newDocumentList =
-            replaceIf (hasId document.id) document documentsInModel
+        nextDocumentList =
+            Document.Utility.replaceIf (Document.Utility.hasId document.id) document model.documentList
     in
-        { model | documentList = newDocumentList }
+        { model | documentList = nextDocumentList }
 
 
 selectDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -236,20 +233,3 @@ getToken model =
 
         Just user ->
             user.token
-
-
-hasId : Int -> Document -> Bool
-hasId id document =
-    document.id == id
-
-
-replaceIf : (a -> Bool) -> a -> List a -> List a
-replaceIf predicate replacement list =
-    List.map
-        (\item ->
-            if predicate item then
-                replacement
-            else
-                item
-        )
-        list

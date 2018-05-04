@@ -23,6 +23,7 @@ import Document.Dictionary as Dictionary
 import Document.TOC
 import Document.MasterDocument
 import Time
+import Document.Utility
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -41,16 +42,23 @@ update submessage model =
                 ActionRead.getDocuments result model
 
             LoadContent (Ok documentRecord) ->
-                ( ActionRead.loadContent model documentRecord, Cmd.none )
+                ( ActionRead.refreshDocumentList model documentRecord, Cmd.none )
 
             LoadContent (Err error) ->
                 ( { model | errorMessage = "LC: " ++ Error.httpErrorString error }, Cmd.none )
 
             LoadContentAndRender (Ok documentRecord) ->
-                ( ActionRead.loadContent model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
+                ( ActionRead.refreshDocumentList model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
 
             LoadContentAndRender (Err error) ->
                 ( { model | errorMessage = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
+
+            SaveDocument (Ok documentRecord) ->
+                let
+                    _ =
+                        Debug.log "documentRecord" documentRecord.document.content
+                in
+                    ( { model | message = "Document saved" }, Task.perform ReceiveTime Time.now )
 
             LoadIntoDictionary (Ok documentRecord) ->
                 let
@@ -64,9 +72,6 @@ update submessage model =
 
             LoadIntoDictionary (Err error) ->
                 ( { model | errorMessage = "LoadIntoDictionary:" ++ Error.httpErrorString error }, Cmd.none )
-
-            SaveDocument (Ok documentRecord) ->
-                ( { model | message = "Document saved" }, Task.perform ReceiveTime Time.now )
 
             SaveDocument (Err error) ->
                 ( { model | errorMessage = "Save: " ++ Error.httpErrorString error }, Cmd.none )

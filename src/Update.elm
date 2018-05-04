@@ -30,6 +30,7 @@ import Dict
 import View.DocumentMenu
 import Time
 import Task
+import Document.Utility
 
 
 --- TEST:
@@ -149,8 +150,16 @@ processInfoForElm model infoForElm =
 
                 updatedDocument =
                     { document | renderedContent = renderedText }
+
+                nextDocumentList =
+                    Document.Utility.replaceIf (Document.Utility.hasId document.id) document model.documentList
             in
-                ( { model | currentDocument = updatedDocument }, Task.perform ReceiveTime Time.now )
+                ( { model
+                    | currentDocument = updatedDocument
+                    , documentList = nextDocumentList
+                  }
+                , Task.perform ReceiveTime Time.now
+                )
 
 
 goToEditorPage model =
