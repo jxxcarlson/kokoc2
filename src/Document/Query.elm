@@ -108,7 +108,7 @@ querySuffix searchDomain =
             ""
 
         SearchAll ->
-            ""
+            "docs=any"
 
 
 searchOrderQuery : SortOrder -> String

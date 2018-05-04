@@ -85,6 +85,9 @@ update msg model =
         ChooseSearchType searchDomain ->
             chooseSearchDomain model searchDomain
 
+        ChooseSortOrder sortOrder ->
+            chooseSortOrder model sortOrder
+
         InputNewDocumentTitle str ->
             ( { model | newDocumentTitle = str }, Cmd.none )
 
@@ -170,6 +173,12 @@ goToHomePage model =
 
 chooseSearchDomain model searchDomain =
     ( { model | searchDomain = searchDomain, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
+    , Document.Cmd.search model
+    )
+
+
+chooseSortOrder model sortOrder =
+    ( { model | sortOrder = sortOrder, searchMenuState = SearchMenu MenuInactive, page = Utility.setPage model }
     , Document.Cmd.search model
     )
 

@@ -27,7 +27,8 @@ footerContent model =
     , wordCount model
     , textLabel <| shareUrl model
     , userStatus model
-    , textLabel <| "Elapsed: " ++ (toString <| elapsedTime model)
+
+    -- , textLabel <| "Elapsed: " ++ (toString <| elapsedTime model)
     , documentStatus model
 
     -- , textLabel <| Configuration.host
@@ -77,6 +78,13 @@ wordCount model =
 
 
 userStatus model =
+    if model.maybeCurrentUser == Nothing then
+        empty
+    else
+        userStatusAux model
+
+
+userStatusAux model =
     case User.Action.userFromToken model (Utility.getToken model) of
         Just user ->
             textLabel <| "Signed in as " ++ user.username

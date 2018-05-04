@@ -5,7 +5,7 @@ import User.Model exposing (User)
 import Model exposing (SearchMenuState, VersionsMenuState, DocumentMenuState, SubdocumentPosition, Page(..))
 import User.Msg exposing (UserMsg)
 import Document.Msg exposing (DocumentMsg)
-import Document.Model exposing (SearchDomain(..), TextType(..), DocType(..))
+import Document.Model exposing (SearchDomain(..), SortOrder(..), TextType(..), DocType(..))
 import Keyboard.Extra
 import Time exposing (Time)
 
@@ -25,6 +25,7 @@ type Msg
     | ToggleSearchMenu SearchMenuState
     | ToggleVersionsMenu VersionsMenuState
     | ChooseSearchType SearchDomain
+    | ChooseSortOrder SortOrder
     | CloseMenus
     | DisplayNewDocumentPanel
     | DisplayDocumentAttributesPanel

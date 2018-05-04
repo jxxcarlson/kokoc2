@@ -7,7 +7,7 @@ import View.Stylesheet exposing (..)
 import Model exposing (Model, Mode(..), Page(..), SearchMenuState(..), DocumentMenuState(..), MenuStatus(..))
 import View.Widget as Widget
 import Msg exposing (..)
-import Document.Model exposing (Document, SearchDomain(..))
+import Document.Model exposing (Document, SearchDomain(..), SortOrder(..))
 import Model exposing (Model, Page(..), SearchMenuState(..))
 import Document.Msg exposing (DocumentMsg(GetRandomDocuments))
 
@@ -22,18 +22,38 @@ view model =
         SearchMenu MenuActive ->
             screen <|
                 column Menu
-                    [ moveRight 200, width (px 130), height (px 225), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
+                    [ moveRight 200, width (px 130), height (px 375), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
                     [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
                     , hairline Hairline
                     , randomSearch model
                     , Widget.hairline
                     , searchPublic model
                     , searchPrivate model
-
-                    -- , searchAll model
+                    , searchAll model
+                    , Widget.hairline
+                    , orderByViewed model
+                    , orderByUpdated model
+                    , orderByCreated model
+                    , orderAlphabetically model
                     , Widget.hairline
                     , (toggleSearchMenuButton model "X" 50 (SearchMenu MenuActive))
                     ]
+
+
+orderByViewed model =
+    Widget.menuButton "Viewed" 90 [ onClick (ChooseSortOrder ViewedOrder) ] (model.sortOrder == ViewedOrder)
+
+
+orderByUpdated model =
+    Widget.menuButton "Updated" 90 [ onClick (ChooseSortOrder UpdatedOrder) ] (model.sortOrder == UpdatedOrder)
+
+
+orderByCreated model =
+    Widget.menuButton "Created" 90 [ onClick (ChooseSortOrder CreatedOrder) ] (model.sortOrder == CreatedOrder)
+
+
+orderAlphabetically model =
+    Widget.menuButton "Alphabetical" 90 [ onClick (ChooseSortOrder AlphabeticalOrder) ] (model.sortOrder == AlphabeticalOrder)
 
 
 randomSearch model =
