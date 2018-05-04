@@ -192,8 +192,14 @@ search model =
 searchPublicCmd : Model -> Cmd Msg
 searchPublicCmd model =
     let
+        queryString =
+            if model.searchQuery == "" then
+                "days_before=7"
+            else
+                model.searchQuery
+
         query =
-            Query.makeQuery model.searchDomain model.sortOrder 0 model.searchQuery
+            Query.makeQuery model.searchDomain model.sortOrder 0 queryString
 
         token =
             ""
@@ -204,8 +210,14 @@ searchPublicCmd model =
 searchWithAuthorizationCmd : Model -> Cmd Msg
 searchWithAuthorizationCmd model =
     let
+        queryString =
+            if model.searchQuery == "" then
+                "days_before=7"
+            else
+                model.searchQuery
+
         query =
-            Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) model.searchQuery
+            Query.makeQuery model.searchDomain model.sortOrder (Utility.getUserId model) queryString
 
         token =
             Utility.getToken model

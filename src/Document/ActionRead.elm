@@ -181,7 +181,6 @@ getRecentDocuments model daysBefore =
             | page = ReaderPage
             , searchMenuState = SearchMenu MenuInactive
             , maybeMasterDocument = Nothing
-            , searchQuery = query
           }
         , cmd
         )

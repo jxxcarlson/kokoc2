@@ -89,12 +89,9 @@
 
     app.ports.infoForOutside.subscribe(msg => {
 
-      console.log("app.ports.infoForOutside")
-
       switch(msg.tag) {
 
          case "PutTextToRender":
-           console.log("PutTextToRender")
            processDocumentContent(msg.data)
            break;
 
@@ -130,37 +127,25 @@
 
     var processDocumentContent = function(data) {
 
-      // if (data.force == true) {
-      //    console.log("DEBOUNCE = TRUE")
-      // } else {
-      //   console.log("DEBOUNCE = FALSE")
-      // }
-
       requestAnimationFrame(function() {
 
           count = count + 1
 
-          console.log("XXX: " + data.textType)
           switch (data.textType) {
 
             case "adoc":
-               console.log("Rendering adoc ...")
                render_asciidoc(data.content)
                break;
             case "adoc_latex":
-               console.log("Rendering adoc_latex ...")
                render_asciidoc_latex(data.content)
                break;
             case "plain":
-               console.log("Rendering plain ...")
                render_plain(data.content)
                break;
             case "latex":
-                console.log("Rendering latex ...")
                 render_latex(data.content)
                 break;
             default:
-              console.log("Default rendering ... asciidoc")
               render_asciidoc(data.content)
           }
       })
@@ -168,27 +153,22 @@
 
 
     var disconnectUser = function () {
-      console.log("disconnectUser");
       localStorage.clear()
     }
 
     var askToReconnectUser = function (str) {
-      console.log("reconnectUser");
       app.ports.infoForElm.send({tag: "ReconnectUser", data: localStorage})
     }
 
     var askToRecoverUserState = function(str) {
-      console.log("RecoverUserState" + JSON.stringify(localStorage));
       app.ports.infoForElm.send({tag: "RecoverUserState", data: localStorage});
     }
 
     var processDocumentStack = function(data) {
-      console.log("xxx I will put the documentStack in local storage");
       localStorage.setItem("documentStack", data.documentStack);
     }
 
     var processUserData = function(userSettings) {
-      console.log("I will put this stuff in local storage" );
       localStorage.setItem("username", userSettings.username);
       localStorage.setItem("token", userSettings.token);
       localStorage.setItem("id", userSettings.id);
@@ -198,7 +178,6 @@
     }
 
     var processUserState = function(data) {
-      console.log("I will put the documentStack in local storage");
       localStorage.setItem("documentStack", data.documentStack);
       localStorage.setItem("currentDocumentId", data.currentDocumentId);
     }
@@ -211,7 +190,6 @@
     document.getElementById("renderedText").style.visibility = "hidden";
 
       var render_asciidoc = function(content) {
-          console.log("XXX: render_asciidoc")
           request_in_progress = true;
           var millisecondsToWait = 100;
           setTimeout(function() {
@@ -225,7 +203,6 @@
        }
 
        var render_asciidoc_latex = function(content) {
-               console.log("XXX: render_asciidoc")
                if (content !== current_content) {
                  document.getElementById('renderedText').innerHTML = asciidoctor.convert(content, {safe: 'safe', attributes: 'icons=font'});
                  typeset()
@@ -236,13 +213,11 @@
         }
 
       var send_rendered_text = function() {
-        console.log("XXX: send_rendered_text")
         var rt = document.getElementById('renderedText').innerHTML
         app.ports.infoForElm.send({ tag: "RenderedText", data: rt });
       }
 
        function typeset() {
-        console.log("XXX: typeset")
         MathJax.Hub.Queue( ["Typeset", MathJax.Hub, send_rendered_text] );
       }
 
@@ -253,7 +228,6 @@
       }
 
        var render_plain = function(content) {
-           console.log("XXX: render_plain")
            request_in_progress = true;
            var millisecondsToWait = 100;
            setTimeout(function() {

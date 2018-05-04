@@ -25,7 +25,7 @@ menuContent model =
 leftMenu model =
     row Menubar
         [ alignLeft, width (fillPortion 33), paddingLeft 20, spacing 12 ]
-        [ searchField, SearchMenu.view model, DocumentMenu.view model ]
+        [ searchField model, SearchMenu.view model, DocumentMenu.view model ]
 
 
 centerMenu model =
@@ -55,7 +55,7 @@ rightMenu model =
 {- FIELDS -}
 
 
-searchField =
+searchField model =
     el Menubar
         [ paddingTop 2.5 ]
         (Widget.searchField "Search" "" 200 (Msg.DocumentMsg << InputSearchQuery) (Msg.DocumentMsg << SearchOnKey))
