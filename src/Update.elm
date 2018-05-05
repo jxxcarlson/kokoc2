@@ -175,7 +175,12 @@ goToReaderPage model =
 
 goToStartPage : Model -> ( Model, Cmd Msg )
 goToStartPage model =
-    ( { model | page = StartPage, currentDocumentNeedsToBeSaved = False }, Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList) )
+    ( { model | page = StartPage, currentDocumentNeedsToBeSaved = False }
+    , Cmd.batch
+        [ Document.Cmd.getDocuments "" "/public/documents" "id=181" (DocumentMsg << GetDocumentList)
+        , Nav.Navigation.setPublicUrlWithId 181
+        ]
+    )
 
 
 goToHomePage : Model -> ( Model, Cmd Msg )

@@ -1,4 +1,4 @@
-module Nav.Navigation exposing (navigateTo)
+module Nav.Navigation exposing (navigateTo, setPublicUrlWithId, setUrl)
 
 import Document.Cmd
 import Model exposing (Model, Page(..))
@@ -6,6 +6,7 @@ import Msg exposing (Msg)
 import Document.Model exposing (DocumentAccessibility(..))
 import Configuration
 import Navigation
+import Document.Model exposing (Document)
 
 
 startPage model =
@@ -15,6 +16,19 @@ startPage model =
           Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument "id=181"
         ]
     )
+
+
+setPublicUrlWithId : Int -> Cmd Msg
+setPublicUrlWithId id =
+    Navigation.newUrl (Configuration.client ++ "/##public/" ++ (toString id))
+
+
+setUrl : Document -> Cmd Msg
+setUrl document =
+    if document.attributes.public then
+        Navigation.newUrl (Configuration.client ++ "/##public/" ++ (toString document.id))
+    else
+        Navigation.newUrl (Configuration.client ++ "/##document/" ++ (toString document.id))
 
 
 navigateTo : Maybe Page -> Model -> ( Model, Cmd Msg )

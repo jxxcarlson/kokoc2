@@ -17,7 +17,7 @@ fi
 echo
 echo "${color}Compiling${reset}"
 start=`date +%s`
-elm make src/Main.elm --output ./dist/main.js
+elm make src/Main.elm --debug --output ./dist/main.js
 end=`date +%s`
 runtime=$((end-start))
 echo
