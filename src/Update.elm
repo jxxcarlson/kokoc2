@@ -155,7 +155,7 @@ processInfoForElm model infoForElm =
                     { document | renderedContent = renderedText }
 
                 nextDocumentList =
-                    Document.Utility.replaceIf (Document.Utility.hasId document.id) document model.documentList
+                    Document.Utility.updateDocumentList document model.documentList
             in
                 ( { model
                     | currentDocument = updatedDocument

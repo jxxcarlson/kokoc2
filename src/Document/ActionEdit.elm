@@ -47,6 +47,7 @@ import MiniLatex.Source
 import MiniLatex.RenderLatexForExport
 import Document.MiniLatex
 import Time
+import Document.Utility
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -371,6 +372,8 @@ updateAttributesOfCurrentDocument model =
             | currentDocument = updatedDocument
             , documentMenuState = DocumentMenu MenuInactive
             , documentAttributePanelState = DocumentAttributePanelInactive
+            , documentList =
+                Document.Utility.updateDocumentList updatedDocument model.documentList
           }
         , updateDocument model updatedDocument
         )

@@ -35,6 +35,7 @@ import MiniLatex.Driver
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
 import Document.Utility
+import Nav.Navigation
 
 
 getDocuments : Result Http.Error DocumentListRecord -> Model -> ( Model, Cmd Msg )
@@ -104,7 +105,7 @@ refreshDocumentList model documentRecord =
             documentRecord.document
 
         nextDocumentList =
-            Document.Utility.replaceIf (Document.Utility.hasId document.id) document model.documentList
+            Document.Utility.updateDocumentList document model.documentList
     in
         { model | documentList = nextDocumentList }
 
@@ -132,6 +133,12 @@ selectDocument model document =
 
         token =
             Utility.getToken model
+
+        refreshCmd =
+            if document.content == "Loading ..." then
+                Document.Cmd.searchWithQueryCmd model PrivateDocument ("id=" ++ (toString document.id))
+            else
+                Cmd.none
     in
         ( { model
             | currentDocument = document
@@ -145,6 +152,7 @@ selectDocument model document =
         , Cmd.batch
             [ Document.Cmd.selectMasterOrRender model document
             , setTexMacroFileCmd document token
+            , refreshCmd
             ]
         )
 

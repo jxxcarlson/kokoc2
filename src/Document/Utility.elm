@@ -6,11 +6,17 @@ module Document.Utility
         , masterDocumenWordCount
         , hasId
         , replaceIf
+        , updateDocumentList
         )
 
 import Model exposing (Model)
 import Document.Model exposing (Document)
 import Array
+
+
+updateDocumentList : Document -> List Document -> List Document
+updateDocumentList document documentList =
+    replaceIf (hasId document.id) document documentList
 
 
 concatenateText : List Document -> String
