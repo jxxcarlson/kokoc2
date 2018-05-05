@@ -7,6 +7,7 @@ import Model
         , DeleteDocumentState(..)
         , DocumentMenuState(..)
         , SearchMenuState(..)
+        , TagsMenuState(..)
         , MenuStatus(..)
         )
 import Msg exposing (Msg(ReceiveTime))
@@ -24,6 +25,7 @@ import Document.TOC
 import Document.MasterDocument
 import Time
 import Document.Utility
+import Document.Tags
 
 
 update : DocumentMsg -> Model -> ( Model, Cmd Msg )
@@ -101,7 +103,16 @@ update submessage model =
                 ( { model | searchQuery = str }, Cmd.none )
 
             InputTags str ->
-                ( model, Cmd.none )
+                ( { model | tagString = str }, Cmd.none )
+
+            UpdateTags ->
+                let
+                    currentDocument =
+                        Document.Tags.updateTags model.currentDocument model.tagString
+                in
+                    ( { model | currentDocument = currentDocument }
+                    , Document.Cmd.saveDocumentCmd currentDocument (Utility.getToken model)
+                    )
 
             SearchOnKey keyCode ->
                 if keyCode == 13 then

@@ -52,6 +52,7 @@ type alias Model =
     , newDocumentPanelState : NewDocumentPanelState
     , documentAttributePanelState : DocumentAttributePanelState
     , newDocumentTitle : String
+    , tagString : String
     , newDocumentDocType : DocType
     , deleteDocumentState : DeleteDocumentState
     , documentTextType : TextType
@@ -164,6 +165,7 @@ initialModel flags =
      , newDocumentPanelState = NewDocumentPanelInactive
      , documentAttributePanelState = DocumentAttributePanelInactive
      , newDocumentTitle = "New Document"
+     , tagString = ""
      , newDocumentDocType = Standard
      , deleteDocumentState = DeleteDocumentInactive
      , documentTextType = MiniLatex

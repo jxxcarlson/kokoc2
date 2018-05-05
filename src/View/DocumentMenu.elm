@@ -48,6 +48,7 @@ import Document.Msg
             , CompileMaster
             , SetRepositoryName
             , UpdateShareData
+            , UpdateTags
             )
         )
 import Document.Model
@@ -158,8 +159,12 @@ tagsMenuAux model =
     in
         [ column Menu
             [ width (px 220), padding 10, spacing 10 ]
-            [ Widget.textArea model.counter (px 200) (px 400) "Ho ho ho" tagString (DocumentMsg << InputTags)
-            , toggleTagsMenuButton model "X" 60 (TagsMenu MenuActive)
+            [ Widget.textArea model.counter (px 200) (px 400) "Tags" tagString (DocumentMsg << InputTags)
+            , row Menu
+                [ spacing 10 ]
+                [ updateTagsButton model
+                , toggleTagsMenuButton model "Cancel" 60 (TagsMenu MenuActive)
+                ]
             ]
         ]
 
@@ -360,6 +365,10 @@ toggleDocumentMenuButton model labelText width msg =
 
 toggleTagsMenuButton model labelText width msg =
     Widget.menuButton labelText width [ verticalCenter, onClick (ToggleTagsMenu msg) ] False
+
+
+updateTagsButton model =
+    Widget.menuButton "Update" 60 [ verticalCenter, onClick (DocumentMsg UpdateTags) ] False
 
 
 toggleVersionsMenuButton model labelText width msg =

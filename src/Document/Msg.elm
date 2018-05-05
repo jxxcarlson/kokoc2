@@ -32,6 +32,7 @@ type DocumentMsg
     | CompileMaster
     | SetRepositoryName
     | UpdateShareData
+    | UpdateTags
 
 
 
