@@ -408,7 +408,6 @@ renderMacroDict =
         , ( "index", \x y z -> "" )
         , ( "italic", \x y z -> renderItalic x z )
         , ( "label", \x y z -> "" )
-        , ( "maketitle", \x y z -> "" )
         , ( "tableofcontents", \x y z -> renderTableOfContents x z )
         , ( "maketitle", \x y z -> renderTitle x z )
         , ( "mdash", \x y z -> "&mdash;" )
