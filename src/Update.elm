@@ -232,10 +232,18 @@ lookupKeyAction : Key -> (Model -> ( Model, Cmd Msg ))
 lookupKeyAction key =
     case key of
         BackSlash ->
-            \model -> Document.ActionEdit.renderContentAndSave model
+            \model ->
+                if model.page == EditorPage then
+                    Document.ActionEdit.renderContentAndSave model
+                else
+                    ( model, Cmd.none )
 
         CharA ->
-            \model -> ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
+            \model ->
+                if model.page == EditorPage then
+                    ( { model | documentAttributePanelState = DocumentAttributePanelActive }, Cmd.none )
+                else
+                    ( model, Cmd.none )
 
         CharC ->
             \model -> View.MenuManager.closeMenus model
@@ -247,7 +255,11 @@ lookupKeyAction key =
             \model -> goToHomePage model
 
         CharN ->
-            \model -> View.MenuManager.displayNewDocumentsPanel model
+            \model ->
+                if model.page == EditorPage then
+                    View.MenuManager.displayNewDocumentsPanel model
+                else
+                    ( model, Cmd.none )
 
         CharR ->
             \model -> goToReaderPage model
@@ -256,7 +268,11 @@ lookupKeyAction key =
             \model -> goToStartPage model
 
         CharV ->
-            \model -> View.MenuManager.toggleVersionsMenu model model.versionsMenuState
+            \model ->
+                if model.page == EditorPage then
+                    View.MenuManager.toggleVersionsMenu model model.versionsMenuState
+                else
+                    ( model, Cmd.none )
 
         CharX ->
             \model -> Document.ActionRead.getRandomDocuments model
