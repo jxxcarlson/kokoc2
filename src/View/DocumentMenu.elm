@@ -49,6 +49,7 @@ import Document.Msg
             , SetRepositoryName
             , UpdateShareData
             , UpdateTags
+            , AdoptChildren
             )
         )
 import Document.Model
@@ -142,6 +143,13 @@ versionsMenuAux model =
 
 
 tagsMenuPanel model =
+    if model.page == EditorPage then
+        tagsMenuPanelAux model
+    else
+        empty
+
+
+tagsMenuPanelAux model =
     case model.tagsMenuState of
         TagsMenu MenuInactive ->
             toggleTagsMenuButton model "Tags" 60 (TagsMenu MenuInactive)
@@ -234,7 +242,7 @@ documentAttributesPanel model =
     if model.documentAttributePanelState == DocumentAttributePanelActive then
         screen <|
             column Menu
-                [ moveRight 560, moveDown 80, width (px 375), height (px 450), padding 25, spacing 2 ]
+                [ moveRight 560, moveDown 80, width (px 375), height (px 510), padding 25, spacing 2 ]
                 [ el Menu [ paddingBottom 8 ] (text "Document attributes")
                 , Widget.inputField "Title" model.currentDocument.title 330 (InputNewDocumentTitle)
                 , Widget.hairline
@@ -243,6 +251,8 @@ documentAttributesPanel model =
                 , Widget.menuButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
                 , Widget.menuButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
                 , Widget.menuButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
+                , Widget.hairline
+                , Widget.menuButton "Adopt children" 125 [ onClick (DocumentMsg AdoptChildren) ] False
                 , Widget.hairline
                 , el Menu [ paddingTop 8 ] (text "Document type")
                 , Widget.menuButton "Standard" 125 [ paddingLeft 20, onClick (SetDocumentType Standard) ] (model.documentType == Standard)

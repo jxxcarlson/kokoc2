@@ -110,7 +110,7 @@ update submessage model =
                     currentDocument =
                         Document.Tags.updateTags model.currentDocument model.tagString
                 in
-                    ( { model | currentDocument = currentDocument }
+                    ( { model | currentDocument = currentDocument, tagsMenuState = TagsMenu MenuInactive }
                     , Document.Cmd.saveDocumentCmd currentDocument (Utility.getToken model)
                     )
 
@@ -200,6 +200,9 @@ update submessage model =
 
             CompileMaster ->
                 Document.MasterDocument.prepareExportLatexFromMaster model
+
+            AdoptChildren ->
+                ( model, Document.Cmd.saveCurrentDocumentWithQueryCmd model "adopt_children=yes" )
 
             TogglePublic ->
                 ActionEdit.togglePublic model

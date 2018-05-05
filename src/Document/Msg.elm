@@ -28,8 +28,9 @@ type DocumentMsg
     | GetRecentDocuments
     | SetDocumentInDict (Result Http.Error ( DocumentListRecord, String ))
     | RenumberMasterDocument
-    | TogglePublic
+    | AdoptChildren
     | CompileMaster
+    | TogglePublic
     | SetRepositoryName
     | UpdateShareData
     | UpdateTags
