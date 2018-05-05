@@ -4,6 +4,7 @@ module Document.Task
         , getOneDocumentTask
         , selectMasterTask
         , saveDocumentTask
+        , saveDocumentWithQueryTask
         , attachChildToMasterDocumentTask
         )
 
@@ -52,6 +53,21 @@ saveDocumentTask token document =
     let
         route =
             "/documents/" ++ toString document.id
+
+        encodedValue =
+            Data.encodeDocumentRecord document
+
+        tagger =
+            Msg.DocumentMsg << SaveDocument
+    in
+        Api.Request.makeTask <| Document.RequestParameters.putDocumentParameters token route encodedValue tagger
+
+
+saveDocumentWithQueryTask : String -> String -> Document -> Task Http.Error DocumentRecord
+saveDocumentWithQueryTask token query document =
+    let
+        route =
+            "/documents/" ++ toString document.id ++ "?" ++ query
 
         encodedValue =
             Data.encodeDocumentRecord document
