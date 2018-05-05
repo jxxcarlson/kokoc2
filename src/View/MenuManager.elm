@@ -46,12 +46,16 @@ toggleDocumentsMenu model menu =
                     DocumentMenu MenuActive
 
                 DocumentMenu MenuActive ->
-                    DocumentMenu MenuInactive
+                    case model.deleteDocumentState of
+                        DeleteDocumentPending ->
+                            DocumentMenu MenuActive
+
+                        DeleteDocumentInactive ->
+                            DocumentMenu MenuInactive
     in
         ( { model
             | searchMenuState = SearchMenu MenuInactive
             , documentMenuState = documentMenuState
-            , deleteDocumentState = DeleteDocumentInactive
           }
         , Cmd.none
         )
