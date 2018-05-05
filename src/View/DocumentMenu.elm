@@ -5,6 +5,7 @@ module View.DocumentMenu
         , documentAttributesPanel
         , versionsMenu
         , toggleVersionsMenuButton
+        , tagsMenuPanel
         )
 
 import Element exposing (..)
@@ -23,6 +24,7 @@ import Model
         , MenuStatus(..)
         , NewDocumentPanelState(..)
         , VersionsMenuState(..)
+        , TagsMenuState(..)
         , DeleteDocumentState(..)
         , DocumentAttributePanelState(..)
         , SubdocumentPosition(..)
@@ -36,6 +38,7 @@ import Document.Msg
         ( DocumentMsg
             ( SearchOnKey
             , InputSearchQuery
+            , InputTags
             , NewDocument
             , PrepareToDeleteDocument
             , DoDeleteDocument
@@ -105,6 +108,10 @@ documentMenuWhenSignedIn model =
         ]
 
 
+textLabel content =
+    el Menu [ paddingTop 8, verticalCenter ] (text <| content)
+
+
 versionsMenu model =
     case model.versionsMenuState of
         VersionsMenu MenuInactive ->
@@ -114,10 +121,6 @@ versionsMenu model =
             toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuActive)
                 |> above
                     (versionsMenuAux model)
-
-
-textLabel content =
-    el Menu [ paddingTop 8, verticalCenter ] (text <| content)
 
 
 versionsMenuAux model =
@@ -135,6 +138,30 @@ versionsMenuAux model =
         , shareDocumentButton model
         ]
     ]
+
+
+tagsMenuPanel model =
+    case model.tagsMenuState of
+        TagsMenu MenuInactive ->
+            toggleTagsMenuButton model "Tags" 60 (TagsMenu MenuInactive)
+
+        TagsMenu MenuActive ->
+            textLabel "Tags"
+                |> above
+                    (tagsMenuAux model)
+
+
+tagsMenuAux model =
+    let
+        tagString =
+            String.join ", " model.currentDocument.tags
+    in
+        [ column Menu
+            [ width (px 220), padding 10, spacing 10 ]
+            [ Widget.textArea model.counter (px 200) (px 400) "Ho ho ho" tagString (DocumentMsg << InputTags)
+            , toggleTagsMenuButton model "X" 60 (TagsMenu MenuActive)
+            ]
+        ]
 
 
 
@@ -329,6 +356,10 @@ togglePublic model =
 
 toggleDocumentMenuButton model labelText width msg =
     Widget.menuButton labelText width [ verticalCenter, onClick (ToggleDocumentMenu msg) ] False
+
+
+toggleTagsMenuButton model labelText width msg =
+    Widget.menuButton labelText width [ verticalCenter, onClick (ToggleTagsMenu msg) ] False
 
 
 toggleVersionsMenuButton model labelText width msg =

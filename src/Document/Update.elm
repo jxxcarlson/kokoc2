@@ -100,6 +100,9 @@ update submessage model =
             InputSearchQuery str ->
                 ( { model | searchQuery = str }, Cmd.none )
 
+            InputTags str ->
+                ( model, Cmd.none )
+
             SearchOnKey keyCode ->
                 if keyCode == 13 then
                     ( { model

@@ -18,6 +18,7 @@ type DocumentMsg
     | InputSearchQuery String
     | LoadParent Document
     | InputEditorText String
+    | InputTags String
     | RenderContent
     | RenderContentAndSave
     | PrepareToDeleteDocument

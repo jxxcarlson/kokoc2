@@ -33,6 +33,7 @@ footerContent model =
 
     -- , textLabel <| Configuration.host
     , versionsMenu model
+    , View.DocumentMenu.tagsMenuPanel model
     ]
 
 
