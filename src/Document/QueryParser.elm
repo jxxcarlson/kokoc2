@@ -1,13 +1,17 @@
 module Document.QueryParser exposing (parseQuery)
 
 import Regex
+import String.Extra
 
 
 parseQuery : String -> String
 parseQuery input =
     let
         cmd =
-            input |> String.split "=" |> List.head |> Maybe.withDefault "NoCommand"
+            input
+                |> String.split "="
+                |> List.head
+                |> Maybe.withDefault "NoCommand"
     in
         if List.member cmd [ "idlist" ] then
             input
@@ -18,6 +22,7 @@ parseQuery input =
 parseQueryHelper : String -> String
 parseQueryHelper input =
     input
+        |> String.Extra.replace "tag=" "key="
         |> Regex.split Regex.All (Regex.regex "[, ]")
         |> List.map String.trim
         |> List.filter (\item -> item /= "")
