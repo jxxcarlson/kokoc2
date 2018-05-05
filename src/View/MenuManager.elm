@@ -3,6 +3,7 @@ module View.MenuManager
         ( toggleSearchMenu
         , toggleDocumentsMenu
         , toggleVersionsMenu
+        , toggleTagsMenu
         , closeMenus
         , displayNewDocumentsPanel
         , cancelNewDocument
@@ -19,6 +20,7 @@ import Model
         , DocumentAttributePanelState(..)
         , NewDocumentPanelState(..)
         , VersionsMenuState(..)
+        , TagsMenuState(..)
         )
 import Document.Model exposing (DocType(..))
 
@@ -73,6 +75,20 @@ toggleVersionsMenu model menu =
                     VersionsMenu MenuInactive
     in
         ( { model | versionsMenuState = versionsMenuState }, Cmd.none )
+
+
+toggleTagsMenu : Model -> TagsMenuState -> ( Model, Cmd Msg )
+toggleTagsMenu model menu =
+    let
+        tagsMenuState =
+            case menu of
+                TagsMenu MenuInactive ->
+                    TagsMenu MenuActive
+
+                TagsMenu MenuActive ->
+                    TagsMenu MenuInactive
+    in
+        ( { model | tagsMenuState = tagsMenuState }, Cmd.none )
 
 
 closeMenus : Model -> ( Model, Cmd Msg )

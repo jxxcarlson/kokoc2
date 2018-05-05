@@ -48,6 +48,7 @@ type alias Model =
     , searchMenuState : SearchMenuState
     , documentMenuState : DocumentMenuState
     , versionsMenuState : VersionsMenuState
+    , tagsMenuState : TagsMenuState
     , newDocumentPanelState : NewDocumentPanelState
     , documentAttributePanelState : DocumentAttributePanelState
     , newDocumentTitle : String
@@ -96,6 +97,10 @@ type DocumentMenuState
 
 type VersionsMenuState
     = VersionsMenu MenuStatus
+
+
+type TagsMenuState
+    = TagsMenu MenuStatus
 
 
 type MenuStatus
@@ -155,6 +160,7 @@ initialModel flags =
      , searchMenuState = SearchMenu MenuInactive
      , documentMenuState = DocumentMenu MenuInactive
      , versionsMenuState = VersionsMenu MenuInactive
+     , tagsMenuState = TagsMenu MenuInactive
      , newDocumentPanelState = NewDocumentPanelInactive
      , documentAttributePanelState = DocumentAttributePanelInactive
      , newDocumentTitle = "New Document"
