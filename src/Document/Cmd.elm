@@ -13,6 +13,8 @@ module Document.Cmd
         , createDocumentCmd
         , deleteDocument
         , saveDocumentCmd
+        , saveCurrentDocumentCmd
+        , saveCurrentDocumentWithQueryCmd
         , saveDocumentListCmd
         , randomDocuments
         , updateSharingData
@@ -292,6 +294,23 @@ saveDocumentCmd document token =
         Cmd.none
     else
         Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentTask token document)
+
+
+saveCurrentDocumentCmd : Model -> Cmd Msg
+saveCurrentDocumentCmd model =
+    saveDocumentCmd model.currentDocument (Utility.getToken model)
+
+
+saveCurrentDocumentWithQueryCmd : Model -> String -> Cmd Msg
+saveCurrentDocumentWithQueryCmd model query =
+    let
+        token =
+            Utility.getToken model
+
+        document =
+            model.currentDocument
+    in
+        Task.attempt (Msg.DocumentMsg << SaveDocument) (Document.Task.saveDocumentWithQueryTask token query document)
 
 
 saveDocumentListCmd : List Document -> Model -> Cmd Msg
