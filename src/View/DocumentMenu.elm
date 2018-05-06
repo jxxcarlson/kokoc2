@@ -69,10 +69,10 @@ import View.MenuManager as MenuManager
 view model =
     case model.documentMenuState of
         DocumentMenu MenuInactive ->
-            toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuInactive)
+            toggleDocumentMenuButton model "Document" 90 (DocumentMenu MenuInactive)
 
         DocumentMenu MenuActive ->
-            (toggleDocumentMenuButton model "Document" 60 (DocumentMenu MenuActive))
+            (toggleDocumentMenuButton model "Document" 90 (DocumentMenu MenuActive))
                 |> below
                     [ if (model.maybeCurrentUser == Nothing || model.page /= EditorPage) then
                         documentMenuWhenNotSignedIn model

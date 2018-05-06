@@ -31,18 +31,33 @@ main =
 
 loadFromUrl location =
     let
+        _ =
+            Debug.log "loadFromUrl, location.href" location.href
+
+        url =
+            Debug.log "URL"
+                (location.href
+                    |> String.split "#"
+                    |> List.head
+                    |> Maybe.withDefault "http://www.knode.io"
+                )
+
         id =
             Nav.UrlParseExtra.getInitialIdFromLocation location
     in
         if id > 0 then
-            Navigation.newUrl (Configuration.client ++ "/##public/" ++ toString id)
+            Navigation.newUrl (url ++ "##public/" ++ toString id)
         else
-            Navigation.newUrl (Configuration.client ++ "/##public/181")
+            Navigation.newUrl (url ++ "##public/181")
+
+
+
+-- init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
 
 
 init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
 init flags location =
-    ( Model.initialModel flags
+    ( Model.initialModel flags location
     , Cmd.batch
         [ OutsideInfo.sendInfoOutside (OutsideInfo.AskToReconnectUser Encode.null)
 

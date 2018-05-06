@@ -12,7 +12,7 @@ import Document.Model exposing (Document)
 startPage model =
     ( { model | page = StartPage }
     , Cmd.batch
-        [ -- Navigation.newUrl (Configuration.client ++ "/##public/181")
+        [ -- Navigation.newUrl (Configuration.client ++ "##public/181")
           Document.Cmd.searchWithQueryCmd model Document.Model.PublicDocument "id=181"
         ]
     )
@@ -20,15 +20,15 @@ startPage model =
 
 setPublicUrlWithId : Int -> Cmd Msg
 setPublicUrlWithId id =
-    Navigation.newUrl (Configuration.client ++ "/##public/" ++ (toString id))
+    Navigation.newUrl (Configuration.client ++ "##public/" ++ (toString id))
 
 
 setUrl : Document -> Cmd Msg
 setUrl document =
     if document.attributes.public then
-        Navigation.newUrl (Configuration.client ++ "/##public/" ++ (toString document.id))
+        Navigation.newUrl (Configuration.client ++ "##public/" ++ (toString document.id))
     else
-        Navigation.newUrl (Configuration.client ++ "/##document/" ++ (toString document.id))
+        Navigation.newUrl (Configuration.client ++ "##document/" ++ (toString document.id))
 
 
 navigateTo : Maybe Page -> Model -> ( Model, Cmd Msg )

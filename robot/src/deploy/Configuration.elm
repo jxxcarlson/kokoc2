@@ -3,6 +3,7 @@ module Configuration
         ( host
         , api
         , client
+        , client2
         , maxDocs
         , startupDocumentId
         , TickerState(..)
@@ -27,7 +28,12 @@ host =
 
 client : String
 client =
-    "http://www.knode.io"
+    "http://www.knode.io/"
+
+
+client2 : String
+client2 =
+    "http://knode.io/"
 
 
 api : String

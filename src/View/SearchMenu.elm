@@ -17,13 +17,13 @@ view model =
         SearchMenu MenuInactive ->
             column Menu
                 [ width (px 110), height (px 200), spacing 15, paddingTop 4 ]
-                [ toggleSearchMenuButton model "Search" 60 (SearchMenu MenuInactive) ]
+                [ toggleSearchMenuButton model "Search" 90 (SearchMenu MenuInactive) ]
 
         SearchMenu MenuActive ->
             screen <|
                 column Menu
                     [ moveRight 200, width (px 150), height (px 400), paddingTop 8, paddingLeft 15, paddingRight 15, paddingTop 4 ]
-                    [ (toggleSearchMenuButton model "Search" 60 (SearchMenu MenuActive))
+                    [ (toggleSearchMenuButton model "Search" 90 (SearchMenu MenuActive))
                     , hairline Hairline
                     , randomSearch model
                     , recentDocuments model

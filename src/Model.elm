@@ -18,6 +18,7 @@ import Html exposing (Html, div, p, ul, li, text)
 import Keyboard.Extra exposing (Key(..))
 import Time exposing (Time)
 import Configuration exposing (TickerState(..))
+import Navigation
 
 
 type alias Model =
@@ -66,6 +67,7 @@ type alias Model =
     , time : Time
     , startTime : Time
     , tickerState : TickerState
+    , clientUrl : String
     }
 
 
@@ -134,8 +136,18 @@ type SubdocumentPosition
     | DoNotAttachSubdocument
 
 
-initialModel : Flags -> Model
-initialModel flags =
+urlFromLocation : Navigation.Location -> String
+urlFromLocation location =
+    Debug.log "URL"
+        (location.href
+            |> String.split "#"
+            |> List.head
+            |> Maybe.withDefault "http://www.knode.io"
+        )
+
+
+initialModel : Flags -> Navigation.Location -> Model
+initialModel flags location =
     ({ mode = Public
      , page = StartPage
      , name = ""
@@ -181,5 +193,6 @@ initialModel flags =
      , time = 0
      , startTime = 0
      , tickerState = Configuration.initialTickerState
+     , clientUrl = urlFromLocation location
      }
     )

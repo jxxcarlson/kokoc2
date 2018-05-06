@@ -102,7 +102,7 @@ textLabel =
 
 shareUrl model =
     if model.currentDocument.attributes.public then
-        Configuration.client ++ "/#@public/" ++ toString model.currentDocument.id
+        Configuration.client ++ "#@public/" ++ toString model.currentDocument.id
     else
         ""
 

@@ -8,7 +8,10 @@ import String.Extra
 id : Parser Int
 id =
     succeed identity
-        |. symbol (Configuration.client ++ "/##public/")
+        |. oneOf
+            [ symbol (Configuration.client ++ "##public/")
+            , symbol (Configuration.client2 ++ "##public/")
+            ]
         |= int
 
 

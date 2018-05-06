@@ -87,6 +87,10 @@ menuColor =
     grayColor 70
 
 
+hoverStyle =
+    Style.hover [ Color.background <| Color.rgb 132 6 6, Style.cursor "pointer" ]
+
+
 stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
@@ -154,7 +158,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style ButtonSelected
             [ Color.text Color.white
@@ -163,7 +167,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style StrongButton
             [ Color.text <| Color.rgb 255 194 102
@@ -172,7 +176,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style MenuButton
             [ Color.text Color.white
@@ -180,7 +184,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style MenuButtonSelected
             [ Color.text (Color.rgb 230 57 57)
@@ -188,7 +192,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style InnerMenuButton
             [ Color.text Color.white
@@ -197,7 +201,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkRed ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style InnerMenuButtonSelected
             [ Color.text (Color.rgb 230 57 57)
@@ -206,7 +210,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.red ]
             , Font.size 14 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style MenuButtonStrong
             [ Color.text (Color.green)
@@ -214,7 +218,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style MenuButtonStrongSelected
             [ Color.text (Color.blue)
@@ -222,7 +226,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style FormButton
             [ Color.text myBlack
@@ -231,7 +235,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style FormButtonSelected
             [ Color.text myBlack
@@ -240,7 +244,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style SmallButton
             [ Color.text Color.white
@@ -249,7 +253,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background (Color.rgb 0 0 255) ]
             , Font.size 11 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style SmallButtonSelected
             [ Color.text Color.white
@@ -258,7 +262,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 12 -- all units given as px
             , Font.typeface fontList
-            , Style.cursor "pointer"
+            , hoverStyle
             ]
         , style Link
             [ Color.text Color.lightGray
