@@ -27,7 +27,7 @@ host =
 
 client : String
 client =
-    "http://knode.io"
+    "http://www.knode.io"
 
 
 api : String
