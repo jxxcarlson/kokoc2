@@ -23,6 +23,7 @@ import OutsideInfo exposing (InfoForOutside(..))
 import Document.Model exposing (SearchDomain(..))
 import User.RequestParameters
 import Api.Request
+import User.Mail
 
 
 handleToken : Model -> String -> ( Model, Cmd Msg )
