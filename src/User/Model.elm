@@ -1,4 +1,4 @@
-module User.Model exposing (User, UserRecord)
+module User.Model exposing (User, UserRecord, UserListRecord)
 
 
 type alias User =
@@ -14,3 +14,8 @@ type alias User =
 
 type alias UserRecord =
     { user : User }
+
+
+type alias UserListRecord =
+    { documents : List User
+    }

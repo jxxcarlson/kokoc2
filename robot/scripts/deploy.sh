@@ -9,15 +9,17 @@ reset=`tput setaf 7`
 if [ "$1" = "-c" ]
 then
 echo
-echo "${color}Use dev configuration ... copying${reset}"
+echo "${color}Use DEPLOYMENT configuration ... copying${reset}"
 cp ./robot/src/deploy/Configuration.elm ./src/Configuration.elm
+cp ./robot/src/deploy/Main.elm ./src/Main.elm
+
 fi
 
 
 echo
 echo "${color}Compiling${reset}"
 start=`date +%s`
-elm make src/Main.elm  --debug --output ./dist/main.js
+elm make src/Main.elm  --output ./dist/main.js
 end=`date +%s`
 runtime=$((end-start))
 echo
