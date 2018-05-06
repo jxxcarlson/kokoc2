@@ -66,6 +66,9 @@ update msg model =
         GotoStartPage ->
             goToStartPage model
 
+        GotoAdminPage ->
+            ( { model | page = AdminPage }, User.Action.getUserListCommmand )
+
         ToggleSearchMenu menu ->
             View.MenuManager.toggleSearchMenu model menu
 

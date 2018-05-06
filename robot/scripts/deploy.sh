@@ -11,8 +11,7 @@ then
 echo
 echo "${color}Use DEPLOYMENT configuration ... copying${reset}"
 cp ./robot/src/deploy/Configuration.elm ./src/Configuration.elm
-cp ./robot/src/deploy/Main.elm ./src/Main.elm
-
+# cp ./robot/src/deploy/Main.elm ./src/Main.elm
 fi
 
 

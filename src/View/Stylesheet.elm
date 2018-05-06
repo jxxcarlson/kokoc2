@@ -11,6 +11,7 @@ import Style.Border as Border
 type MyStyles
     = Main
     | MainContent
+    | Item
     | Menubar
     | Menulabel
     | MenulabelWarning
@@ -258,6 +259,12 @@ stylesheet =
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
             , Font.weight 800
+            ]
+        , style Item
+            [ Color.text Color.black
+            , Color.background alternateColor
+            , Font.size 12 -- all units given as px
+            , Font.typeface fontList
             ]
         , style TOCItem
             [ Color.text Color.blue

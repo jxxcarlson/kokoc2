@@ -35,6 +35,7 @@ centerMenu model =
         , homePageButton model
         , readerPageButton model
         , editorPageButton model
+        , adminPageButton model
         , DocumentMenu.newDocumentPanel model
         , DocumentMenu.documentAttributesPanel model
         ]
@@ -70,6 +71,22 @@ editorPageButton model =
         empty
     else
         Widget.button "Edit" 75 [ onClick (GotoEditorPage) ] (model.page == EditorPage)
+
+
+adminPageButton model =
+    let
+        isAdmin =
+            case model.maybeCurrentUser of
+                Just user ->
+                    user.admin
+
+                Nothing ->
+                    False
+    in
+        if isAdmin then
+            Widget.button "Admin" 75 [ onClick (GotoAdminPage) ] (model.page == AdminPage)
+        else
+            empty
 
 
 readerPageButton model =

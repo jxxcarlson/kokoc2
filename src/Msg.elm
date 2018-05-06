@@ -28,6 +28,7 @@ type Msg
     | GotoReaderPage
     | GotoEditorPage
     | GotoHomePage
+    | GotoAdminPage
     | Test
     | ToggleDocumentMenu DocumentMenuState
     | ToggleSearchMenu SearchMenuState

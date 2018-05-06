@@ -7,6 +7,7 @@ import Model exposing (Model, Page(..))
 import View.StartPage as StartPage
 import View.ReaderPage as ReaderPage
 import View.EditorPage as EditorPage
+import View.AdminPage as AdminPage
 import Html
 import Msg exposing (Msg)
 
@@ -30,6 +31,9 @@ dispatcher model =
 
         EditorPage ->
             EditorPage.view model
+
+        AdminPage ->
+            AdminPage.view model
 
         UrlPage _ ->
             ReaderPage.view model

@@ -79,6 +79,7 @@ type Page
     = StartPage
     | ReaderPage
     | EditorPage
+    | AdminPage
     | UrlPage Int
 
 
