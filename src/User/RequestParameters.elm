@@ -5,9 +5,10 @@ import User.Data as Data
 import Model exposing (Model)
 import Msg
 import User.Model exposing (UserRecord)
-import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp))
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser))
 import HttpBuilder as HB
 import Api.Request exposing (RequestParameters)
+import Json.Encode as Encode
 
 
 authenticateUser : Model -> RequestParameters String
@@ -31,4 +32,16 @@ signUpUser model =
     , token = ""
     , decoder = Data.userRecordDecoder
     , method = HB.post
+    }
+
+
+getUser : Int -> RequestParameters UserRecord
+getUser userId =
+    { api = Configuration.api
+    , route = "/users/" ++ (toString userId)
+    , payload = Encode.null
+    , tagger = Msg.UserMsg << GetUser
+    , token = ""
+    , decoder = Data.userRecordDecoder
+    , method = HB.get
     }

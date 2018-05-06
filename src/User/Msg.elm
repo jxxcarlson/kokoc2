@@ -10,6 +10,7 @@ type UserMsg
     | VerifyAuthentication (Result Http.Error String)
     | SignUpUser
     | VerifySignUp (Result Http.Error UserRecord)
+    | GetUser (Result Http.Error UserRecord)
     | CancelSignIn
     | GoToSignupForm
     | UserNoOp

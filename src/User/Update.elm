@@ -12,17 +12,13 @@ update : UserMsg -> Model -> ( Model, Cmd Msg )
 update submessage model =
     case submessage of
         SignIn ->
-            let
-                _ =
-                    Debug.log "SIGN IN/OUT" "now"
-            in
-                ( { model
-                    | mode = Action.setMode model
-                    , page = StartPage
-                    , maybeCurrentUser = Nothing
-                  }
-                , Action.signOutCommand model
-                )
+            ( { model
+                | mode = Action.setMode model
+                , page = StartPage
+                , maybeCurrentUser = Nothing
+              }
+            , Action.signOutCommand model
+            )
 
         AuthenticateUser ->
             ( model, Request.doRequest <| RequestParameters.authenticateUser model )
@@ -40,6 +36,30 @@ update submessage model =
             Action.handleUserRecord model userRecord
 
         VerifySignUp (Err error) ->
+            ( { model | errorMessage = (toString error) }, Cmd.none )
+
+        GetUser (Ok userRecord) ->
+            let
+                completeUser =
+                    userRecord.user
+
+                maybeCurrentUser =
+                    (case model.maybeCurrentUser of
+                        Just user ->
+                            Just
+                                { user
+                                    | blurb = completeUser.blurb
+                                    , admin = completeUser.admin
+                                    , name = completeUser.name
+                                }
+
+                        Nothing ->
+                            Nothing
+                    )
+            in
+                ( { model | maybeCurrentUser = maybeCurrentUser }, Cmd.none )
+
+        GetUser (Err error) ->
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
         CancelSignIn ->

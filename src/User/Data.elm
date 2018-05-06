@@ -87,6 +87,10 @@ userDecoder =
         |> JPipeline.required "admin" Decode.bool
 
 
+
+-- (Decode.map elixirTFToBool Decode.string)
+
+
 userDecoderFromLocalStorage : Decoder User
 userDecoderFromLocalStorage =
     decode User
@@ -97,6 +101,19 @@ userDecoderFromLocalStorage =
         |> JPipeline.required "blurb" Decode.string
         |> JPipeline.required "token" Decode.string
         |> JPipeline.hardcoded False
+
+
+elixirTFToBool : String -> Bool
+elixirTFToBool str =
+    case str of
+        "Elixir.True" ->
+            True
+
+        "Elixir.False" ->
+            False
+
+        _ ->
+            False
 
 
 type alias User =

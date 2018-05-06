@@ -3,6 +3,7 @@ module User.Action
         ( handleToken
         , handleUserRecord
         , userFromToken
+        , userIdFromToken
         , reconnectUser
         , setMode
         , signOutCommand
@@ -17,6 +18,8 @@ import Msg exposing (Msg)
 import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))
 import Document.Model exposing (SearchDomain(..))
+import User.RequestParameters
+import Api.Request
 
 
 handleToken : Model -> String -> ( Model, Cmd Msg )
@@ -24,8 +27,22 @@ handleToken model token =
     let
         newModel =
             modelFromToken model token
+
+        userId =
+            (case newModel.maybeCurrentUser of
+                Just user ->
+                    user.id
+
+                Nothing ->
+                    0
+            )
     in
-        ( newModel, sendUserDataToLocalStorage newModel )
+        ( newModel
+        , Cmd.batch
+            [ sendUserDataToLocalStorage newModel
+            , Api.Request.doRequest <| User.RequestParameters.getUser userId
+            ]
+        )
 
 
 userFromToken : Model -> String -> Maybe User
@@ -43,6 +60,16 @@ userFromToken model token =
 
         Err error ->
             Nothing
+
+
+userIdFromToken : String -> Int
+userIdFromToken token =
+    case Jwt.decodeToken Data.jwtDecoder token of
+        Ok value ->
+            value.user_id
+
+        Err error ->
+            0
 
 
 modelFromToken : Model -> String -> Model
@@ -66,8 +93,7 @@ handleUserRecord : Model -> UserRecord -> ( Model, Cmd Msg )
 handleUserRecord model userRecord =
     let
         user =
-            Debug.log "handleUserRecord"
-                userRecord.user
+            userRecord.user
     in
         case Jwt.decodeToken Data.userRecordDecoder user.token of
             Ok value ->
@@ -118,3 +144,8 @@ signOutCommand model =
         OutsideInfo.sendInfoOutside (DisconnectUser Encode.null)
     else
         Cmd.none
+
+
+getUserCommmand : Int -> Cmd Msg
+getUserCommmand userId =
+    Api.Request.doRequest <| User.RequestParameters.getUser userId

@@ -254,7 +254,11 @@ lookupKeyAction key =
             \model -> View.MenuManager.closeMenus model
 
         CharE ->
-            \model -> goToEditorPage model
+            \model ->
+                if model.maybeCurrentUser /= Nothing then
+                    goToEditorPage model
+                else
+                    ( model, Cmd.none )
 
         CharH ->
             \model -> goToHomePage model
