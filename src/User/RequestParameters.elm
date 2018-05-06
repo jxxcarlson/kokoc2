@@ -4,8 +4,8 @@ import Configuration
 import User.Data as Data
 import Model exposing (Model)
 import Msg
-import User.Model exposing (UserRecord)
-import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser))
+import User.Model exposing (UserRecord, UserListRecord)
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList))
 import HttpBuilder as HB
 import Api.Request exposing (RequestParameters)
 import Json.Encode as Encode
@@ -43,5 +43,17 @@ getUser userId =
     , tagger = Msg.UserMsg << GetUser
     , token = ""
     , decoder = Data.userRecordDecoder
+    , method = HB.get
+    }
+
+
+getUserList : RequestParameters UserListRecord
+getUserList =
+    { api = Configuration.api
+    , route = "/users/"
+    , payload = Encode.null
+    , tagger = Msg.UserMsg << GetUserList
+    , token = ""
+    , decoder = Data.userListDecoder
     , method = HB.get
     }

@@ -3,6 +3,9 @@ module User.Action
         ( handleToken
         , handleUserRecord
         , userFromToken
+        , getUser
+        , getUserList
+        , getUserListCommmand
         , userIdFromToken
         , reconnectUser
         , setMode
@@ -11,7 +14,7 @@ module User.Action
 
 import Jwt exposing (decodeToken)
 import Model exposing (Model, Mode(..))
-import User.Model exposing (User)
+import User.Model exposing (User, UserListRecord)
 import User.Data as Data
 import Json.Encode as Encode
 import Msg exposing (Msg)
@@ -149,3 +152,36 @@ signOutCommand model =
 getUserCommmand : Int -> Cmd Msg
 getUserCommmand userId =
     Api.Request.doRequest <| User.RequestParameters.getUser userId
+
+
+getUserListCommmand : Cmd Msg
+getUserListCommmand =
+    Api.Request.doRequest <| User.RequestParameters.getUserList
+
+
+getUser : Model -> UserRecord -> ( Model, Cmd Msg )
+getUser model userRecord =
+    let
+        completeUser =
+            userRecord.user
+
+        maybeCurrentUser =
+            (case model.maybeCurrentUser of
+                Just user ->
+                    Just
+                        { user
+                            | blurb = completeUser.blurb
+                            , admin = completeUser.admin
+                            , name = completeUser.name
+                        }
+
+                Nothing ->
+                    Nothing
+            )
+    in
+        ( { model | maybeCurrentUser = maybeCurrentUser }, Cmd.none )
+
+
+getUserList : Model -> UserListRecord -> ( Model, Cmd Msg )
+getUserList model userListRecord =
+    ( { model | userList = userListRecord.users }, Cmd.none )

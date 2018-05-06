@@ -24,6 +24,8 @@ view model =
 
 footerContent model =
     [ el Menu [ verticalCenter ] (text model.message)
+
+    -- , testButton
     , wordCount model
     , textLabel <| shareUrl model
     , userStatus model

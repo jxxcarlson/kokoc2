@@ -17,5 +17,5 @@ type alias UserRecord =
 
 
 type alias UserListRecord =
-    { documents : List User
+    { users : List User
     }

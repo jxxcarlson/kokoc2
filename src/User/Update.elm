@@ -5,7 +5,7 @@ import Msg exposing (Msg)
 import User.Msg exposing (..)
 import Api.Request as Request
 import User.RequestParameters as RequestParameters
-import User.Action as Action
+import User.Action
 
 
 update : UserMsg -> Model -> ( Model, Cmd Msg )
@@ -13,18 +13,18 @@ update submessage model =
     case submessage of
         SignIn ->
             ( { model
-                | mode = Action.setMode model
+                | mode = User.Action.setMode model
                 , page = StartPage
                 , maybeCurrentUser = Nothing
               }
-            , Action.signOutCommand model
+            , User.Action.signOutCommand model
             )
 
         AuthenticateUser ->
             ( model, Request.doRequest <| RequestParameters.authenticateUser model )
 
         VerifyAuthentication (Ok token) ->
-            Action.handleToken model token
+            User.Action.handleToken model token
 
         VerifyAuthentication (Err error) ->
             ( { model | errorMessage = (toString error) }, Cmd.none )
@@ -33,33 +33,21 @@ update submessage model =
             ( model, Request.doRequest <| RequestParameters.signUpUser model )
 
         VerifySignUp (Ok userRecord) ->
-            Action.handleUserRecord model userRecord
+            User.Action.handleUserRecord model userRecord
 
         VerifySignUp (Err error) ->
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
         GetUser (Ok userRecord) ->
-            let
-                completeUser =
-                    userRecord.user
-
-                maybeCurrentUser =
-                    (case model.maybeCurrentUser of
-                        Just user ->
-                            Just
-                                { user
-                                    | blurb = completeUser.blurb
-                                    , admin = completeUser.admin
-                                    , name = completeUser.name
-                                }
-
-                        Nothing ->
-                            Nothing
-                    )
-            in
-                ( { model | maybeCurrentUser = maybeCurrentUser }, Cmd.none )
+            User.Action.getUser model userRecord
 
         GetUser (Err error) ->
+            ( { model | errorMessage = (toString error) }, Cmd.none )
+
+        GetUserList (Ok userListRecord) ->
+            User.Action.getUserList model userListRecord
+
+        GetUserList (Err error) ->
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
         CancelSignIn ->

@@ -31,6 +31,7 @@ import View.DocumentMenu
 import Time
 import Task
 import Document.Utility
+import User.Action
 
 
 --- TEST:
@@ -138,7 +139,7 @@ update msg model =
             ( { model | startTime = time }, Cmd.none )
 
         Test ->
-            ( model, Document.Cmd.loadDocumentIntoDictionary (Utility.getToken model) 181 )
+            ( model, User.Action.getUserListCommmand )
 
 
 processInfoForElm model infoForElm =

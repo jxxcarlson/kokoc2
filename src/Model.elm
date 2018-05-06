@@ -28,6 +28,7 @@ type alias Model =
     , email : String
     , password : String
     , maybeCurrentUser : Maybe User
+    , userList : List User
     , message : String
     , errorMessage : String
     , documentList : List Document
@@ -141,6 +142,7 @@ initialModel flags =
      , email = ""
      , password = ""
      , maybeCurrentUser = Nothing
+     , userList = []
      , message = ""
      , errorMessage = ""
      , documentList = []
