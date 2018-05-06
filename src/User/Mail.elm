@@ -37,7 +37,7 @@ requestUrl requestData =
 mailingDecoder : Decoder MailResult
 mailingDecoder =
     decode MailResult
-        |> JPipeline.required "recipient_count" Decode.int
+        |> JPipeline.required "message" Decode.string
 
 
 mailingEncoder : MailRecord -> Encode.Value
@@ -54,8 +54,9 @@ encodePlainTextMailing : MailRecord -> Encode.Value
 encodePlainTextMailing mailRecord =
     Encode.object
         [ ( "subject", Encode.string <| mailRecord.subject )
-        , ( "text", Encode.string <| mailRecord.text )
-        , ( "html_text", Encode.string <| "" )
+        , ( "recipient", Encode.string <| mailRecord.recipient )
+        , ( "body", Encode.string <| mailRecord.recipient )
+        , ( "type", Encode.string "plain_text" )
         ]
 
 
@@ -63,8 +64,9 @@ encodeHtmlMailing : MailRecord -> Encode.Value
 encodeHtmlMailing mailRecord =
     Encode.object
         [ ( "subject", Encode.string <| mailRecord.subject )
-        , ( "text", Encode.string <| "" )
-        , ( "html_text", Encode.string <| mailRecord.text )
+        , ( "recipient", Encode.string <| mailRecord.recipient )
+        , ( "body", Encode.string <| mailRecord.recipient )
+        , ( "type", Encode.string "html_text" )
         ]
 
 
@@ -79,9 +81,9 @@ type alias RequestParameters msg =
 
 type alias MailRecord =
     { subject : String
-    , text : String
+    , recipient : String
+    , body : String
     , textType : TextType
-    , emailsSent : Int
     }
 
 
@@ -91,4 +93,4 @@ type TextType
 
 
 type alias MailResult =
-    { recipientCount : Int }
+    { message : String }
