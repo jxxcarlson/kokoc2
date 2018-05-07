@@ -4,7 +4,7 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing (decodeValue, field, map, map2, map3, field, at, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
 import Model exposing (Model)
-import User.Model exposing (UserRecord, UserListRecord)
+import User.Model exposing (UserRecord, UserListRecord, UserReply)
 
 
 type alias Claims =
@@ -92,6 +92,13 @@ userListDecoder =
     decode
         UserListRecord
         |> required "users" (Decode.list userDecoder)
+
+
+decodeDeleteUserReply : Decoder UserReply
+decodeDeleteUserReply =
+    decode
+        UserReply
+        |> required "reply" Decode.string
 
 
 

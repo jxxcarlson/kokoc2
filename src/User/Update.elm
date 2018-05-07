@@ -50,6 +50,15 @@ update submessage model =
         GetUserList (Err error) ->
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
+        DeleteUser userId ->
+            ( { model | message = "Delete user " ++ (toString userId) }, Cmd.none )
+
+        ProcessDeletedDocument (Ok result) ->
+            ( { model | message = result.reply }, Cmd.none )
+
+        ProcessDeletedDocument (Err error) ->
+            ( { model | errorMessage = (toString error) }, Cmd.none )
+
         CancelSignIn ->
             ( { model | mode = Public }, Cmd.none )
 

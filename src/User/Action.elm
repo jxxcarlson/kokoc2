@@ -160,6 +160,11 @@ getUserListCommmand =
     Api.Request.doRequest <| User.RequestParameters.getUserList
 
 
+deleteUserCommmand : String -> Int -> Cmd Msg
+deleteUserCommmand token userId =
+    Api.Request.doRequest <| User.RequestParameters.deleteUser token userId
+
+
 getUser : Model -> UserRecord -> ( Model, Cmd Msg )
 getUser model userRecord =
     let

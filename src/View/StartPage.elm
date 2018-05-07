@@ -150,4 +150,4 @@ signUpForm model =
 
 
 passwordResetButton =
-    Widget.linkButton2 "https://nshost.herokuapp.com/api/password/request" "Reset password reset"
+    Widget.linkButton2 "https://nshost.herokuapp.com/api/password/request" "Request password reset"

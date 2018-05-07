@@ -4,8 +4,8 @@ import Configuration
 import User.Data as Data
 import Model exposing (Model)
 import Msg
-import User.Model exposing (UserRecord, UserListRecord)
-import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList))
+import User.Model exposing (UserRecord, UserListRecord, UserReply)
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList, ProcessDeletedDocument))
 import HttpBuilder as HB
 import Api.Request exposing (RequestParameters)
 import Json.Encode as Encode
@@ -56,4 +56,16 @@ getUserList =
     , token = ""
     , decoder = Data.userListDecoder
     , method = HB.get
+    }
+
+
+deleteUser : String -> Int -> RequestParameters UserReply
+deleteUser token userId =
+    { api = Configuration.api
+    , route = "/users/" ++ (toString userId)
+    , payload = Encode.null
+    , tagger = Msg.UserMsg << ProcessDeletedDocument
+    , token = token
+    , decoder = Data.decodeDeleteUserReply
+    , method = HB.delete
     }

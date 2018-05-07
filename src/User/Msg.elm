@@ -1,7 +1,7 @@
 module User.Msg exposing (..)
 
 import Http
-import User.Model exposing (UserRecord, UserListRecord)
+import User.Model exposing (UserRecord, UserListRecord, UserReply)
 
 
 type UserMsg
@@ -12,6 +12,7 @@ type UserMsg
     | VerifySignUp (Result Http.Error UserRecord)
     | GetUser (Result Http.Error UserRecord)
     | GetUserList (Result Http.Error UserListRecord)
+    | ProcessDeletedDocument (Result Http.Error UserReply)
     | CancelSignIn
     | GoToSignupForm
     | UserNoOp
@@ -19,3 +20,4 @@ type UserMsg
     | InputUsername String
     | InputEmail String
     | InputPassword String
+    | DeleteUser Int

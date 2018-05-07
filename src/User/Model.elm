@@ -1,4 +1,4 @@
-module User.Model exposing (User, UserRecord, UserListRecord)
+module User.Model exposing (User, UserRecord, UserListRecord, UserReply)
 
 
 type alias User =
@@ -19,3 +19,7 @@ type alias UserRecord =
 type alias UserListRecord =
     { users : List User
     }
+
+
+type alias UserReply =
+    { reply : String }
