@@ -91,6 +91,10 @@ hoverStyle =
     Style.hover [ Color.background <| Color.rgb 132 6 6, Style.cursor "pointer" ]
 
 
+hoverStyle2 =
+    Style.hover [ Color.background <| Color.rgb 132 6 6, Color.text <| Color.lightGray, Style.cursor "pointer" ]
+
+
 stylesheet =
     Style.styleSheet
         [ style Main [ Color.background mainColor ]
@@ -235,7 +239,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.darkBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , hoverStyle
+            , hoverStyle2
             ]
         , style FormButtonSelected
             [ Color.text myBlack
@@ -244,7 +248,7 @@ stylesheet =
             , pseudo "active" [ Transition.all, Color.background Color.lightBlue ]
             , Font.size 16 -- all units given as px
             , Font.typeface fontList
-            , hoverStyle
+            , hoverStyle2
             ]
         , style SmallButton
             [ Color.text Color.white

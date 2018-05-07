@@ -97,6 +97,11 @@ linkButton url label =
         el MenuButton [ paddingTop 8, verticalCenter, onClick CloseMenus ] (text label)
 
 
+linkButton2 url label =
+    newTab url <|
+        el FormButton [ paddingXY 10 5, verticalCenter, onClick CloseMenus ] (text label)
+
+
 inputField label_ value_ width_ action =
     Element.Input.text InputField
         [ width (px width_)

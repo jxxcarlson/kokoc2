@@ -130,6 +130,7 @@ signInForm model =
         , row Panel [] [ Widget.formButton "Sign in" 300 [ onClick (Msg.UserMsg AuthenticateUser) ] False ]
         , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (Msg.UserMsg CancelSignIn) ] False ]
         , row Panel [ paddingTop 40 ] [ Widget.formButton "Need to sign up instead?" 300 [ onClick (Msg.UserMsg GoToSignupForm) ] False ]
+        , row Panel [] [ passwordResetButton ]
         ]
     ]
 
@@ -146,3 +147,7 @@ signUpForm model =
         , row Panel [] [ Widget.formButton "Cancel" 300 [ onClick (Msg.UserMsg CancelSignIn) ] False ]
         ]
     ]
+
+
+passwordResetButton =
+    Widget.linkButton2 "https://nshost.herokuapp.com/api/password/request" "Reset password reset"
