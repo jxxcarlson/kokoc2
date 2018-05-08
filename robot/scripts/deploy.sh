@@ -41,7 +41,7 @@ echo "${magenta}Compile time: " $runtime " seconds${reset}"
 
 echo
 echo "${color}upload to cloud ...${reset}"
-scp -r ./dist/* root@138.197.81.6:/var/www/html/
+scp -r ./dist/main.js root@138.197.81.6:/var/www/html/
 
 echo
 tput setaf 2; echo "${color}Done${reset}"

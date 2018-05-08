@@ -6,6 +6,7 @@ import User.Msg exposing (..)
 import Api.Request as Request
 import User.RequestParameters as RequestParameters
 import User.Action
+import Utility
 
 
 update : UserMsg -> Model -> ( Model, Cmd Msg )
@@ -51,13 +52,15 @@ update submessage model =
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
         DeleteUser userId ->
-            ( { model | message = "Delete user " ++ (toString userId) }, Cmd.none )
+            ( { model | message = "Delete user " ++ (toString userId) }
+            , User.Action.deleteUserCmd (Utility.getToken model) userId
+            )
 
         ProcessDeletedDocument (Ok result) ->
             ( { model | message = result.reply }, Cmd.none )
 
         ProcessDeletedDocument (Err error) ->
-            ( { model | errorMessage = (toString error) }, Cmd.none )
+            ( { model | message = "Error: could not delete user", errorMessage = (toString error) }, Cmd.none )
 
         CancelSignIn ->
             ( { model | mode = Public }, Cmd.none )

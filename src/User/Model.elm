@@ -9,6 +9,7 @@ type alias User =
     , blurb : String
     , token : String
     , admin : Bool
+    , active : Bool
     }
 
 

@@ -85,6 +85,7 @@ userDecoder =
         |> JPipeline.required "blurb" Decode.string
         |> JPipeline.required "token" Decode.string
         |> JPipeline.required "admin" Decode.bool
+        |> JPipeline.required "active" Decode.bool
 
 
 userListDecoder : Decoder UserListRecord
@@ -115,6 +116,7 @@ userDecoderFromLocalStorage =
         |> JPipeline.required "blurb" Decode.string
         |> JPipeline.required "token" Decode.string
         |> JPipeline.hardcoded False
+        |> JPipeline.hardcoded True
 
 
 elixirTFToBool : String -> Bool
@@ -138,4 +140,5 @@ type alias User =
     , blurb : String
     , token : String
     , admin : Bool
+    , active : Bool
     }

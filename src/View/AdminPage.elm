@@ -53,7 +53,8 @@ displayUser user =
         , textLabel [ width (px 90) ] user.username
         , textLabel [ width (px 130) ] user.name
         , textLabel [ width (px 130) ] user.email
-        , deleteUserButton user
+
+        -- , deleteUserButton user
         ]
 
 

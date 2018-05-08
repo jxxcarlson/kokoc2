@@ -10,6 +10,7 @@ module User.Action
         , reconnectUser
         , setMode
         , signOutCommand
+        , deleteUserCmd
         )
 
 import Jwt exposing (decodeToken)
@@ -60,7 +61,7 @@ userFromToken model token =
                 id =
                     value.user_id
             in
-                Just <| User "" id username model.email "" token False
+                Just <| User "" id username model.email "" token False True
 
         Err error ->
             Nothing
@@ -160,8 +161,8 @@ getUserListCommmand =
     Api.Request.doRequest <| User.RequestParameters.getUserList
 
 
-deleteUserCommmand : String -> Int -> Cmd Msg
-deleteUserCommmand token userId =
+deleteUserCmd : String -> Int -> Cmd Msg
+deleteUserCmd token userId =
     Api.Request.doRequest <| User.RequestParameters.deleteUser token userId
 
 

@@ -3,6 +3,7 @@ module Configuration
         ( host
         , api
         , client
+        , client2
         , maxDocs
         , startupDocumentId
         , TickerState(..)
@@ -28,6 +29,11 @@ host =
 
 client : String
 client =
+    "http://localhost:8080"
+
+
+client2 : String
+client2 =
     "http://localhost:8080"
 
 
