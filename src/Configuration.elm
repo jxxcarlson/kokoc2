@@ -17,33 +17,28 @@ type TickerState
     | TickSlowly
 
 
+initialTickerState =
+    TickNever
+
+
 host : String
 host =
-    "http://localhost:4000"
-
-
-
---- "https://nshost.herokuapp.com"
--- "http://localhost:4000"
+    "https://nshost.herokuapp.com"
 
 
 client : String
 client =
-    "http://localhost:8080"
+    "http://www.knode.io/"
 
 
 client2 : String
 client2 =
-    "http://localhost:8080"
+    "http://knode.io/"
 
 
 api : String
 api =
     host ++ "/api"
-
-
-initialTickerState =
-    TickNever
 
 
 maxDocs =

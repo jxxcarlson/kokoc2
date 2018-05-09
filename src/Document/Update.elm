@@ -50,17 +50,17 @@ update submessage model =
                 ( { model | errorMessage = "LC: " ++ Error.httpErrorString error }, Cmd.none )
 
             LoadContentAndRender (Ok documentRecord) ->
-                ( ActionRead.refreshDocumentList model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
+                let
+                    _ =
+                        Debug.log "LoadContentAndRender" documentRecord.document.title
+                in
+                    ( ActionRead.refreshDocumentList model documentRecord, Document.Cmd.putTextToRender documentRecord.document )
 
             LoadContentAndRender (Err error) ->
                 ( { model | errorMessage = "LCAR:" ++ Error.httpErrorString error }, Cmd.none )
 
             SaveDocument (Ok documentRecord) ->
-                let
-                    _ =
-                        Debug.log "documentRecord" documentRecord.document.content
-                in
-                    ( { model | message = "Document saved" }, Task.perform ReceiveTime Time.now )
+                ( { model | message = "Document saved" }, Task.perform ReceiveTime Time.now )
 
             LoadIntoDictionary (Ok documentRecord) ->
                 let

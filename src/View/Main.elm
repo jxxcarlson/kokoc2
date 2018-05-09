@@ -16,7 +16,7 @@ view : Model -> Html.Html Msg
 view model =
     Element.viewport stylesheet <|
         Element.column Main
-            [ width fill, height <| px <| toFloat <| model.windowHeight ]
+            [ width fill, height <| px <| toFloat <| model.windowHeight, clip ]
             [ dispatcher model
             ]
 
