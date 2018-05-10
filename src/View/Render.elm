@@ -31,6 +31,7 @@ innerRenderedContent : Model -> Length -> Float -> Document -> Element MyStyles 
 innerRenderedContent model width_ verticalInset document =
     el (MainContent)
         [ yScrollbar
+        , clipX
         , id "renderedText"
         , paddingXY 50 50
         , width width_
