@@ -75,6 +75,13 @@ menuButton title width_ attrs selected =
         el MenuButton ([ height (px 28), width (px width_) ] ++ attrs) (el None [ center, verticalCenter ] (text title))
 
 
+menuItemButton title width_ attrs selected =
+    if selected then
+        el MenuButtonSelected ([ height (px 28), width (px width_), alignLeft ] ++ attrs) (el None [ alignLeft, verticalCenter ] (text title))
+    else
+        el MenuButton ([ height (px 28), width (px width_), alignLeft ] ++ attrs) (el None [ alignLeft, verticalCenter ] (text title))
+
+
 innerMenuButton title width_ attrs selected =
     if selected then
         el InnerMenuButtonSelected ([ paddingXY 6 0, height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))

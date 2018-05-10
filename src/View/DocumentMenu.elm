@@ -81,6 +81,8 @@ view model =
                     ]
 
 
+{-| DOCUMENT MENU
+-}
 documentMenuWhenNotSignedIn model =
     column Menu
         [ width (px 200), padding 12, spacing 4 ]
@@ -92,7 +94,7 @@ documentMenuWhenNotSignedIn model =
 
 documentMenuWhenSignedIn model =
     column Menu
-        [ width (px 200), padding 12, spacing 4 ]
+        [ width (px 200), paddingXY 18 4, spacing 0, alignLeft ]
         [ hairline Hairline
         , printDocument model
         , newDocument model
@@ -110,8 +112,62 @@ documentMenuWhenSignedIn model =
         ]
 
 
-textLabel content =
-    el Menu [ paddingTop 8, verticalCenter ] (text <| content)
+printDocument model =
+    printButton model.currentDocument
+
+
+printButton document =
+    Widget.linkButton (printUrl document) "Print"
+
+
+printUrl : Document -> String
+printUrl document =
+    Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
+
+
+newDocument model =
+    Widget.menuItemButton "New ctrl-N" 160 [ onClick (DisplayNewDocumentPanel) ] False
+
+
+deleteDocument model =
+    case model.deleteDocumentState of
+        DeleteDocumentInactive ->
+            Widget.menuItemButton "Delete" 160 [ onClick (DocumentMsg PrepareToDeleteDocument) ] False
+
+        DeleteDocumentPending ->
+            Widget.menuItemButton "DELETE!" 160 [ onClick (DocumentMsg DoDeleteDocument) ] True
+
+
+documentAttributes model =
+    Widget.menuItemButton "Attributes" 160 [ onClick (DisplayDocumentAttributesPanel) ] False
+
+
+togglePublic model =
+    Widget.menuItemButton (publicStatus model) 160 [ onClick (DocumentMsg TogglePublic) ] True
+
+
+renumberMaster model =
+    Widget.menuItemButton "Renumber Master" 160 [ onClick (DocumentMsg RenumberMasterDocument) ] False
+
+
+compileMaster model =
+    Widget.menuItemButton "Compile Master" 160 [ onClick (DocumentMsg CompileMaster) ] False
+
+
+exportButton model =
+    let
+        prefix =
+            Utility.compress "-" model.currentDocument.title
+
+        fileName =
+            prefix ++ ".tex"
+    in
+        Element.downloadAs { src = dataUrl model.textToExport, filename = fileName } <|
+            el MenuButton [] (text "Export LaTeX")
+
+
+
+{- END OF DOCUMENTS MENU -}
 
 
 versionsMenu model =
@@ -288,42 +344,9 @@ repositoryNameInputPane model =
     Widget.menuInputField "repository" (Document.Utility.archiveName model model.currentDocument) 180 (InputRepositoryName)
 
 
-exportButton model =
-    let
-        prefix =
-            Utility.compress "-" model.currentDocument.title
-
-        fileName =
-            prefix ++ ".tex"
-    in
-        Element.downloadAs { src = dataUrl model.textToExport, filename = fileName } <|
-            el MenuButton [] (text "Export LaTeX")
-
-
 dataUrl : String -> String
 dataUrl data =
     "data:text/plain;charset=utf-8," ++ Http.encodeUri data
-
-
-compileMaster model =
-    Widget.menuButton "Compile Master" 90 [ onClick (DocumentMsg CompileMaster) ] False
-
-
-renumberMaster model =
-    Widget.menuButton "Renumber Master" 90 [ onClick (DocumentMsg RenumberMasterDocument) ] False
-
-
-printDocument model =
-    printButton model.currentDocument
-
-
-printButton document =
-    Widget.linkButton (printUrl document) "Print"
-
-
-printUrl : Document -> String
-printUrl document =
-    Configuration.host ++ "/print/documents" ++ "/" ++ toString document.id ++ "?" ++ printTypeString document
 
 
 newVersionButton document =
@@ -346,27 +369,6 @@ showVersionsButton document =
 showVersionsUrl : Document -> String
 showVersionsUrl document =
     Configuration.host ++ "/archive/versions" ++ "/" ++ toString document.id
-
-
-newDocument model =
-    Widget.menuButton "New ctrl-N" 60 [ onClick (DisplayNewDocumentPanel) ] False
-
-
-documentAttributes model =
-    Widget.menuButton "Attributes" 60 [ onClick (DisplayDocumentAttributesPanel) ] False
-
-
-deleteDocument model =
-    case model.deleteDocumentState of
-        DeleteDocumentInactive ->
-            Widget.menuButton "Delete" 60 [ onClick (DocumentMsg PrepareToDeleteDocument) ] False
-
-        DeleteDocumentPending ->
-            Widget.menuButton "DELETE!" 60 [ onClick (DocumentMsg DoDeleteDocument) ] True
-
-
-togglePublic model =
-    Widget.menuButton (publicStatus model) 60 [ onClick (DocumentMsg TogglePublic) ] True
 
 
 toggleDocumentMenuButton model labelText width msg =
@@ -394,6 +396,10 @@ publicStatus model =
 
 
 {- HELPERS -}
+
+
+textLabel content =
+    el Menu [ paddingTop 8, verticalCenter ] (text <| content)
 
 
 printTypeString : Document -> String

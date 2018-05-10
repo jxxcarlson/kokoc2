@@ -27,7 +27,7 @@ footerContent model =
 
     -- , testButton
     , wordCount model
-    , textLabel <| shareUrl model
+    , documentInfo model
     , userStatus model
 
     -- , textLabel <| "Elapsed: " ++ (toString <| elapsedTime model)
@@ -98,6 +98,13 @@ userStatusAux model =
 
 textLabel =
     Widget.textLabel Menulabel [ paddingXY 8 3 ]
+
+
+documentInfo model =
+    if model.currentDocument.attributes.public then
+        textLabel <| shareUrl model
+    else
+        textLabel <| "ID: " ++ (toString model.currentDocument.id)
 
 
 shareUrl model =
