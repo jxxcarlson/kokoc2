@@ -42,31 +42,31 @@ view model =
 
 
 orderByViewed model =
-    Widget.menuButton "Viewed" 90 [ onClick (ChooseSortOrder ViewedOrder) ] (model.sortOrder == ViewedOrder)
+    Widget.menuItemButton "Viewed" 90 [ onClick (ChooseSortOrder ViewedOrder) ] (model.sortOrder == ViewedOrder)
 
 
 orderByUpdated model =
-    Widget.menuButton "Updated" 90 [ onClick (ChooseSortOrder UpdatedOrder) ] (model.sortOrder == UpdatedOrder)
+    Widget.menuItemButton "Updated" 90 [ onClick (ChooseSortOrder UpdatedOrder) ] (model.sortOrder == UpdatedOrder)
 
 
 orderByCreated model =
-    Widget.menuButton "Created" 90 [ onClick (ChooseSortOrder CreatedOrder) ] (model.sortOrder == CreatedOrder)
+    Widget.menuItemButton "Created" 90 [ onClick (ChooseSortOrder CreatedOrder) ] (model.sortOrder == CreatedOrder)
 
 
 orderAlphabetically model =
-    Widget.menuButton "Alphabetical" 90 [ onClick (ChooseSortOrder AlphabeticalOrder) ] (model.sortOrder == AlphabeticalOrder)
+    Widget.menuItemButton "Alphabetical" 90 [ onClick (ChooseSortOrder AlphabeticalOrder) ] (model.sortOrder == AlphabeticalOrder)
 
 
 randomSearch model =
-    Widget.menuButton "Random Docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRandomDocuments) ] False
+    Widget.menuItemButton "Random Docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRandomDocuments) ] False
 
 
 recentDocuments model =
-    Widget.menuButton "Recent docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRecentDocuments) ] False
+    Widget.menuItemButton "Recent docs" 90 [ paddingTop 12, onClick (DocumentMsg GetRecentDocuments) ] False
 
 
 searchPublic model =
-    Widget.menuButton "Public Docs" 90 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
+    Widget.menuItemButton "Public Docs" 90 [ onClick (ChooseSearchType SearchPublic) ] (model.searchDomain == SearchPublic)
 
 
 searchPrivate model =
@@ -79,7 +79,7 @@ searchPrivate model =
 
 
 searchPrivateAux model =
-    Widget.menuButton "My Docs" 90 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
+    Widget.menuItemButton "My Docs" 90 [ onClick (ChooseSearchType SearchPrivate) ] (model.searchDomain == SearchPrivate)
 
 
 searchAll model =
@@ -92,11 +92,11 @@ searchAll model =
 
 
 searchAllAux model =
-    Widget.menuButton "All Docs" 90 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
+    Widget.menuItemButton "All Docs" 90 [ onClick (ChooseSearchType SearchAll) ] (model.searchDomain == SearchAll)
 
 
 testButton2 =
-    Widget.menuButton "Test" 100 [ onClick (Test) ] False
+    Widget.menuItemButton "Test" 100 [ onClick (Test) ] False
 
 
 toggleSearchMenuButton model labelText width msg =
