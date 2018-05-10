@@ -91,9 +91,9 @@ innerMenuButton title width_ attrs selected =
 
 strongMenuButton title width_ attrs selected =
     if selected then
-        el MenuButtonStrongSelected ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+        el MenuButtonStrongSelected ([ height (px 28), width (px width_), alignLeft ] ++ attrs) (el None [ alignLeft, verticalCenter ] (text title))
     else
-        el MenuButtonStrong ([ height (px 28), width (px width_) ] ++ attrs) (el None [ verticalCenter ] (text title))
+        el MenuButtonStrong ([ height (px 28), width (px width_), alignLeft ] ++ attrs) (el None [ alignLeft, verticalCenter ] (text title))
 
 
 formButton title width_ attrs selected =
