@@ -88,8 +88,16 @@ documentMenuWhenNotSignedIn model =
         [ width (px 200), padding 12, spacing 4 ]
         [ hairline Hairline
         , printDocument model
+        , newdocumentModelAlt model
         , toggleDocumentMenuButton model "X" 33 (DocumentMenu MenuActive)
         ]
+
+
+newdocumentModelAlt model =
+    if model.maybeCurrentUser == Nothing then
+        empty
+    else
+        newDocument model
 
 
 documentMenuWhenSignedIn model =
@@ -170,34 +178,6 @@ exportButton model =
 {- END OF DOCUMENTS MENU -}
 
 
-versionsMenu model =
-    case model.versionsMenuState of
-        VersionsMenu MenuInactive ->
-            toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuInactive)
-
-        VersionsMenu MenuActive ->
-            toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuActive)
-                |> above
-                    (versionsMenuAux model)
-
-
-versionsMenuAux model =
-    [ column Menu
-        [ width (px 220), padding 18, spacing 6 ]
-        [ versionDisplay model
-        , showVersionsButton model.currentDocument
-        , newVersionButton model.currentDocument
-        , textLabel <| "Repository:"
-        , repositoryNameInputPane model
-        , setRepository model
-        , Widget.hairline
-        , textLabel <| "Sharing"
-        , shareDocumentInputPane model
-        , shareDocumentButton model
-        ]
-    ]
-
-
 tagsMenuPanel model =
     if model.page == EditorPage then
         tagsMenuPanelAux model
@@ -244,6 +224,8 @@ menuHeight model =
         (px 145)
 
 
+{-| NEW DOCUMENT PANEL
+-}
 newDocumentPanel model =
     if model.newDocumentPanelState == NewDocumentPanelActive then
         screen <|
@@ -270,6 +252,10 @@ newDocumentPanel model =
         empty
 
 
+dismissNewDocumentPanel =
+    Widget.menuButton "Done" 60 [ onClick (CancelNewDocument) ] False
+
+
 newDocumentMenuHeight : Model -> Length
 newDocumentMenuHeight model =
     if model.maybeMasterDocument == Nothing then
@@ -294,6 +280,8 @@ masterDocuParameters model =
             [ empty ]
 
 
+{-| DOCUMENT ATTRIBUTES PANEL
+-}
 documentAttributesPanel model =
     if model.documentAttributePanelState == DocumentAttributePanelActive then
         screen <|
@@ -324,10 +312,6 @@ documentAttributesPanel model =
         empty
 
 
-dismissNewDocumentPanel =
-    Widget.menuButton "Done" 60 [ onClick (CancelNewDocument) ] False
-
-
 shareDocumentInputPane model =
     Widget.menuInputField "share" (model.shareDocumentCommand) 180 (InputShareDocumentCommand)
 
@@ -336,17 +320,43 @@ shareDocumentButton model =
     Widget.innerMenuButton "Share" 50 [ onClick (DocumentMsg UpdateShareData) ] False
 
 
+{-| VERSIONW MENU
+-}
+versionsMenu model =
+    case model.versionsMenuState of
+        VersionsMenu MenuInactive ->
+            toggleVersionsMenuButton model "Tools" 60 (VersionsMenu MenuInactive)
+
+        VersionsMenu MenuActive ->
+            (textLabel "Tools")
+                |> above
+                    (versionsMenuAux model)
+
+
+versionsMenuAux model =
+    [ column Menu
+        [ width (px 220), padding 18, spacing 6 ]
+        [ versionDisplay model
+        , showVersionsButton model.currentDocument
+        , newVersionButton model.currentDocument
+        , textLabel <| "Repository:"
+        , repositoryNameInputPane model
+        , setRepository model
+        , Widget.hairline
+        , textLabel <| "Sharing"
+        , shareDocumentInputPane model
+        , shareDocumentButton model
+        , toggleVersionsMenuButton model "X" 60 (VersionsMenu MenuActive)
+        ]
+    ]
+
+
 versionDisplay model =
     el MenuButton [] (text <| "Document version: " ++ (toString model.currentDocument.attributes.version))
 
 
 repositoryNameInputPane model =
     Widget.menuInputField "repository" (Document.Utility.archiveName model model.currentDocument) 180 (InputRepositoryName)
-
-
-dataUrl : String -> String
-dataUrl data =
-    "data:text/plain;charset=utf-8," ++ Http.encodeUri data
 
 
 newVersionButton document =
@@ -369,6 +379,15 @@ showVersionsButton document =
 showVersionsUrl : Document -> String
 showVersionsUrl document =
     Configuration.host ++ "/archive/versions" ++ "/" ++ toString document.id
+
+
+
+{- XXXX -}
+
+
+dataUrl : String -> String
+dataUrl data =
+    "data:text/plain;charset=utf-8," ++ Http.encodeUri data
 
 
 toggleDocumentMenuButton model labelText width msg =

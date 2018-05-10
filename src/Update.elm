@@ -269,7 +269,7 @@ lookupKeyAction key =
 
         CharN ->
             \model ->
-                if model.page == EditorPage then
+                if model.page == EditorPage || model.maybeCurrentUser /= Nothing then
                     View.MenuManager.displayNewDocumentsPanel model
                 else
                     ( model, Cmd.none )
