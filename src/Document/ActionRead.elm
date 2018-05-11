@@ -31,7 +31,7 @@ import Document.Query as Query
 import Utility
 import Task exposing (Task)
 import Document.Task
-import MiniLatex.Driver
+import MeenyLatex.Driver
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
 import Document.Utility
@@ -143,7 +143,7 @@ selectDocument model document =
         ( { model
             | currentDocument = document
             , maybeMasterDocument = updatedMaybeMasterDocument
-            , editRecord = MiniLatex.Driver.emptyEditRecord
+            , editRecord = MeenyLatex.Driver.emptyEditRecord
             , documentType = document.attributes.docType
             , documentTextType = document.attributes.textType
             , counter = model.counter + 1

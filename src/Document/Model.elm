@@ -70,7 +70,7 @@ type DocType
 
 
 type TextType
-    = MiniLatex
+    = MeenyLatex
     | Asciidoc
     | AsciidocLatex
     | Plain

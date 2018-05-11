@@ -38,14 +38,14 @@ import Document.Query as Query
 import Utility
 import Task exposing (Task)
 import Document.Task
-import MiniLatex.Driver
+import MeenyLatex.Driver
 import Regex
 import Dict exposing (Dict)
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
-import MiniLatex.Source
-import MiniLatex.RenderLatexForExport
-import Document.MiniLatex
+import MeenyLatex.Source
+import MeenyLatex.RenderLatexForExport
+import Document.MeenyLatex
 import Time
 import Document.Utility
 
@@ -112,7 +112,7 @@ selectNewDocument model document =
 
 renderContent : Model -> ( Model, Cmd Msg )
 renderContent model =
-    if model.currentDocument.attributes.textType == MiniLatex then
+    if model.currentDocument.attributes.textType == MeenyLatex then
         renderLatex model
     else
         ( model, Document.Cmd.renderNonLatexCmd model )
@@ -120,7 +120,7 @@ renderContent model =
 
 renderContentAndSave : Model -> ( Model, Cmd Msg )
 renderContentAndSave model =
-    if model.currentDocument.attributes.textType == MiniLatex then
+    if model.currentDocument.attributes.textType == MeenyLatex then
         renderLatex model
     else
         ( { model | currentDocumentNeedsToBeSaved = False }
@@ -142,23 +142,23 @@ renderLatex model =
             getEnrichedContent document
 
         newEditRecord =
-            MiniLatex.Driver.update 666 model.editRecord contentToRender
+            MeenyLatex.Driver.update 666 model.editRecord contentToRender
 
         macroDefinitions =
-            Document.MiniLatex.getMacroDefinitions model
+            Document.MeenyLatex.getMacroDefinitions model
 
         textToExport =
-            [ MiniLatex.Source.texPrefix
+            [ MeenyLatex.Source.texPrefix
             , macroDefinitions
             , sectionNumberCommand -1 document
             , tableOfContentsMacro document
-            , MiniLatex.RenderLatexForExport.renderLatexForExport document.content
-            , MiniLatex.Source.texSuffix
+            , MeenyLatex.RenderLatexForExport.renderLatexForExport document.content
+            , MeenyLatex.Source.texSuffix
             ]
                 |> String.join ""
 
         renderedContent =
-            (MiniLatex.Driver.getRenderedText macroDefinitions newEditRecord)
+            (MeenyLatex.Driver.getRenderedText macroDefinitions newEditRecord)
 
         updatedDocument =
             { document | renderedContent = renderedContent }

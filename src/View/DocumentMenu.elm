@@ -239,7 +239,7 @@ newDocumentPanel model =
                  , el Menu [ paddingTop 12 ] (text "Text type")
                  , Widget.menuItemButton "Asciidoc" 90 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
                  , Widget.menuItemButton "Asciidoc Latex" 90 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
-                 , Widget.menuItemButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                 , Widget.menuItemButton "MiniLatex" 90 [ paddingLeft 20, onClick (SetDocumentTextType MeenyLatex) ] (model.documentTextType == MeenyLatex)
                  , Widget.menuItemButton "Plain" 90 [ paddingBottom 12, paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                  , hairline Hairline
                  , el Menu [ paddingTop 12 ] (text "Document type")
@@ -293,7 +293,7 @@ documentAttributesPanel model =
                 , el Menu [ paddingTop 8 ] (text "Text type")
                 , Widget.menuItemButton "Asciidoc" 125 [ paddingLeft 20, onClick (SetDocumentTextType Asciidoc) ] (model.documentTextType == Asciidoc)
                 , Widget.menuItemButton "Asciidoc Latex" 125 [ paddingLeft 20, onClick (SetDocumentTextType AsciidocLatex) ] (model.documentTextType == AsciidocLatex)
-                , Widget.menuItemButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MiniLatex) ] (model.documentTextType == MiniLatex)
+                , Widget.menuItemButton "MiniLatex" 125 [ paddingLeft 20, onClick (SetDocumentTextType MeenyLatex) ] (model.documentTextType == MeenyLatex)
                 , Widget.menuItemButton "Plain" 125 [ paddingLeft 20, onClick (SetDocumentTextType Plain) ] (model.documentTextType == Plain)
                 , Widget.hairline
                 , Widget.menuItemButton "Adopt children" 125 [ onClick (DocumentMsg AdoptChildren) ] False
@@ -430,7 +430,7 @@ printTypeString document =
         AsciidocLatex ->
             "text=adoc_latex"
 
-        MiniLatex ->
+        MeenyLatex ->
             "text=latex"
 
         Plain ->
