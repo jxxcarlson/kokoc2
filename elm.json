@@ -12,7 +12,8 @@
         "elm-lang/http": "2.0.0",
         "elm-lang/json": "1.0.0",
         "elm-lang/parser": "1.0.0",
-        "lukewestby/http-builder": "1.0.1"
+        "lukewestby/http-builder": "1.0.1",
+        "mdgriffith/style-elements": "5.0.0"
     },
     "test-dependencies": {},
     "do-not-edit-this-by-hand": {
