@@ -4,7 +4,7 @@ import Json.Encode as Encode
 import Json.Decode as Decode exposing (decodeValue, field, map, map2, map3, field, at, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
 import Model exposing (Model)
-import User.Model exposing (UserRecord, UserListRecord, UserReply)
+import User.Model exposing (UserRecord, UserListRecord, UserReply, User)
 
 
 type alias Claims =
@@ -15,13 +15,13 @@ type alias Claims =
 {- ENCODERS -}
 
 
-authenticationEncoder : Model -> Encode.Value
-authenticationEncoder model =
+authenticationEncoder : String -> String -> Encode.Value
+authenticationEncoder email password =
     Encode.object
         [ ( "authenticate"
           , Encode.object
-                [ ( "email", Encode.string model.email )
-                , ( "password", Encode.string model.password )
+                [ ( "email", Encode.string email )
+                , ( "password", Encode.string password )
                 ]
           )
         ]
@@ -132,13 +132,15 @@ elixirTFToBool str =
             False
 
 
-type alias User =
-    { name : String
-    , id : Int
-    , username : String
-    , email : String
-    , blurb : String
-    , token : String
-    , admin : Bool
-    , active : Bool
-    }
+
+--
+-- type alias User =
+--     { name : String
+--     , id : Int
+--     , username : String
+--     , email : String
+--     , blurb : String
+--     , token : String
+--     , admin : Bool
+--     , active : Bool
+--     }

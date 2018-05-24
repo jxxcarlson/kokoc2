@@ -11,11 +11,11 @@ import Api.Request exposing (RequestParameters)
 import Json.Encode as Encode
 
 
-authenticateUser : Model -> RequestParameters String
-authenticateUser model =
+authenticateUser : String -> String -> RequestParameters String
+authenticateUser email password =
     { api = Configuration.api
     , route = "/authentication"
-    , payload = Data.authenticationEncoder model
+    , payload = Data.authenticationEncoder email password
     , tagger = Msg.UserMsg << VerifyAuthentication
     , token = ""
     , decoder = Data.tokenDecoder

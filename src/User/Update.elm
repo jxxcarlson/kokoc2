@@ -22,7 +22,7 @@ update submessage model =
             )
 
         AuthenticateUser ->
-            ( model, Request.doRequest <| RequestParameters.authenticateUser model )
+            ( model, Request.doRequest <| RequestParameters.authenticateUser model.email model.password )
 
         VerifyAuthentication (Ok token) ->
             User.Action.handleToken model token
