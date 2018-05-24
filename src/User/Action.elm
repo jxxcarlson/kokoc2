@@ -13,11 +13,11 @@ module User.Action
         , deleteUserCmd
         )
 
+import Json.Encode as Encode
 import Jwt exposing (decodeToken)
 import Model exposing (Model, Mode(..))
 import User.Model exposing (User, UserListRecord)
 import User.Data as Data
-import Json.Encode as Encode
 import Msg exposing (Msg)
 import User.Model exposing (UserRecord)
 import OutsideInfo exposing (InfoForOutside(..))

@@ -1,13 +1,17 @@
 module View.TOC exposing (view)
 
-import Document.ActionRead
-import Document.Model exposing (Document, DocumentAttributes, DocType(..), SearchDomain(..))
-import Model exposing (Model)
-import Msg exposing (Msg)
-import Document.Msg exposing (DocumentMsg(SelectDocument))
 import Element exposing (image, textLayout, paragraph, el, paragraph, newTab, row, wrappedRow, column, button, text, empty)
 import Element.Attributes exposing (..)
 import Element.Events exposing (onClick, onInput)
+
+
+--
+
+import Model exposing (Model)
+import Msg exposing (Msg)
+import Document.ActionRead
+import Document.Model exposing (Document, DocumentAttributes, DocType(..), SearchDomain(..))
+import Document.Msg exposing (DocumentMsg(SelectDocument))
 import View.Stylesheet exposing (..)
 
 
