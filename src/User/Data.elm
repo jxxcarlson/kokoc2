@@ -3,8 +3,11 @@ module User.Data exposing (..)
 import Json.Encode as Encode
 import Json.Decode as Decode exposing (decodeValue, field, map, map2, map3, field, at, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
-import Model exposing (Model)
-import User.Model exposing (UserRecord, UserListRecord, UserReply, User)
+
+
+--
+
+import User.Model exposing (UserRecord, UserListRecord, UserReply, User, NewUser)
 
 
 type alias Claims =
@@ -27,15 +30,15 @@ authenticationEncoder email password =
         ]
 
 
-signupUserEncoder : Model -> Encode.Value
-signupUserEncoder model =
+signupUserEncoder : NewUser -> Encode.Value
+signupUserEncoder newUser =
     Encode.object
         [ ( "user"
           , Encode.object
-                [ ( "name", Encode.string <| model.name )
-                , ( "username", Encode.string <| model.username )
-                , ( "email", Encode.string <| model.email )
-                , ( "password", Encode.string <| model.password )
+                [ ( "name", Encode.string <| newUser.name )
+                , ( "username", Encode.string <| newUser.username )
+                , ( "email", Encode.string <| newUser.email )
+                , ( "password", Encode.string <| newUser.password )
                 ]
           )
         ]
@@ -130,17 +133,3 @@ elixirTFToBool str =
 
         _ ->
             False
-
-
-
---
--- type alias User =
---     { name : String
---     , id : Int
---     , username : String
---     , email : String
---     , blurb : String
---     , token : String
---     , admin : Bool
---     , active : Bool
---     }
