@@ -8,6 +8,14 @@ module Document.ActionRead
         , getRecentDocuments
         )
 
+{-| The Document.ActionRead module is composed of functions
+with return value (Model, Cmd Msg) and their helpers. The
+exported functions are consumed by the update function in
+Document.Update. Functions in this module are used for
+"reading" documents. They do not return changed documents.
+Functions total, 6 exported.
+-}
+
 import Document.Default
 import Document.Model
     exposing
@@ -194,6 +202,7 @@ getRecentDocuments model daysBefore =
         )
 
 
+setTexMacroFileCmd : Document -> String -> Cmd Msg
 setTexMacroFileCmd document token =
     let
         maybeMacroFileId =
