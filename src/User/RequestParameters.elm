@@ -1,21 +1,28 @@
 module User.RequestParameters exposing (..)
 
-import Configuration
-import User.Data as Data
-import Model exposing (Model)
-import Msg
-import User.Model exposing (UserRecord, UserListRecord, UserReply)
-import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList, ProcessDeletedDocument))
-import HttpBuilder as HB
-import Api.Request exposing (RequestParameters)
 import Json.Encode as Encode
+import HttpBuilder as HB
 
 
-authenticateUser : Model -> RequestParameters String
-authenticateUser model =
+--
+
+import Configuration
+import Api.Request exposing (RequestParameters)
+import Msg
+
+
+--
+
+import User.Data as Data
+import User.Model exposing (UserRecord, UserListRecord, UserReply, NewUser)
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList, ProcessDeletedDocument))
+
+
+authenticateUser : String -> String -> RequestParameters String
+authenticateUser email password =
     { api = Configuration.api
     , route = "/authentication"
-    , payload = Data.authenticationEncoder model
+    , payload = Data.authenticationEncoder email password
     , tagger = Msg.UserMsg << VerifyAuthentication
     , token = ""
     , decoder = Data.tokenDecoder
@@ -23,11 +30,11 @@ authenticateUser model =
     }
 
 
-signUpUser : Model -> RequestParameters UserRecord
-signUpUser model =
+signUpUser : NewUser -> RequestParameters UserRecord
+signUpUser newUser =
     { api = Configuration.api
     , route = "/users"
-    , payload = Data.signupUserEncoder model
+    , payload = Data.signupUserEncoder newUser
     , tagger = Msg.UserMsg << VerifySignUp
     , token = ""
     , decoder = Data.userRecordDecoder

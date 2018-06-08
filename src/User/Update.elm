@@ -1,12 +1,16 @@
 module User.Update exposing (..)
 
+import Api.Request as Request
 import Model exposing (Model, Flags, initialModel, Mode(..), Page(..))
 import Msg exposing (Msg)
+import Utility
+
+
+--
+
 import User.Msg exposing (..)
-import Api.Request as Request
 import User.RequestParameters as RequestParameters
 import User.Action
-import Utility
 
 
 update : UserMsg -> Model -> ( Model, Cmd Msg )
@@ -22,7 +26,7 @@ update submessage model =
             )
 
         AuthenticateUser ->
-            ( model, Request.doRequest <| RequestParameters.authenticateUser model )
+            ( model, Request.doRequest <| RequestParameters.authenticateUser model.email model.password )
 
         VerifyAuthentication (Ok token) ->
             User.Action.handleToken model token
@@ -31,7 +35,15 @@ update submessage model =
             ( { model | errorMessage = (toString error) }, Cmd.none )
 
         SignUpUser ->
-            ( model, Request.doRequest <| RequestParameters.signUpUser model )
+            let
+                newUser =
+                    { name = model.name
+                    , username = model.username
+                    , email = model.email
+                    , password = model.password
+                    }
+            in
+                ( model, Request.doRequest <| RequestParameters.signUpUser newUser )
 
         VerifySignUp (Ok userRecord) ->
             User.Action.handleUserRecord model userRecord

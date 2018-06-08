@@ -140,7 +140,7 @@ update submessage model =
                         Debug.log "InputEditorText, chars" (String.length document.content)
 
                     cmd =
-                        if document.attributes.textType == MiniLatex then
+                        if document.attributes.textType == MeenyLatex then
                             Cmd.none
                         else
                             Document.Cmd.putTextToRender updatedDocument

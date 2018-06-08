@@ -8,6 +8,14 @@ module Document.ActionRead
         , getRecentDocuments
         )
 
+{-| The Document.ActionRead module is composed of functions
+with return value (Model, Cmd Msg) and their helpers. The
+exported functions are consumed by the update function in
+Document.Update. Functions in this module are used for
+"reading" documents. They do not return changed documents.
+Functions total, 6 exported.
+-}
+
 import Document.Default
 import Document.Model
     exposing
@@ -31,7 +39,7 @@ import Document.Query as Query
 import Utility
 import Task exposing (Task)
 import Document.Task
-import MiniLatex.Driver
+import MeenyLatex.Driver
 import Document.Dictionary as Dictionary
 import Utility.KeyValue as KeyValue
 import Document.Utility
@@ -143,7 +151,7 @@ selectDocument model document =
         ( { model
             | currentDocument = document
             , maybeMasterDocument = updatedMaybeMasterDocument
-            , editRecord = MiniLatex.Driver.emptyEditRecord
+            , editRecord = MeenyLatex.Driver.emptyEditRecord
             , documentType = document.attributes.docType
             , documentTextType = document.attributes.textType
             , counter = model.counter + 1
@@ -194,6 +202,7 @@ getRecentDocuments model daysBefore =
         )
 
 
+setTexMacroFileCmd : Document -> String -> Cmd Msg
 setTexMacroFileCmd document token =
     let
         maybeMacroFileId =

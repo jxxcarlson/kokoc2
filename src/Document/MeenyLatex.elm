@@ -1,4 +1,4 @@
-module Document.MiniLatex exposing (getMacroDefinitions, macros)
+module Document.MeenyLatex exposing (getMacroDefinitions, macros)
 
 import Model exposing (Model)
 import Document.Dictionary as Dictionary

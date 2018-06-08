@@ -89,7 +89,7 @@ decodeTextType textTypeString =
             Decode.succeed Asciidoc
 
         "latex" ->
-            Decode.succeed MiniLatex
+            Decode.succeed MeenyLatex
 
         _ ->
             Decode.fail <| "I don't know a textType named " ++ textTypeString
@@ -175,7 +175,7 @@ encodeDocumentForOutside document =
 
         content_to_render =
             case textType of
-                MiniLatex ->
+                MeenyLatex ->
                     document.renderedContent
 
                 _ ->
@@ -207,7 +207,7 @@ encodeTextType textType =
         AsciidocLatex ->
             Encode.string "adoc_latex"
 
-        MiniLatex ->
+        MeenyLatex ->
             Encode.string "latex"
 
         Plain ->

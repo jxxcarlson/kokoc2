@@ -13,11 +13,23 @@ module Document.ActionEdit
         , renderContentAndSave
         )
 
-import Document.Default
-import Document.Model exposing (Document, DocumentRecord, DocumentListRecord, DocType(..), TextType(..))
-import Document.Data as Data
-import Document.Cmd
-import Document.Msg exposing (DocumentMsg(GetDocumentList, SaveDocument))
+{-| The Document.ActionEdit module is composed of functions
+with return value (Model, Cmd Msg) and their helpers. The
+exported functions are consumed by the update function in
+Document.Update. Functions in this module are used for creating,
+editing and deleting documents. 19 functions total, 11 exported.
+-}
+
+import Http
+import Task exposing (Task)
+import Regex
+import Time
+import Dict exposing (Dict)
+
+
+--
+
+import Configuration
 import Model
     exposing
         ( Model
@@ -30,24 +42,27 @@ import Model
         , SubdocumentPosition(..)
         )
 import Msg exposing (Msg(DocumentMsg, ReceiveStartTime))
-import Http
 import OutsideInfo exposing (InfoForOutside(PutTextToRender))
-import Configuration
+
+
+--
+
+import Document.Default
+import Document.Model exposing (Document, DocumentAttributes, DocumentRecord, DocumentListRecord, DocType(..), TextType(..))
+import Document.Data as Data
+import Document.Cmd
+import Document.Msg exposing (DocumentMsg(GetDocumentList, SaveDocument))
 import Document.QueryParser as QueryParser
 import Document.Query as Query
-import Utility
-import Task exposing (Task)
 import Document.Task
-import MiniLatex.Driver
-import Regex
-import Dict exposing (Dict)
 import Document.Dictionary as Dictionary
-import Utility.KeyValue as KeyValue
-import MiniLatex.Source
-import MiniLatex.RenderLatexForExport
-import Document.MiniLatex
-import Time
+import Document.MeenyLatex
 import Document.Utility
+import MeenyLatex.Source
+import MeenyLatex.RenderLatexForExport
+import MeenyLatex.Driver
+import Utility
+import Utility.KeyValue as KeyValue
 
 
 createDocument : Model -> Document -> ( Model, Cmd Msg )
@@ -112,7 +127,7 @@ selectNewDocument model document =
 
 renderContent : Model -> ( Model, Cmd Msg )
 renderContent model =
-    if model.currentDocument.attributes.textType == MiniLatex then
+    if model.currentDocument.attributes.textType == MeenyLatex then
         renderLatex model
     else
         ( model, Document.Cmd.renderNonLatexCmd model )
@@ -120,7 +135,7 @@ renderContent model =
 
 renderContentAndSave : Model -> ( Model, Cmd Msg )
 renderContentAndSave model =
-    if model.currentDocument.attributes.textType == MiniLatex then
+    if model.currentDocument.attributes.textType == MeenyLatex then
         renderLatex model
     else
         ( { model | currentDocumentNeedsToBeSaved = False }
@@ -130,6 +145,10 @@ renderContentAndSave model =
             , Task.perform ReceiveStartTime Time.now
             ]
         )
+
+
+
+{- renderLatex and helpers -}
 
 
 renderLatex : Model -> ( Model, Cmd Msg )
@@ -142,23 +161,23 @@ renderLatex model =
             getEnrichedContent document
 
         newEditRecord =
-            MiniLatex.Driver.update 666 model.editRecord contentToRender
+            MeenyLatex.Driver.update 666 model.editRecord contentToRender
 
         macroDefinitions =
-            Document.MiniLatex.getMacroDefinitions model
+            Document.MeenyLatex.getMacroDefinitions model
 
         textToExport =
-            [ MiniLatex.Source.texPrefix
+            [ MeenyLatex.Source.texPrefix
             , macroDefinitions
             , sectionNumberCommand -1 document
             , tableOfContentsMacro document
-            , MiniLatex.RenderLatexForExport.renderLatexForExport document.content
-            , MiniLatex.Source.texSuffix
+            , MeenyLatex.RenderLatexForExport.renderLatexForExport document.content
+            , MeenyLatex.Source.texSuffix
             ]
                 |> String.join ""
 
         renderedContent =
-            (MiniLatex.Driver.getRenderedText macroDefinitions newEditRecord)
+            (MeenyLatex.Driver.getRenderedText macroDefinitions newEditRecord)
 
         updatedDocument =
             { document | renderedContent = renderedContent }
@@ -223,6 +242,10 @@ tableOfContentsMacro document =
                 "\n\n"
 
 
+
+{- End of renderLatex and helpers -}
+
+
 deleteDocumentFromList : Document -> Model -> Model
 deleteDocumentFromList document model =
     let
@@ -241,6 +264,7 @@ deleteDocumentFromList document model =
         }
 
 
+deleteDocument : Model -> ( Model, Cmd Msg )
 deleteDocument model =
     let
         documentToDelete =
@@ -260,6 +284,7 @@ deleteDocument model =
         )
 
 
+newDocument : Model -> ( Model, Cmd Msg )
 newDocument model =
     let
         newDocument =
@@ -278,6 +303,7 @@ newDocument model =
 {- New document helpers -}
 
 
+makeNewDocument : Model -> Document
 makeNewDocument model =
     let
         title =
@@ -294,6 +320,7 @@ makeNewDocument model =
                 Document.Default.make title Document.Default.masterDocText
 
 
+putAuthorInfo : Model -> Document -> Document
 putAuthorInfo model document =
     case model.maybeCurrentUser of
         Nothing ->
@@ -303,6 +330,7 @@ putAuthorInfo model document =
             { document | authorId = currentUser.id, authorName = currentUser.username }
 
 
+putParent : Model -> Document -> Document
 putParent model document =
     case model.maybeMasterDocument of
         Just masterDocument ->
@@ -315,6 +343,7 @@ putParent model document =
             document
 
 
+putTextAndDocumentType : Model -> DocumentAttributes -> DocumentAttributes
 putTextAndDocumentType model documentAttributes =
     case model.documentType of
         Standard ->
@@ -328,6 +357,7 @@ putTextAndDocumentType model documentAttributes =
 {- End new document helpers -}
 
 
+togglePublic : Model -> ( Model, Cmd Msg )
 togglePublic model =
     let
         currentDocument =

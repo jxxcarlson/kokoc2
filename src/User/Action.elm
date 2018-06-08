@@ -13,18 +13,30 @@ module User.Action
         , deleteUserCmd
         )
 
+import Json.Encode as Encode
 import Jwt exposing (decodeToken)
+
+
+--
+
 import Model exposing (Model, Mode(..))
+import Msg exposing (Msg)
+
+
+--
+
 import User.Model exposing (User, UserListRecord)
 import User.Data as Data
-import Json.Encode as Encode
-import Msg exposing (Msg)
+import User.RequestParameters
+import User.Mail
 import User.Model exposing (UserRecord)
+
+
+--
+
+import Api.Request
 import OutsideInfo exposing (InfoForOutside(..))
 import Document.Model exposing (SearchDomain(..))
-import User.RequestParameters
-import Api.Request
-import User.Mail
 
 
 handleToken : Model -> String -> ( Model, Cmd Msg )

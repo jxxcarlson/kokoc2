@@ -11,8 +11,8 @@ import Document.Model
         )
 import User.Model exposing (User)
 import Document.Default
-import MiniLatex.Differ exposing (EditRecord)
-import MiniLatex.Driver
+import MeenyLatex.Differ exposing (EditRecord)
+import MeenyLatex.Driver
 import Dict exposing (Dict)
 import Html exposing (Html, div, p, ul, li, text)
 import Keyboard.Extra exposing (Key(..))
@@ -163,7 +163,7 @@ initialModel flags location =
      , currentDocument = Document.Default.make "TITLE" "CONTENT"
      , currentDocumentNeedsToBeSaved = False
      , maybePreviousDocument = Nothing
-     , editRecord = MiniLatex.Driver.setup 0 ""
+     , editRecord = MeenyLatex.Driver.setup 0 ""
      , maybeMasterDocument = Nothing
      , textToExport = ""
      , windowWidth = flags.width
@@ -183,7 +183,7 @@ initialModel flags location =
      , tagString = ""
      , newDocumentDocType = Standard
      , deleteDocumentState = DeleteDocumentInactive
-     , documentTextType = MiniLatex
+     , documentTextType = MeenyLatex
      , documentType = Standard
      , subdocumentPosition = DoNotAttachSubdocument
      , repositoryName = "default"

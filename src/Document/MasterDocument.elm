@@ -4,10 +4,10 @@ module Document.MasterDocument
         , wordCount
         )
 
-import Document.MiniLatex
-import MiniLatex.FastExportToLatex as FastExportToLatex
-import MiniLatex.RenderLatexForExport
-import MiniLatex.Source as Source
+import Document.MeenyLatex
+import MeenyLatex.FastExportToLatex as FastExportToLatex
+import MeenyLatex.RenderLatexForExport
+import MeenyLatex.Source as Source
 import Model exposing (Model)
 import Document.Dictionary as Dictionary
 import Regex
@@ -34,7 +34,7 @@ prepareExportLatexFromMaster : Model -> ( Model, Cmd Msg )
 prepareExportLatexFromMaster model =
     let
         macroDefinitions =
-            Document.MiniLatex.macros model.documentDict
+            Document.MeenyLatex.macros model.documentDict
 
         sourceText =
             List.drop 1 model.documentList

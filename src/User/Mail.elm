@@ -1,16 +1,24 @@
 module User.Mail exposing (MailRecord, doMailing)
 
-import Configuration
-import User.Data as Data
-import Model exposing (Model)
-import Msg exposing (Msg)
-import User.Model exposing (UserRecord, UserListRecord)
-import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList))
 import HttpBuilder as HB
 import Json.Encode as Encode
 import Http
 import Json.Decode as Decode exposing (at, field, int, list, string, decodeString, Decoder)
 import Json.Decode.Pipeline as JPipeline exposing (decode, required, optional, hardcoded)
+
+
+--
+
+import Configuration
+import Model exposing (Model)
+import Msg exposing (Msg)
+
+
+--
+
+import User.Data as Data
+import User.Model exposing (UserRecord, UserListRecord)
+import User.Msg exposing (UserMsg(VerifyAuthentication, VerifySignUp, GetUser, GetUserList))
 
 
 doMailingRequest : MailRecord -> RequestParameters MailResult -> HB.RequestBuilder MailResult

@@ -33,7 +33,7 @@ emptyDocument =
 
 defaultAttributes : DocumentAttributes
 defaultAttributes =
-    DocumentAttributes False MiniLatex Standard 0 "default" 0 Nothing
+    DocumentAttributes False MeenyLatex Standard 0 "default" 0 Nothing
 
 
 masterDocText =
