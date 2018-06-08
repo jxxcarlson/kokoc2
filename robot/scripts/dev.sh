@@ -8,15 +8,15 @@ if [ "$1" = "-c" ]
 then
 echo
 echo "${color}Use dev configuration ... copying${reset}"
-cp ./robot/src/dev/Configuration.elm ./src/Configuration.elm
-cp ./robot/src/dev/Main.elm ./src/Main.elm
+# cp ./robot/src/dev/Configuration.elm ./src/Configuration.elm
+ ./robot/src/dev/Main.elm ./src/Main.elm --output-ao
 fi
 
 
 echo
 echo "${color}Compiling${reset}"
 start=`date +%s`
-elm make src/Main.elm  --debug --output ./dist-local/main.js
+/Users/carlson/Downloads/elm make ./Main.elm --output ./dist-local/main.js
 end=`date +%s`
 runtime=$((end-start))
 echo

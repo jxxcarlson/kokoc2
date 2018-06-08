@@ -9,7 +9,7 @@ import Model exposing (Model, Flags, initialModel)
 import Msg exposing (Msg(..))
 import Update exposing (update)
 import View.Main
-import Document.Msg exposing (DocumentMsg(GetDocumentList))
+import Document.Msg exposing (DocumentMsg(..))
 import Configuration
 import Nav.Parser
 import Navigation
