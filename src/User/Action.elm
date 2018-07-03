@@ -14,6 +14,7 @@ module User.Action
         )
 
 import Json.Encode as Encode
+import Json.Decode as Decode
 import Jwt exposing (decodeToken)
 
 
@@ -109,10 +110,12 @@ modelFromToken model token =
 handleUserRecord : Model -> UserRecord -> ( Model, Cmd Msg )
 handleUserRecord model userRecord =
     let
-        user =
+        user = Debug.log "USER"
             userRecord.user
+        
     in
-        case Jwt.decodeToken Data.userRecordDecoder user.token of
+        -- case Jwt.decodeToken Data.userRecordDecoder user.token of
+        case Jwt.decodeToken Data.jwtDecoder user.token of
             Ok value ->
                 let
                     newModel =
@@ -121,7 +124,7 @@ handleUserRecord model userRecord =
                     ( newModel, sendUserDataToLocalStorage newModel )
 
             Err error ->
-                ( { model | maybeCurrentUser = Nothing, mode = Public, password = "", message = "Error !!!" }, Cmd.none )
+                ( { model | maybeCurrentUser = Nothing, mode = Public, password = "", message = "Error !!!" ++ (toString error)}, Cmd.none )
 
 
 sendUserDataToLocalStorage : Model -> Cmd Msg

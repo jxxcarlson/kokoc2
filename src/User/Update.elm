@@ -46,10 +46,10 @@ update submessage model =
                 ( model, Request.doRequest <| RequestParameters.signUpUser newUser )
 
         VerifySignUp (Ok userRecord) ->
-            User.Action.handleUserRecord model userRecord
+            User.Action.handleUserRecord model (Debug.log "SIGNUP RECORD" userRecord)
 
         VerifySignUp (Err error) ->
-            ( { model | errorMessage = (toString error) }, Cmd.none )
+            ( { model | errorMessage = "SIGNUP ERROR" ++ (toString error) }, Cmd.none )
 
         GetUser (Ok userRecord) ->
             User.Action.getUser model userRecord
