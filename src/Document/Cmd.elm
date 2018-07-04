@@ -167,11 +167,12 @@ selectMaster document model =
 selectMasterAux : Int -> String -> Cmd Msg
 selectMasterAux documentId token =
     let
-        route =
+        route = Debug.log("selectMasterAux, route") (
             if token == "" then
                 "/public/documents"
             else
                 "/documents"
+            )
 
         query =
             "master=" ++ toString documentId ++ "&loading"

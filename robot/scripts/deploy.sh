@@ -18,21 +18,20 @@ fi
 echo
 echo "${color}Compiling${reset}"
 start=`date +%s`
-elm make src/Main.elm  --output ./dist/main.js
+elm make src/Main.elm  --output ./Main.js
 end=`date +%s`
 runtime=$((end-start))
 echo
 echo "${magenta}Compile time: " $runtime " seconds${reset}"
 
 
-# echo
-# echo "${color}Uglifying${reset}"
-# uglifyjs ./dist/main.js -mc 'unsafe_comps=true,unsafe=true,pure_funcs="F2,F3,F4,F5,F6,F7,F8,F9"' > ./dist/main.min.js
-# echo "Uglified main.js:"
-# mv ./dist/main.min.js ./dist/main.js
-# ls -lh ./dist/main.js
-# echo
-
+echo
+echo "${color}Minifying${reset}"
+uglifyjs Main.js -mc 'pure_funcs="F2,F3,F4,F5,F6,F7,F8,F9"' -o Main.min.js
+mv ./Main.min.js ./dist/Main.min.js
+ls -lh ./Main.js
+ls -lh ./dist/Main.min.js
+rm ./Main.js
 
 # echo "${color}Compressing${reset}"
 # gzip -f ./dist/main.js
@@ -41,7 +40,8 @@ echo "${magenta}Compile time: " $runtime " seconds${reset}"
 
 echo
 echo "${color}upload to cloud ...${reset}"
-scp -r ./dist/main.js root@138.197.81.6:/var/www/html/
+scp -r ./dist/Main.min.js root@138.197.81.6:/var/www/html/
+scp -r ./dist/index.html root@138.197.81.6:/var/www/html/
 
 echo
 tput setaf 2; echo "${color}Done${reset}"

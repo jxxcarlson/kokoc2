@@ -12,6 +12,14 @@ cp ./robot/src/dev/Configuration.elm ./src/Configuration.elm
 cp ./robot/src/dev/Main.elm ./src/Main.elm
 fi
 
+if [ "$1" = "-r" ]
+then
+echo
+echo "${color}Use dev configuration ... copying${reset}"
+cp ./robot/src/remote/Configuration.elm ./src/Configuration.elm
+cp ./robot/src/dev/Main.elm ./src/Main.elm
+fi
+
 
 echo
 echo "${color}Compiling${reset}"
